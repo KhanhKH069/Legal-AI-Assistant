@@ -1,0 +1,31 @@
+# Core Dependencies - UPDATED TO v1.x
+streamlit==1.32.0
+python-dotenv==1.0.0
+
+# LangChain v1.x (UPDATED)
+langchain==1.0.0
+langchain-core==1.0.0
+langchain-community==1.0.0a1
+
+# Vector Database
+chromadb==0.4.22
+sentence-transformers==2.7.0
+
+# CV Processing
+PyPDF2==3.0.1
+python-docx==1.1.0
+
+# Data Processing & Export
+pandas==2.2.0
+openpyxl==3.1.2
+
+# GitHub API (if you add GitHub feature later)
+requests==2.31.0
+
+# Backend API
+fastapi
+uvicorn[standard]
+
+# ORM
+sqlmodel
+

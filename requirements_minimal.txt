@@ -1,0 +1,20 @@
+# Minimal Requirements - Pure Vector
+# Fix for huggingface_hub error
+
+# LangChain
+langchain-core==0.2.43
+langsmith==0.1.147
+
+# Fix huggingface_hub version
+huggingface-hub>=0.20.0
+
+# Vector Database  
+chromadb==0.4.22
+sentence-transformers==2.2.2
+
+# Streamlit
+streamlit==1.31.0
+
+# Utilities
+python-dotenv==1.0.0
+requests

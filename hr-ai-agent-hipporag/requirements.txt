@@ -1,0 +1,38 @@
+# HR AI Agent - HippoRAG Version
+
+# Core LangChain
+langchain==0.1.0
+langchain-core==0.1.10
+
+# Google Gemini
+langchain-google-genai==1.0.0
+google-generativeai==0.3.2
+
+# LangGraph
+langgraph==0.0.20
+
+# Vector Database & Embeddings
+chromadb==0.4.22
+sentence-transformers==2.2.2
+
+# HippoRAG (if available on PyPI, else install from GitHub)
+# hipporag==0.1.0
+# Or install from source: pip install git+https://github.com/OSU-NLP-Group/HippoRAG
+
+# Document Processing
+pypdf==4.0.1
+python-docx==1.1.0
+pymupdf==1.23.8
+
+# Knowledge Graph
+networkx==3.2.1
+spacy==3.7.2
+
+# Streamlit for Web UI
+streamlit==1.31.0
+plotly==5.18.0
+
+# Utilities
+python-dotenv==1.0.0
+pydantic==2.5.3
+PyYAML==6.0.1

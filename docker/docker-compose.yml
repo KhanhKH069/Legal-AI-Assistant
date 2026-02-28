@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  hr-agent:
+    build: ..
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ../data:/app/data

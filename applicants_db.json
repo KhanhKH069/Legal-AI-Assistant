@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Nam Khanh Vu",
+    "email": "nslgkhanh.vu@gmail.com",
+    "phone": "0383356237",
+    "position": "AI Intern",
+    "cv_path": "cv_uploads\\Portfolio of Vu Nam Khanh (2).pdf",
+    "cv_url": null,
+    "status": "NEW",
+    "created_at": "2026-02-28 06:28:35"
+  },
+  {
+    "name": "Nguyen Van Hung Lam",
+    "email": "lamhung13102005@gmail.com",
+    "phone": "0379181310",
+    "position": "AI Intern",
+    "cv_path": "cv_uploads\\CV Nguyễn Văn Lâm Hùng AI intern.pdf",
+    "cv_url": null,
+    "status": "NEW",
+    "created_at": "2026-02-28 06:29:22"
+  },
+  {
+    "name": "Doan Duc Thang",
+    "email": "ducthang8558@gmail.com",
+    "phone": "0978 851 058",
+    "position": "AI Intern",
+    "cv_path": "cv_uploads\\Doan Duc Thang_AI Engineer.pdf",
+    "cv_url": null,
+    "status": "NEW",
+    "created_at": "2026-02-28 06:29:59"
+  }
+]

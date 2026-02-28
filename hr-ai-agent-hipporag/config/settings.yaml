@@ -1,0 +1,26 @@
+application:
+  name: HR AI Agent
+  version: 2.0.0
+  environment: development
+
+agents:
+  orchestrator:
+    enabled: true
+  policy_agent:
+    enabled: true
+  onboard_agent:
+    enabled: true
+  recruit_agent:
+    enabled: false
+  analytics_agent:
+    enabled: false
+
+services:
+  vector_store:
+    enabled: true
+    type: mock
+  database:
+    enabled: true
+    type: mock
+  audit_logger:
+    enabled: true
