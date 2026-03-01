@@ -171,23 +171,22 @@ query expansion, reranking, and final answer generation by the LLM.
 ```mermaid
 flowchart TD
     subgraph Preprocessing
-        A[Input (.docx / .md)] --> B[Heading/Text/Table extraction]
-        B --> C[Markdown file]
+        A["Input (.docx / .md)"] --> B["Heading/Text/Table extraction"]
+        B --> C["Markdown file"]
     end
     subgraph Indexing
         C --> D[Chunking]
         D --> E[Embedding]
-        E --> F[Vector Store (Qdrant)]
+        E --> F["Vector Store (Qdrant)"]
     end
     subgraph QueryProcess
-        U[User question] --> V[LLM expand query]
+        U["User question"] --> V["LLM expand query"]
         V --> F
         F --> W[Querying]
-        W --> X[Rerank (Top‑K)]
-        X --> Y[LLM core input
-            Prompt + Question + Context]
-        Y --> Z[LLM answer]
-        Z --> A1[Answer to user]
+        W --> X["Rerank (Top‑K)"]
+        X --> Y["LLM core input<br/>Prompt + Question + Context"]
+        Y --> Z["LLM answer"]
+        Z --> A1["Answer to user"]
     end
 ```
 
