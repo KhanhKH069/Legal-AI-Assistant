@@ -117,6 +117,154 @@ knowledge base; LLM clients are never initialized in this mode.
   offline or missing key.
 - Frontend components live in `frontend/app/` following the Next.js App Router.
 
+## Project pipeline diagrams
+
+To make the processing flow even clearer, here are two visualizations of the
+pipeline.  The first is a high‑level mind map; the second is a detailed
+flowchart showing preprocessing, indexing, and generation steps.
+
+### Mind map overview
+
+```mermaid
+mindmap
+  root((Paraline HR AI Project))
+    Frontend
+      Chat UI
+      Apply form
+      HR dashboard
+    Backend
+      FastAPI
+      Routers
+        applicants
+        screening
+        job_requirements
+        files
+      Agents
+        Orchestrator
+        PolicyAgent
+        OnboardAgent
+        CVAgent
+        OfflineAgent
+      Tools
+        cv_tools
+        policy_tools
+        onboard_tools
+    Data
+      SQLite DB
+      JSON logs
+      Markdown docs
+    CI/CD
+      GitHub Actions
+        backend tests & lint
+        frontend build & lint
+    Deployment
+      Docker (optional)
+      Uvicorn / Node
+```
+
+### Detailed processing flow
+
+This flowchart illustrates how documents move through the system: preprocessing
+(conversion/heading extraction), chunking & embedding into the vector store,
+query expansion, reranking, and final answer generation by the LLM.
+
+```mermaid
+flowchart TD
+    subgraph Preprocessing
+        A[Input (.docx / .md)] --> B[Heading/Text/Table extraction]
+        B --> C[Markdown file]
+    end
+    subgraph Indexing
+        C --> D[Chunking]
+        D --> E[Embedding]
+        E --> F[Vector Store (Qdrant)]
+    end
+    subgraph QueryProcess
+        U[User question] --> V[LLM expand query]
+        V --> F
+        F --> W[Querying]
+        W --> X[Rerank (Top‑K)]
+        X --> Y[LLM core input
+            Prompt + Question + Context]
+        Y --> Z[LLM answer]
+        Z --> A1[Answer to user]
+    end
+```
+
+## CI/CD Pipeline
+
+This repository includes a simple continuous integration workflow that runs on
+push and pull request events.  The pipeline is implemented with GitHub Actions
+(`.github/workflows/ci.yml`) and performs the following steps:
+
+## CI/CD Pipeline
+
+This repository includes a simple continuous integration workflow that runs on
+push and pull request events.  The pipeline is implemented with GitHub Actions
+(`.github/workflows/ci.yml`) and performs the following steps:
+
+1. **Checkout** the code.
+2. **Backend job**
+   - Set up Python 3.10.
+   - Install dependencies from `requirements-dev.txt` (virtualenv created).
+   - Run `pytest` to execute the unit and integration tests under `src/` and
+     `tests/`.
+   - Lint the Python code with `flake8`.
+3. **Frontend job** (runs after backend job completes)
+   - Set up Node 18.
+   - Install packages in `frontend/` with `npm ci`.
+   - Build the Next.js application (`npm run build`).
+   - Run frontend linting (`npm run lint`).
+
+Below is an example of the workflow file used in this project:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements-dev.txt
+      - name: Run backend tests
+        run: |
+          source .venv/bin/activate
+          pytest -q
+      - name: Lint Python
+        run: |
+          source .venv/bin/activate
+          flake8 src tests
+
+  frontend:
+    runs-on: ubuntu-latest
+    needs: backend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: |
+          cd frontend
+          npm ci
+          npm run build
+          npm run lint
+```
+
+You can extend the workflow to build Docker images, deploy to a server, or push
+artifacts to a registry as needed.
+
 ## License
 
 This project is licensed under the MIT License. Feel free to adapt or reuse it
