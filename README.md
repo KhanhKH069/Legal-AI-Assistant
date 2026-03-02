@@ -107,7 +107,8 @@ EOF
 
 Set `OFFLINE_MODE=true` or leave `GOOGLE_API_KEY` blank to run without any
 external API calls. The chat endpoint will answer using the local markdown
-knowledge base; LLM clients are never initialized in this mode.
+knowledge base; LLM clients are never initialized in this mode. You do *not*
+need to install the `langchain_google_genai` package to use offline mode.
 
 ## Extending the project
 
@@ -189,12 +190,6 @@ flowchart TD
         Z --> A1["Answer to user"]
     end
 ```
-
-## CI/CD Pipeline
-
-This repository includes a simple continuous integration workflow that runs on
-push and pull request events.  The pipeline is implemented with GitHub Actions
-(`.github/workflows/ci.yml`) and performs the following steps:
 
 ## CI/CD Pipeline
 
