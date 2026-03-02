@@ -603,7 +603,7 @@ components.html(footer_html, height=400)
 # ============================================
 
 with st.sidebar:
-    st.markdown("###  Ứng Tuyển Việc Làm - Apply for jobs")
+    st.markdown("### Ứng Tuyển Việc Làm - Apply for jobs")
     
     with st.form("cv_form", clear_on_submit=True):
         st.markdown("** Thông tin ứng viên**")
