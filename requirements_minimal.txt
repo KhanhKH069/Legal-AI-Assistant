@@ -8,7 +8,7 @@ langsmith==0.1.147
 # Fix huggingface_hub version
 huggingface-hub>=0.20.0
 
-# Vector Database  
+# Vector Database
 chromadb==0.4.22
 sentence-transformers==2.2.2
 

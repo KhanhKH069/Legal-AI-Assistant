@@ -43,8 +43,11 @@ def on_startup() -> None:
     global graph
     graph = create_hr_agent_graph()
 
+
 ConversationStore = Dict[str, List[BaseMessage]]
 conversation_history: ConversationStore = {}
+
+graph = None  # type: ignore[var-annotated]
 
 
 class ChatRequest(BaseModel):
@@ -88,17 +91,21 @@ def chat_endpoint(payload: ChatRequest) -> ChatResponse:
     # project files.
     if config.enable_offline_mode or not config.google_api_key:
         from src.agents.offline_agent import answer_question
+
         try:
             resp = answer_question(payload.message)
             conversation_history[user_id].append(AIMessage(content=resp))
-            return ChatResponse(status="success", response=resp, intent="OFFLINE", user_id=user_id)
+            return ChatResponse(
+                status="success", response=resp, intent="OFFLINE", user_id=user_id
+            )
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Offline agent error: {e}")
 
     try:
-        result = graph.invoke(initial_state)
+        result = graph.invoke(initial_state)  # type: ignore
     except Exception as e:
         import traceback
+
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Agent error: {e}")
 
@@ -118,4 +125,3 @@ def chat_endpoint(payload: ChatRequest) -> ChatResponse:
         intent=result.get("user_intent", ""),
         user_id=user_id,
     )
-

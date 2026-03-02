@@ -60,4 +60,3 @@ def cv_agent_node(state):
         "user_id": state.get("user_id", ""),
         "user_info": state.get("user_info", {}),
     }
-

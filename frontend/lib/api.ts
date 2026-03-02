@@ -158,4 +158,3 @@ export async function updateJobRequirement(
     body: JSON.stringify(payload)
   });
 }
-

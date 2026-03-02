@@ -25,6 +25,7 @@ class AgentState(TypedDict):
     user_id: str
     user_info: dict
 
+
 # Initialize Gemini LLM (only if online mode with API key)
 llm = None
 if not config.enable_offline_mode and config.google_api_key:
@@ -32,8 +33,9 @@ if not config.enable_offline_mode and config.google_api_key:
         model=config.model_name,
         google_api_key=config.google_api_key,
         temperature=config.temperature,
-        max_tokens=config.max_tokens
+        max_tokens=config.max_tokens,
     )
+
 
 def create_orchestrator():
     """Create orchestrator agent"""
@@ -54,19 +56,22 @@ Examples:
 - "Đánh giá CV này cho vị trí Backend Developer" → CV_AGENT
 - "CV này đạt bao nhiêu điểm cho Software Engineer?" → CV_AGENT
 """
-    
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", system_prompt),
-        MessagesPlaceholder(variable_name="messages"),
-    ])
-    
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            MessagesPlaceholder(variable_name="messages"),
+        ]
+    )
+
     return prompt | llm | StrOutputParser()
+
 
 def orchestrator_node(state: AgentState):
     """Orchestrator node"""
     orchestrator = create_orchestrator()
     response = orchestrator.invoke({"messages": state["messages"]})
-    
+
     response_clean = response.strip().upper()
     if "POLICY" in response_clean:
         next_agent = "policy_agent"
@@ -76,14 +81,15 @@ def orchestrator_node(state: AgentState):
         next_agent = "cv_agent"
     else:
         next_agent = "end"
-    
+
     return {
         "messages": state["messages"],
         "next": next_agent,
         "user_intent": response_clean,
         "user_id": state.get("user_id", ""),
-        "user_info": state.get("user_info", {})
+        "user_info": state.get("user_info", {}),
     }
+
 
 def router(state: AgentState):
     """Route to next agent"""
@@ -96,28 +102,29 @@ def router(state: AgentState):
         return "cv_agent"
     return "end"
 
+
 def create_hr_agent_graph():
     """Create HR Agent Graph with LangGraph"""
     workflow = StateGraph(AgentState)
-    
+
     # Add nodes
     workflow.add_node("orchestrator", orchestrator_node)
     workflow.add_node("policy_agent", policy_agent_node)
     workflow.add_node("onboard_agent", onboard_agent_node)
     workflow.add_node("cv_agent", cv_agent_node)
-    
+
     # Tool nodes
     policy_tools = [get_policy_info, calculate_leave_days, search_hr_qa]
     onboard_tools = [get_onboarding_checklist, search_hr_qa]
     cv_tools = [screen_cv_for_position]
-    
+
     workflow.add_node("policy_tools", ToolNode(policy_tools))
     workflow.add_node("onboard_tools", ToolNode(onboard_tools))
     workflow.add_node("cv_tools", ToolNode(cv_tools))
-    
+
     # Set entry point
     workflow.set_entry_point("orchestrator")
-    
+
     # Add conditional edges
     workflow.add_conditional_edges(
         "orchestrator",
@@ -126,10 +133,10 @@ def create_hr_agent_graph():
             "policy_agent": "policy_agent",
             "onboard_agent": "onboard_agent",
             "cv_agent": "cv_agent",
-            "end": END
-        }
+            "end": END,
+        },
     )
-    
+
     # Edges for agents
     workflow.add_edge("policy_agent", "policy_tools")
     workflow.add_edge("policy_tools", END)
@@ -137,5 +144,5 @@ def create_hr_agent_graph():
     workflow.add_edge("onboard_tools", END)
     workflow.add_edge("cv_agent", "cv_tools")
     workflow.add_edge("cv_tools", END)
-    
+
     return workflow.compile()

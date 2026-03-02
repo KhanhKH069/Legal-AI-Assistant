@@ -44,9 +44,9 @@ A lightweight Streamlit UI remains as legacy code but is no longer the primary f
 ### Backend setup
 
 ```bash
-python -m venv .venv
+uv venv
 source .venv/bin/activate    # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
 Create a `.env` file in the project root with keys such as:
@@ -233,9 +233,9 @@ jobs:
           python-version: '3.10'
       - name: Install dependencies
         run: |
-          python -m venv .venv
+          uv venv
           source .venv/bin/activate
-          pip install -r requirements-dev.txt
+          uv pip install -r requirements-dev.txt
       - name: Run backend tests
         run: |
           source .venv/bin/activate
@@ -538,7 +538,7 @@ streamlit run job_requirements_manager.py
 
 **Giải pháp:**
 ```bash
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
 ### 5. Chatbot không trả lời
@@ -702,9 +702,9 @@ MIT License - See [LICENSE](LICENSE) file
 
 ```bash
 # 1. Backend
-python -m venv .venv
+uv venv
 .\.venv\Scripts\activate        # hoặc source .venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 uvicorn api.main:app --reload --port 8000
 
 # 2. Frontend

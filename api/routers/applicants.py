@@ -11,6 +11,7 @@ from src.db_models import Applicant
 
 # --- helper for legacy JSON storage -------------------------------------------------
 
+
 def _append_applicant_to_json(applicant: Applicant):
     """Append a new applicant record to applicants_db.json.
 
@@ -124,4 +125,3 @@ def update_applicant(applicant_id: int, payload: Applicant):
     session.commit()
     session.refresh(applicant)
     return applicant
-

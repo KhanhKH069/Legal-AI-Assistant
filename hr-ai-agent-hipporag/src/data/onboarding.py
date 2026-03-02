@@ -9,26 +9,23 @@ ONBOARDING_DATA = {
         "14:00 - Ký hợp đồng",
         "15:00 - Training",
     ],
-    
     "week_1": [
         "Training sản phẩm",
         "Làm quen quy trình",
         "Meeting các department",
         "Daily standup",
     ],
-    
     "month_1": [
         "Review với Manager",
         "Hoàn thành task thử nghiệm",
         "Tham gia dự án",
         "Đánh giá thử việc",
     ],
-    
     "documents": [
         "CMND/CCCD",
         "Bằng cấp",
         "Sổ BHXH",
         "Giấy khám sức khỏe",
         "Ảnh 4x6 (4 ảnh)",
-    ]
+    ],
 }

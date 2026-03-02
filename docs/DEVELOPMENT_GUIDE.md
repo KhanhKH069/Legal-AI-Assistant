@@ -8,11 +8,11 @@ git clone <repo>
 cd hr-ai-agent
 
 # Create virtual environment
-python3 -m venv venv
+uv venv
 source venv/bin/activate
 
 # Install dependencies
-pip install -r requirements-dev.txt
+uv pip install -r requirements-dev.txt
 
 # Configure
 cp config/.env.example .env

@@ -31,4 +31,3 @@ def session_scope() -> Iterator[Session]:
         raise
     finally:
         session.close()
-

@@ -8,7 +8,6 @@ HR_POLICIES = {
     - Phép ốm: 30 ngày/năm có lương
     - Phép thai sản: 6 tháng cho nữ, 5 ngày cho nam
     """,
-    
     "working_hours": """
     Chính sách giờ làm việc:
     - Giờ hành chính: 8:00 - 17:00
@@ -16,7 +15,6 @@ HR_POLICIES = {
     - Remote: Tối đa 2 ngày/tuần
     - Overtime: x1.5 ngày thường, x2.0 ngày lễ
     """,
-    
     "compensation": """
     Chính sách lương thưởng:
     - Lương tháng 13: Chi trả tháng 12
@@ -24,7 +22,6 @@ HR_POLICIES = {
     - Review lương: 2 lần/năm
     - Bảo hiểm: BHXH, BHYT, BHTN + PTI
     """,
-    
     "benefits": """
     Chính sách phúc lợi:
     - Bảo hiểm sức khỏe PTI

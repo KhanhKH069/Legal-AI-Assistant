@@ -1,9 +1,9 @@
 """Advanced Usage Example"""
 import sys
 
-sys.path.insert(0, '../src')
+sys.path.insert(0, "../src")
 
-from main import HRAgentApp
+from main import HRAgentApp  # type: ignore[import-not-found,attr-defined]
 
 app = HRAgentApp()
 

@@ -49,4 +49,3 @@ def screen_cv_for_position(cv_path: str, position: str) -> str:
     lines.append(f"- Certifications: {cert.get('points', 0)}/10")
 
     return "\n".join(lines)
-

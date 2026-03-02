@@ -6,7 +6,7 @@ Enterprise-grade HR AI Agent powered by **Google Gemini API**.
 
 ```bash
 # 1. Install
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # 2. Get Gemini API Key
 # Go to: https://makersuite.google.com/app/apikey

@@ -28,4 +28,3 @@ async def upload_cv(file: UploadFile = File(...)) -> dict:
         "filename": file.filename,
         "cv_path": str(dest_path),
     }
-

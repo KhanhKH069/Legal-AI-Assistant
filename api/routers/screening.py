@@ -69,7 +69,7 @@ def run_screening(applicant_id: Optional[int] = None) -> Dict[str, Any]:
     # Batch mode: all NEW applicants with cv_path
     query = select(Applicant).where(
         Applicant.status == "NEW",
-        Applicant.cv_path.is_not(None),
+        Applicant.cv_path != None,  # noqa: E711
     )
     applicants = session.exec(query).all()
 
@@ -110,4 +110,3 @@ def get_result(result_id: int):
     if not result:
         raise HTTPException(status_code=404, detail="Screening result not found")
     return result
-

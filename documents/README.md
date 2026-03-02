@@ -17,7 +17,7 @@
    - Allowances, insurance
    - Retirement, incentives
 
-4. **04_Onboarding.md** - 25 questions  
+4. **04_Onboarding.md** - 25 questions
    - First day/week procedures
    - Training & orientation
    - Probation process
@@ -74,4 +74,3 @@ Update questions:
 1. Edit .md files
 2. Run: `python index_to_chromadb.py --reindex`
 3. Done!
-

@@ -50,4 +50,3 @@ def update_job_requirement(jr_id: int, payload: JobRequirement):
     session.commit()
     session.refresh(jr)
     return jr
-

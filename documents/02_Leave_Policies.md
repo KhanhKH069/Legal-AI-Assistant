@@ -12,7 +12,7 @@
 
 **Trả lời:**
 - Full-time: 12 ngày/năm
-- Probation (3 tháng đầu): 6 ngày/năm  
+- Probation (3 tháng đầu): 6 ngày/năm
 - Tính từ ngày bắt đầu làm việc
 - Tăng thêm 1 ngày/năm sau 5 năm làm việc
 
@@ -56,7 +56,7 @@
 
 **Trả lời:**
 - 1-2 ngày: Báo trước 3 ngày
-- 3-5 ngày: Báo trước 1 tuần  
+- 3-5 ngày: Báo trước 1 tuần
 - >5 ngày: Báo trước 2 tuần
 - Urgent/khẩn cấp: ASAP + lý do
 

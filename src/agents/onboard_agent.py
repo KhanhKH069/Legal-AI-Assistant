@@ -15,31 +15,35 @@ if not config.enable_offline_mode and config.google_api_key:
         temperature=config.temperature,
     )
 
+
 def create_onboard_agent():
     """Create Onboard Agent"""
     system_prompt = """You are Onboard Agent - onboarding specialist using Gemini AI.
-    
+
     Your role:
     - Help new employees with onboarding
     - Provide checklists and guidance
     - Answer onboarding questions
     - Be friendly and supportive
-    
+
     Available tools:
     - get_onboarding_checklist: Get phase checklists
     - search_hr_qa: Search Q&A database
-    
+
     Respond in Vietnamese when user asks in Vietnamese.
     """
-    
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", system_prompt),
-        MessagesPlaceholder(variable_name="messages"),
-    ])
-    
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            MessagesPlaceholder(variable_name="messages"),
+        ]
+    )
+
     tools = [get_onboarding_checklist, search_hr_qa]
     llm_with_tools = llm.bind_tools(tools)
     return prompt | llm_with_tools
+
 
 def onboard_agent_node(state):
     """Onboard Agent Node"""
@@ -50,5 +54,5 @@ def onboard_agent_node(state):
         "next": "end",
         "user_intent": state.get("user_intent", ""),
         "user_id": state.get("user_id", ""),
-        "user_info": state.get("user_info", {})
+        "user_info": state.get("user_info", {}),
     }

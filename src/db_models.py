@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 from sqlmodel import JSON, Column, Field, SQLModel
 
 
-class Applicant(SQLModel, table=True):
+class Applicant(SQLModel, table=True):  # type: ignore[call-arg]
     __tablename__ = "applicants"
 
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -14,11 +14,13 @@ class Applicant(SQLModel, table=True):
     position: str
     cv_url: Optional[str] = None
     cv_path: Optional[str] = None
-    status: str = Field(default="NEW", description="NEW/SCREENED/INTERVIEW/REJECTED/HIRED")
+    status: str = Field(
+        default="NEW", description="NEW/SCREENED/INTERVIEW/REJECTED/HIRED"
+    )
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
-class ScreeningResult(SQLModel, table=True):
+class ScreeningResult(SQLModel, table=True):  # type: ignore[call-arg]
     __tablename__ = "screening_results"
 
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -35,7 +37,7 @@ class ScreeningResult(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
-class JobRequirement(SQLModel, table=True):
+class JobRequirement(SQLModel, table=True):  # type: ignore[call-arg]
     __tablename__ = "job_requirements"
 
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -55,4 +57,3 @@ class JobRequirement(SQLModel, table=True):
     )
     min_score: float = 60.0
     created_at: datetime = Field(default_factory=datetime.utcnow)
-

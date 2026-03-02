@@ -107,4 +107,3 @@ export type RunScreeningResponse = {
   count: number;
   results: ScreeningResult[];
 };
-

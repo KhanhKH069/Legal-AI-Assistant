@@ -11,35 +11,39 @@ if not config.enable_offline_mode and config.google_api_key:
     llm = ChatGoogleGenerativeAI(
         model=config.model_name,
         google_api_key=config.google_api_key,
-        temperature=config.temperature
+        temperature=config.temperature,
     )
+
 
 def create_policy_agent():
     """Create Policy Agent"""
     system_prompt = """You are Policy Agent - HR policy expert using Gemini AI.
-    
+
     Your role:
     - Answer HR policy questions
     - Provide clear, accurate information
     - Use tools to get data
     - Be professional and helpful
-    
+
     Available tools:
     - get_policy_info: Get HR policy details
     - calculate_leave_days: Calculate leave entitlement
     - search_hr_qa: Search Q&A database
-    
+
     Respond in Vietnamese when user asks in Vietnamese.
     """
-    
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", system_prompt),
-        MessagesPlaceholder(variable_name="messages"),
-    ])
-    
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            MessagesPlaceholder(variable_name="messages"),
+        ]
+    )
+
     tools = [get_policy_info, calculate_leave_days, search_hr_qa]
     llm_with_tools = llm.bind_tools(tools)
     return prompt | llm_with_tools
+
 
 def policy_agent_node(state):
     """Policy Agent Node"""
@@ -50,5 +54,5 @@ def policy_agent_node(state):
         "next": "end",
         "user_intent": state.get("user_intent", ""),
         "user_id": state.get("user_id", ""),
-        "user_info": state.get("user_info", {})
+        "user_info": state.get("user_info", {}),
     }
