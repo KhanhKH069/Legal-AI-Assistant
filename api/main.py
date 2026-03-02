@@ -8,7 +8,8 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from pydantic import BaseModel
 
 from api.routers import applicants, files, job_requirements, screening
-from src.agents.orchestrator import create_hr_agent_graph
+
+# from src.agents.orchestrator import create_hr_agent_graph  # Moved inside on_startup
 from src.db import init_db
 from src.core.config import config
 
@@ -41,7 +42,12 @@ def on_startup() -> None:
     """Initialize database and agent graph on startup."""
     init_db()
     global graph
-    graph = create_hr_agent_graph()
+    if config.enable_offline_mode or not config.google_api_key:
+        graph = None
+    else:
+        from src.agents.orchestrator import create_hr_agent_graph
+
+        graph = create_hr_agent_graph()
 
 
 ConversationStore = Dict[str, List[BaseMessage]]
