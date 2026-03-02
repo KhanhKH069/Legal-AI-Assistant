@@ -13,9 +13,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 try:
     from services.vector_db import get_vector_db
-    print("✅ Import successful!")
+    print(" Import successful!")
 except Exception as e:
-    print(f"❌ Import error: {e}")
+    print(f" Import error: {e}")
     print("\nTry:")
     print("  pip install chromadb sentence-transformers")
     sys.exit(1)
@@ -69,35 +69,35 @@ def parse_qa_markdown(file_path):
 
 def index_documents():
     """Index all Q&A documents"""
-    print("🚀 Indexing HR Q&A to ChromaDB...\n")
+    print(" Indexing HR Q&A to ChromaDB...\n")
     
     # Get vector DB
     vdb = get_vector_db()
-    print("✅ Vector DB connected\n")
+    print(" Vector DB connected\n")
     
     # Find markdown files
     docs_dir = Path('documents')
     if not docs_dir.exists():
-        print("❌ documents/ folder not found!")
+        print(" documents/ folder not found!")
         print("Make sure you're running from project root!")
         return
     
     md_files = sorted(docs_dir.glob('*.md'))
     md_files = [f for f in md_files if f.name != 'README.md']
     
-    print(f"📁 Found {len(md_files)} document files\n")
+    print(f" Found {len(md_files)} document files\n")
     
     total_questions = 0
     total_variations = 0
     
     for md_file in md_files:
-        print(f"📄 Processing: {md_file.name}")
+        print(f" Processing: {md_file.name}")
         
         # Parse Q&A
         qa_pairs = parse_qa_markdown(md_file)
         
         if not qa_pairs:
-            print("  ⚠️  No questions found\n")
+            print("    No questions found\n")
             continue
         
         # Prepare for ChromaDB
@@ -144,16 +144,16 @@ def index_documents():
                 metadatas=metadatas,
                 ids=ids
             )
-            print(f"  ✅ Added {len(qa_pairs)} questions + {sum(len(qa['variations']) for qa in qa_pairs)} variations\n")
+            print(f"   Added {len(qa_pairs)} questions + {sum(len(qa['variations']) for qa in qa_pairs)} variations\n")
             total_questions += len(qa_pairs)
         except Exception as e:
-            print(f"  ❌ Error: {e}\n")
+            print(f"   Error: {e}\n")
     
     print("="*50)
-    print("✅ Indexing complete!")
-    print(f"📊 Total: {total_questions} questions")
-    print(f"📊 Total: {total_variations} variations")
-    print("📊 Collection: hr_policies")
+    print(" Indexing complete!")
+    print(f" Total: {total_questions} questions")
+    print(f" Total: {total_variations} variations")
+    print(" Collection: hr_policies")
     print("="*50)
 
 if __name__ == "__main__":

@@ -379,11 +379,11 @@ export default function HomePage() {
               <h3>Company culture</h3>
               <div className="culture-list">
                 <div className="culture-item">
-                  <div className="culture-icon">🏠</div>
+                  <div className="culture-icon"></div>
                   <p>Each individual is company's asset. We are all building up the company together.</p>
                 </div>
                 <div className="culture-item">
-                  <div className="culture-icon">😊</div>
+                  <div className="culture-icon"></div>
                   <p>Work together, Happy together!</p>
                 </div>
               </div>
@@ -393,21 +393,21 @@ export default function HomePage() {
               <h3>Information</h3>
               <div className="info-table">
                 <div className="info-row">
-                  <div className="info-icon">👤</div>
+                  <div className="info-icon"></div>
                   <div className="info-content">
                     <div className="info-label">CEO</div>
                     <div className="info-value">Pham Van Quang</div>
                   </div>
                 </div>
                 <div className="info-row">
-                  <div className="info-icon">🏢</div>
+                  <div className="info-icon"></div>
                   <div className="info-content">
                     <div className="info-label">Company</div>
                     <div className="info-value">ParaLine VietNam Co., Ltd.</div>
                   </div>
                 </div>
                 <div className="info-row">
-                  <div className="info-icon">📞</div>
+                  <div className="info-icon"></div>
                   <div className="info-content">
                     <div className="info-label">Tel</div>
                     <div className="info-value"><a href="tel:+842432004679">+84 24-3200-4679</a></div>
@@ -429,14 +429,14 @@ export default function HomePage() {
           <div className="contact-layout">
             <div className="contact-info-block">
               <div className="contact-info-item">
-                <div className="contact-info-icon">📍</div>
+                <div className="contact-info-icon"></div>
                 <div className="contact-info-text">
                   <p>Address</p>
                   <strong>15 Floor, Viwaseen Tower, 48 To Huu, Nam Tu Liem, Ha Noi, Vietnam</strong>
                 </div>
               </div>
               <div className="contact-info-item">
-                <div className="contact-info-icon">📞</div>
+                <div className="contact-info-icon"></div>
                 <div className="contact-info-text">
                   <p>Phone</p>
                   <strong><a href="tel:+842432004679">+84 24-3200-4679</a></strong>
@@ -474,15 +474,15 @@ export default function HomePage() {
 
           <div className="activity-grid">
             {[
-              { emoji: "🎉", title: "Year End Party" },
-              { emoji: "📊", title: "Report" },
-              { emoji: "💻", title: "Daily meeting" },
-              { emoji: "⚽", title: "Soccer" },
-              { emoji: "🥂", title: "Party" },
-              { emoji: "🌲", title: "Team building" },
-              { emoji: "✈️", title: "Business trip" },
-              { emoji: "🏢", title: "Seminar" },
-              { emoji: "🌊", title: "Ha Long tour" },
+              { emoji: "", title: "Year End Party" },
+              { emoji: "", title: "Report" },
+              { emoji: "", title: "Daily meeting" },
+              { emoji: "", title: "Soccer" },
+              { emoji: "", title: "Party" },
+              { emoji: "", title: "Team building" },
+              { emoji: "", title: "Business trip" },
+              { emoji: "", title: "Seminar" },
+              { emoji: "", title: "Ha Long tour" },
             ].map((activity, i) => (
               <div key={i} className="activity-card" style={{ background: `linear-gradient(135deg, hsl(${i * 40},50%,20%), hsl(${i * 40},50%,35%))` }}>
                 <div className="activity-thumb">{activity.emoji}</div>
@@ -500,7 +500,7 @@ export default function HomePage() {
               Para<span style={{ color: "#27ae60" }}>line</span>
             </div>
             <p className="footer-desc">Founded by members who had studied and worked in Japan, Australia. Providing products with 「International Quality」 in Vietnam.</p>
-            <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.3)" }}>© 2017. Made with <span className="footer-heart">♥</span> in Hanoi</p>
+            <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.3)" }}> 2017. Made with <span className="footer-heart"></span> in Hanoi</p>
           </div>
           <div className="footer-col">
             <h4>Navigation</h4>
@@ -527,8 +527,8 @@ export default function HomePage() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>© 2017. ParaLine VietNam Co., Ltd. All rights reserved.</p>
-          <p>Made with <span className="footer-heart">♥</span> in Hanoi</p>
+          <p> 2017. ParaLine VietNam Co., Ltd. All rights reserved.</p>
+          <p>Made with <span className="footer-heart"></span> in Hanoi</p>
         </div>
       </footer>
     </>

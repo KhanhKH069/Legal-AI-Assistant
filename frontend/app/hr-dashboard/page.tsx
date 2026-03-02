@@ -48,7 +48,7 @@ export default function HrDashboardPage() {
     <div className="max-w-5xl mx-auto py-10">
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
-          <h1 className="text-lg font-semibold">📊 HR Dashboard - Screening</h1>
+          <h1 className="text-lg font-semibold"> HR Dashboard - Screening</h1>
           <button
             onClick={handleRunAll}
             disabled={running}

@@ -69,14 +69,14 @@ def load_job_requirements():
                     'min_score': scoring.get('min_pass_score', 60)
                 }
             
-            print(f"✅ Loaded {len(requirements)} positions from config")
+            print(f" Loaded {len(requirements)} positions from config")
             return requirements
             
         except Exception as e:
-            print(f"⚠️  Error loading config: {e}")
+            print(f"  Error loading config: {e}")
             return get_default_requirements()
     else:
-        print("⚠️  Config file not found, using default requirements")
+        print("  Config file not found, using default requirements")
         return get_default_requirements()
 
 def get_default_requirements():
@@ -270,19 +270,19 @@ def score_cv(cv_path: str, position: str) -> Dict:
     
     if total_score >= min_score + 20:
         recommendation = "STRONG_PASS"
-        status = "✅ Highly Recommended"
+        status = " Highly Recommended"
         action = "Schedule interview ASAP"
     elif total_score >= min_score:
         recommendation = "PASS"
-        status = "✅ Recommended"
+        status = " Recommended"
         action = "Schedule interview"
     elif total_score >= min_score - 10:
         recommendation = "MAYBE"
-        status = "⚠️ Consider"
+        status = " Consider"
         action = "Review manually"
     else:
         recommendation = "REJECT"
-        status = "❌ Not Recommended"
+        status = " Not Recommended"
         action = "Send rejection email"
     
     return {
@@ -328,13 +328,13 @@ def screen_all_applicants(db_file: str = "applicants_db.json") -> List[Dict]:
         if cv_path and position:
             # Check if CV file exists
             if not Path(cv_path).exists():
-                errors.append(f"❌ CV not found: {name} - {cv_path}")
+                errors.append(f" CV not found: {name} - {cv_path}")
                 continue
             
             score_result = score_cv(cv_path, position)
             
             if 'error' in score_result:
-                errors.append(f"❌ Error for {name}: {score_result['error']}")
+                errors.append(f" Error for {name}: {score_result['error']}")
             else:
                 result = {
                     **applicant,
@@ -342,11 +342,11 @@ def screen_all_applicants(db_file: str = "applicants_db.json") -> List[Dict]:
                 }
                 results.append(result)
         else:
-            errors.append(f"❌ Missing cv_path or position for {name}")
+            errors.append(f" Missing cv_path or position for {name}")
     
     # Print errors if any
     if errors:
-        print("\n⚠️  Errors during screening:")
+        print("\n  Errors during screening:")
         for error in errors:
             print(f"   {error}")
         print()
@@ -375,16 +375,16 @@ def export_screening_results(results: List[Dict], output_file: str = "screening_
 # ============================================
 
 if __name__ == "__main__":
-    print("🔍 CV Screening System v2")
+    print(" CV Screening System v2")
     print("=" * 50)
-    print(f"📋 Loaded {len(JOB_REQUIREMENTS)} positions")
+    print(f" Loaded {len(JOB_REQUIREMENTS)} positions")
     print()
     
     # Screen all applicants
     results = screen_all_applicants()
     
     if results:
-        print(f"📊 Successfully screened {len(results)} applicants\n")
+        print(f" Successfully screened {len(results)} applicants\n")
         
         for i, result in enumerate(results, 1):
             print(f"{i}. {result['name']} - {result['position']}")
@@ -405,11 +405,11 @@ if __name__ == "__main__":
         # Export
         export_file = export_screening_results(results)
         if export_file:
-            print(f"✅ Results exported to: {export_file}")
+            print(f" Results exported to: {export_file}")
     else:
-        print("❌ No applicants found or all failed screening")
+        print(" No applicants found or all failed screening")
         print()
-        print("💡 Troubleshooting:")
+        print(" Troubleshooting:")
         print("   1. Check if applicants_db.json exists")
         print("   2. Verify CV files exist at paths in database")
         print("   3. Ensure job_requirements_config.json is present")

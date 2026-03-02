@@ -34,7 +34,7 @@ class HRAgentApp:
         self.graph = create_hr_agent_graph()
         self.conversation_history = {}
         
-        logger.info("✅ HR Agent initialized!")
+        logger.info(" HR Agent initialized!")
     
     def chat(self, user_id: str, message: str, api_key: str = None) -> dict:
         """Process chat message"""
@@ -67,7 +67,7 @@ class HRAgentApp:
                 if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
                     response_text = f"Intent: {result.get('user_intent', 'N/A')}\n\n"
                     for tool_call in last_message.tool_calls:
-                        response_text += f"🔧 {tool_call['name']}\n"
+                        response_text += f" {tool_call['name']}\n"
                     response_text += f"\n{last_message.content if last_message.content else ''}"
                 else:
                     response_text = last_message.content
@@ -104,14 +104,14 @@ class HRAgentApp:
 def demo():
     """Run demo"""
     print("=" * 80)
-    print("🏢 HR AI AGENT - Modular System")
+    print(" HR AI AGENT - Modular System")
     print("=" * 80)
-    print("\n📊 Components:")
-    print("  ✅ API Gateway")
-    print("  ✅ Orchestrator")
-    print("  ✅ Policy Agent")
-    print("  ✅ Onboard Agent")
-    print("  ✅ Shared Services")
+    print("\n Components:")
+    print("   API Gateway")
+    print("   Orchestrator")
+    print("   Policy Agent")
+    print("   Onboard Agent")
+    print("   Shared Services")
     print("\n" + "=" * 80 + "\n")
     
     app = HRAgentApp()
@@ -124,69 +124,69 @@ def demo():
         "Checklist tuần đầu?",
     ]
     
-    print("🎮 DEMO:\n")
+    print(" DEMO:\n")
     
     for i, q in enumerate(questions, 1):
         print(f"\n{'='*80}")
-        print(f"❓ Q{i}: {q}")
+        print(f" Q{i}: {q}")
         print("="*80 + "\n")
         
         response = app.chat(demo_user, q)
         
         if response['status'] == 'success':
-            print(f"✅ Status: {response['status']}")
-            print(f"🎯 Intent: {response['intent']}")
-            print(f"\n💬 Response:\n{response['response']}\n")
+            print(f" Status: {response['status']}")
+            print(f" Intent: {response['intent']}")
+            print(f"\n Response:\n{response['response']}\n")
         else:
-            print(f"❌ Error: {response['message']}\n")
+            print(f" Error: {response['message']}\n")
     
     print("\n" + "=" * 80)
-    print("📊 Statistics")
+    print(" Statistics")
     print("=" * 80)
     stats = app.admin_panel.get_statistics()
     print(f"\nTotal: {stats['total_requests']}")
     print(f"By Action: {stats['requests_by_action']}")
     
     print("\n" + "=" * 80)
-    print("💬 Interactive Mode")
+    print(" Interactive Mode")
     print("=" * 80)
     print("\nCommands: 'stats', 'reset', 'quit'")
     print("=" * 80 + "\n")
     
     while True:
         try:
-            user_input = input(f"👤 {demo_user}: ").strip()
+            user_input = input(f" {demo_user}: ").strip()
             
             if not user_input:
                 continue
             
             if user_input.lower() in ['quit', 'exit']:
-                print("\n👋 Goodbye!")
+                print("\n Goodbye!")
                 break
             
             if user_input.lower() == 'reset':
                 app.reset_conversation(demo_user)
-                print("✅ Reset\n")
+                print(" Reset\n")
                 continue
             
             if user_input.lower() == 'stats':
                 stats = app.admin_panel.get_statistics()
-                print(f"\n📊 {stats}\n")
+                print(f"\n {stats}\n")
                 continue
             
             print()
             response = app.chat(demo_user, user_input)
             
             if response['status'] == 'success':
-                print(f"💬 Agent: {response['response']}\n")
+                print(f" Agent: {response['response']}\n")
             else:
-                print(f"❌ Error: {response['message']}\n")
+                print(f" Error: {response['message']}\n")
                 
         except KeyboardInterrupt:
-            print("\n\n👋 Goodbye!")
+            print("\n\n Goodbye!")
             break
         except Exception as e:
-            print(f"\n❌ Error: {str(e)}\n")
+            print(f"\n Error: {str(e)}\n")
 
 if __name__ == "__main__":
     demo()

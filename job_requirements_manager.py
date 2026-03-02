@@ -297,16 +297,16 @@ class JobRequirementsManager:
 def show_requirements_manager():
     """Streamlit UI for managing job requirements"""
     
-    st.markdown("## ⚙️ Quản Lý Yêu Cầu Tuyển Dụng")
+    st.markdown("##  Quản Lý Yêu Cầu Tuyển Dụng")
     
     manager = JobRequirementsManager()
     
     # Tabs
-    tab1, tab2, tab3 = st.tabs(["📋 Xem Yêu Cầu", "➕ Thêm/Sửa Vị Trí", "📊 Export"])
+    tab1, tab2, tab3 = st.tabs([" Xem Yêu Cầu", " Thêm/Sửa Vị Trí", " Export"])
     
     # TAB 1: View Requirements
     with tab1:
-        st.markdown("### 📋 Danh Sách Vị Trí")
+        st.markdown("###  Danh Sách Vị Trí")
         
         positions = manager.list_positions()
         
@@ -319,7 +319,7 @@ def show_requirements_manager():
                 req = manager.get_position_requirements(selected_position)
                 
                 # Position Info
-                st.markdown("#### 📌 Thông Tin Chung")
+                st.markdown("####  Thông Tin Chung")
                 info = req.get('position_info', {})
                 
                 col1, col2 = st.columns(2)
@@ -332,7 +332,7 @@ def show_requirements_manager():
                 st.markdown("---")
                 
                 # Technical Skills
-                st.markdown("#### 💻 Technical Skills")
+                st.markdown("####  Technical Skills")
                 tech = req.get('technical_skills', {})
                 
                 col1, col2 = st.columns(2)
@@ -354,7 +354,7 @@ def show_requirements_manager():
                 st.markdown("---")
                 
                 # Experience
-                st.markdown("#### 📅 Experience Requirements")
+                st.markdown("####  Experience Requirements")
                 exp = req.get('experience', {})
                 
                 col1, col2 = st.columns(2)
@@ -372,18 +372,18 @@ def show_requirements_manager():
                 st.markdown("---")
                 
                 # Education
-                st.markdown("#### 🎓 Education Requirements")
+                st.markdown("####  Education Requirements")
                 edu = req.get('education', {})
                 
                 st.write(f"**Required Degree:** {edu.get('required_degree', 'N/A')}")
                 st.write(f"**Preferred Majors:** {', '.join(edu.get('preferred_majors', []))}")
-                st.write(f"**Bootcamp Acceptable:** {'✅ Yes' if edu.get('bootcamp_acceptable') else '❌ No'}")
+                st.write(f"**Bootcamp Acceptable:** {' Yes' if edu.get('bootcamp_acceptable') else ' No'}")
                 st.caption(f"Weight: {edu.get('weight', 0)}% of total score")
                 
                 st.markdown("---")
                 
                 # Scoring
-                st.markdown("#### 🎯 Scoring Thresholds")
+                st.markdown("####  Scoring Thresholds")
                 scoring = req.get('scoring', {})
                 
                 col1, col2, col3, col4 = st.columns(4)
@@ -399,14 +399,14 @@ def show_requirements_manager():
                 st.markdown("---")
                 
                 # Disqualifiers
-                st.markdown("#### ❌ Disqualifiers")
+                st.markdown("####  Disqualifiers")
                 disqualifiers = req.get('disqualifiers', [])
                 for item in disqualifiers:
                     st.error(f"• {item}")
     
     # TAB 2: Add/Edit Position
     with tab2:
-        st.markdown("### ➕ Thêm/Sửa Vị Trí Tuyển Dụng")
+        st.markdown("###  Thêm/Sửa Vị Trí Tuyển Dụng")
         
         mode = st.radio("Mode:", ["Tạo mới", "Chỉnh sửa"])
         
@@ -419,7 +419,7 @@ def show_requirements_manager():
             base_req = {}
         
         with st.form("position_form"):
-            st.markdown("#### 📌 Thông Tin Chung")
+            st.markdown("####  Thông Tin Chung")
             
             col1, col2 = st.columns(2)
             
@@ -459,7 +459,7 @@ def show_requirements_manager():
                 )
             
             st.markdown("---")
-            st.markdown("#### 💻 Technical Skills (nhập mỗi skill 1 dòng)")
+            st.markdown("####  Technical Skills (nhập mỗi skill 1 dòng)")
             
             col1, col2 = st.columns(2)
             
@@ -484,7 +484,7 @@ def show_requirements_manager():
                 )
             
             st.markdown("---")
-            st.markdown("#### 📅 Experience")
+            st.markdown("####  Experience")
             
             col1, col2, col3 = st.columns(3)
             
@@ -512,7 +512,7 @@ def show_requirements_manager():
                 )
             
             st.markdown("---")
-            st.markdown("#### 🎯 Scoring")
+            st.markdown("####  Scoring")
             
             col1, col2, col3, col4 = st.columns(4)
             
@@ -549,11 +549,11 @@ def show_requirements_manager():
             # Submit button
             col1, col2, col3 = st.columns([1, 2, 1])
             with col2:
-                submitted = st.form_submit_button("💾 Lưu Cấu Hình", use_container_width=True, type="primary")
+                submitted = st.form_submit_button(" Lưu Cấu Hình", use_container_width=True, type="primary")
             
             if submitted:
                 if not position_name or not required_skills:
-                    st.error("❌ Vui lòng điền đầy đủ thông tin bắt buộc!")
+                    st.error(" Vui lòng điền đầy đủ thông tin bắt buộc!")
                 else:
                     # Build requirements dict
                     new_req = {
@@ -583,28 +583,28 @@ def show_requirements_manager():
                     
                     if mode == "Tạo mới":
                         manager.add_position(position_name, new_req)
-                        st.success(f"✅ Đã tạo vị trí: {position_name}")
+                        st.success(f" Đã tạo vị trí: {position_name}")
                     else:
                         manager.update_position(position_name, new_req)
-                        st.success(f"✅ Đã cập nhật vị trí: {position_name}")
+                        st.success(f" Đã cập nhật vị trí: {position_name}")
                     
                     st.rerun()
     
     # TAB 3: Export
     with tab3:
-        st.markdown("### 📊 Export Configuration")
+        st.markdown("###  Export Configuration")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            if st.button("📥 Export to JSON", use_container_width=True):
+            if st.button(" Export to JSON", use_container_width=True):
                 manager.save_config()
-                st.success("✅ Exported to job_requirements_config.json")
+                st.success(" Exported to job_requirements_config.json")
         
         with col2:
-            if st.button("📊 Export to Excel", use_container_width=True):
+            if st.button(" Export to Excel", use_container_width=True):
                 filename = manager.export_to_excel()
-                st.success(f"✅ Exported to {filename}")
+                st.success(f" Exported to {filename}")
 
 # ============================================
 # MAIN

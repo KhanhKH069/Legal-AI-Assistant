@@ -77,7 +77,7 @@ export default function ChatPage() {
         <div style={{ height: 340, overflowY: 'auto', padding: '24px 24px 0 24px', borderRadius: 18 }}>
           {messages.length === 0 && (
             <div style={{ color: '#aaa', fontSize: 15, textAlign: 'center', marginTop: 60 }}>
-              👋 Xin chào, hãy đặt câu hỏi đầu tiên của bạn về HR (VD: "Nghỉ phép mấy ngày mỗi năm?", "Thời gian thử việc bao lâu?")
+               Xin chào, hãy đặt câu hỏi đầu tiên của bạn về HR (VD: "Nghỉ phép mấy ngày mỗi năm?", "Thời gian thử việc bao lâu?")
             </div>
           )}
           {messages.map((m, i) => (

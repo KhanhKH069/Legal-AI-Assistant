@@ -188,7 +188,7 @@ for filepath, content in files.items():
     full_path.parent.mkdir(parents=True, exist_ok=True)
     full_path.write_text(content)
     total += 1
-    print(f"✅ Created {filepath}")
+    print(f" Created {filepath}")
 
-print(f"\n✅ Created {total} files successfully!")
+print(f"\n Created {total} files successfully!")
 

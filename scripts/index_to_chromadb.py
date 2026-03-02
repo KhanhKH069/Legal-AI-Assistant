@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'hr-ai-agent-pu
 try:
     from services.vector_db import get_vector_db
 except ImportError:
-    print("⚠️  Note: Run from project root or adjust path")
+    print("  Note: Run from project root or adjust path")
     print("This is a template script - modify paths as needed")
     sys.exit(1)
 
@@ -65,7 +65,7 @@ def parse_qa_markdown(file_path):
 
 def index_documents(docs_dir='./'):
     """Index all Q&A documents"""
-    print("🚀 Indexing HR Q&A to ChromaDB...")
+    print(" Indexing HR Q&A to ChromaDB...")
     
     # Get vector DB
     vdb = get_vector_db()
@@ -77,7 +77,7 @@ def index_documents(docs_dir='./'):
     total_questions = 0
     
     for md_file in sorted(md_files):
-        print(f"\n📄 Processing: {md_file.name}")
+        print(f"\n Processing: {md_file.name}")
         
         # Parse Q&A
         qa_pairs = parse_qa_markdown(md_file)
@@ -122,13 +122,13 @@ def index_documents(docs_dir='./'):
             ids=ids
         )
         
-        print(f"  ✅ Added {len(qa_pairs)} questions + {sum(len(qa['variations']) for qa in qa_pairs)} variations")
+        print(f"   Added {len(qa_pairs)} questions + {sum(len(qa['variations']) for qa in qa_pairs)} variations")
         total_questions += len(qa_pairs)
     
     print(f"\n{'='*50}")
-    print("✅ Indexing complete!")
-    print(f"📊 Total: {total_questions} core questions")
-    print("📊 Collection: hr_policies")
+    print(" Indexing complete!")
+    print(f" Total: {total_questions} core questions")
+    print(" Collection: hr_policies")
     print(f"{'='*50}")
 
 if __name__ == "__main__":

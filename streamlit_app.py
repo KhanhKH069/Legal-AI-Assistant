@@ -18,7 +18,6 @@ load_dotenv()
 
 st.set_page_config(
     page_title="Paraline HR Assistant",
-    page_icon="💼",
     layout="wide",
     initial_sidebar_state="auto"
 )
@@ -294,7 +293,7 @@ def save_cv_to_disk(uploaded_file, applicant_info):
         
         return str(filepath)
     except Exception as e:
-        st.error(f"❌ Lỗi lưu file: {e}")
+        st.error(f"Lỗi lưu file: {e}")
         return None
 
 def save_to_database(applicant_info):
@@ -322,7 +321,7 @@ def save_to_database(applicant_info):
         
         return True
     except Exception as e:
-        st.error(f"❌ Lỗi lưu database: {e}")
+        st.error(f" Lỗi lưu database: {e}")
         return False
 
 def send_email_notification(applicant_info):
@@ -344,7 +343,7 @@ def send_email_notification(applicant_info):
         
         return True
     except Exception as e:
-        st.error(f"⚠️ Email notification failed: {e}")
+        st.error(f" Email notification failed: {e}")
         return False
 
 # ============================================
@@ -398,7 +397,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = [{
         "role": "assistant",
         "content": """<div style="color: #333;">
-<span style="color: #333;">👋 <strong>Xin chào! Tôi là HR Assistant của Paraline.</strong></span><br><br>
+<span style="color: #333;"> <strong>Xin chào! Tôi là HR Assistant của Paraline.</strong></span><br><br>
 <span style="color: #333;">Tôi có thể giúp bạn với các câu hỏi về công ty Paraline Software.</span><br><br>
 </div>"""
     }]
@@ -449,7 +448,7 @@ st.markdown('<div class="chat-card">', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="chat-header">
-    <h2>💬 Trò chuyện với HR Assistant</h2>
+    <h2> Trò chuyện với HR Assistant</h2>
 </div>
 """, unsafe_allow_html=True)
 
@@ -486,15 +485,15 @@ if prompt := st.chat_input("Nhập câu hỏi của bạn..."):
                     formatted_lines.append('<br>')
             
             answer_html = '<br>'.join(formatted_lines)
-            resp = f'<div style="color: #333;"><strong>📚 Trả lời:</strong><br><br>{answer_html}</div>'
+            resp = f'<div style="color: #333;"><strong> Trả lời:</strong><br><br>{answer_html}</div>'
             
             if st.session_state.debug:
-                resp += f"<br><br><small style='color: #666;'>📄 {result['source']} | 🎯 {result['similarity']}%</small>"
+                resp += f"<br><br><small style='color: #666;'> {result['source']} |  {result['similarity']}%</small>"
             
             placeholder.markdown(resp, unsafe_allow_html=True)
             st.session_state.stats['found'] += 1
         else:
-            resp = '<div style="color: #333;">❌ <strong>Không tìm thấy</strong><br><br>Xin lỗi, câu hỏi này chưa có trong knowledge base.<br><br>💡 Vui lòng liên hệ HR: <strong>hr@paraline.com.vn</strong></div>'
+            resp = '<div style="color: #333;"> <strong>Không tìm thấy</strong><br><br>Xin lỗi, câu hỏi này chưa có trong knowledge base.<br><br> Vui lòng liên hệ HR: <strong>hr@paraline.com.vn</strong></div>'
             placeholder.markdown(resp, unsafe_allow_html=True)
             st.session_state.stats['not_found'] += 1
         
@@ -592,7 +591,7 @@ footer_html = """
     <div class="footer-divider"></div>
     
     <div class="footer-bottom">
-        © 2017. Made with <span class="heart">❤️</span> in Hanoi
+         2017. Made with <span class="heart"></span> in Hanoi
     </div>
 </div>
 """
@@ -604,10 +603,10 @@ components.html(footer_html, height=400)
 # ============================================
 
 with st.sidebar:
-    st.markdown("### 💼 Ứng Tuyển Việc Làm - Apply for jobs")
+    st.markdown("###  Ứng Tuyển Việc Làm - Apply for jobs")
     
     with st.form("cv_form", clear_on_submit=True):
-        st.markdown("**📄 Thông tin ứng viên**")
+        st.markdown("** Thông tin ứng viên**")
         
         name = st.text_input("Họ và tên - Fullname *", placeholder="")
         email = st.text_input("Email *", placeholder="")
@@ -637,16 +636,16 @@ with st.sidebar:
             help="Kích thước tối đa: 10MB"
         )
         
-        submitted = st.form_submit_button("📤 Nộp Hồ Sơ", use_container_width=True)
+        submitted = st.form_submit_button(" Nộp Hồ Sơ", use_container_width=True)
         
         if submitted:
             # Validate
             if not name or not email or not phone:
-                st.error("❌ Vui lòng điền đầy đủ thông tin!")
+                st.error(" Vui lòng điền đầy đủ thông tin!")
             elif position == "-- Chọn vị trí --":
-                st.error("❌ Vui lòng chọn vị trí ứng tuyển!")
+                st.error(" Vui lòng chọn vị trí ứng tuyển!")
             elif not uploaded_cv:
-                st.error("❌ Vui lòng upload CV!")
+                st.error(" Vui lòng upload CV!")
             else:
                 # Process application
                 with st.spinner("Đang xử lý..."):
@@ -672,27 +671,27 @@ with st.sidebar:
                         email_sent = send_email_notification(applicant_info)
                         
                         if db_saved:
-                            st.success("✅ Đã nộp CV thành công!")
-                            st.success(f"🎯 Vị trí: **{position}**")
-                            st.info("📧 HR sẽ liên hệ với bạn trong 3-5 ngày làm việc!")
+                            st.success(" Đã nộp CV thành công!")
+                            st.success(f" Vị trí: **{position}**")
+                            st.info(" HR sẽ liên hệ với bạn trong 3-5 ngày làm việc!")
                             st.balloons()
                         else:
-                            st.warning("⚠️ CV đã được lưu nhưng có lỗi với database")
+                            st.warning(" CV đã được lưu nhưng có lỗi với database")
     
     st.markdown("---")
-    st.markdown("### 🔧 Developer")
+    st.markdown("###  Developer")
     debug = st.checkbox("Debug", value=st.session_state.debug)
     st.session_state.debug = debug
     
     st.markdown("---")
-    st.markdown("### 📊 Stats")
+    st.markdown("###  Stats")
     col1, col2 = st.columns(2)
     with col1:
-        st.metric("✅", st.session_state.stats['found'])
+        st.metric("", st.session_state.stats['found'])
     with col2:
-        st.metric("❌", st.session_state.stats['not_found'])
+        st.metric("", st.session_state.stats['not_found'])
     
-    if st.button("🔄 Clear"):
+    if st.button(" Clear"):
         st.session_state.messages = st.session_state.messages[:1]
         st.session_state.stats = {'found': 0, 'not_found': 0, 'total': 0}
         st.rerun()

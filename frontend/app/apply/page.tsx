@@ -45,10 +45,10 @@ export default function ApplyPage() {
         if (resp.results && resp.results[0]) {
           recText = ` (${resp.results[0].recommendation})`;
         }
-        setStatus(`✅ Nộp hồ sơ thành công!${recText}`);
+        setStatus(` Nộp hồ sơ thành công!${recText}`);
       } catch (_err) {
         // ignore screening failure in UI, backend logged it
-        setStatus("✅ Nộp hồ sơ thành công!");
+        setStatus(" Nộp hồ sơ thành công!");
       }
 
       setForm({ name: "", email: "", phone: "", position: "" });
@@ -56,9 +56,9 @@ export default function ApplyPage() {
     } catch (e: any) {
       const msg = e.message || String(e);
       if (msg.includes("Failed to fetch")) {
-        setStatus("❌ Lỗi: Không thể kết nối tới API. Hãy kiểm tra xem backend (mặc định http://localhost:8000) có đang chạy và có cho phép CORS không.");
+        setStatus(" Lỗi: Không thể kết nối tới API. Hãy kiểm tra xem backend (mặc định http://localhost:8000) có đang chạy và có cho phép CORS không.");
       } else {
-        setStatus(`❌ Lỗi: ${msg}`);
+        setStatus(` Lỗi: ${msg}`);
       }
     } finally {
       setLoading(false);
@@ -128,9 +128,9 @@ export default function ApplyPage() {
             <div style={{ color: '#888', fontSize: 12, marginTop: 2 }}>Kích thước tối đa 10MB. Hỗ trợ PDF, DOC, DOCX.</div>
           </div>
           <button type="submit" disabled={loading} style={{ marginTop: 8, width: '100%', borderRadius: 8, background: '#27ae60', color: '#fff', fontWeight: 700, fontSize: 16, padding: '12px 0', border: 'none', boxShadow: '0 2px 8px 0 rgba(39,174,96,0.08)', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
-            {loading ? 'Đang gửi...' : '📤 Nộp hồ sơ'}
+            {loading ? 'Đang gửi...' : ' Nộp hồ sơ'}
           </button>
-          {status && <div style={{ color: status.startsWith('✅') ? '#27ae60' : '#e74c3c', fontSize: 14, marginTop: 8 }}>{status}</div>}
+          {status && <div style={{ color: status.startsWith('') ? '#27ae60' : '#e74c3c', fontSize: 14, marginTop: 8 }}>{status}</div>}
         </form>
       </div>
     </div>

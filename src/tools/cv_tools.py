@@ -18,10 +18,10 @@ def screen_cv_for_position(cv_path: str, position: str) -> str:
         return f"CV screening error: {result['error']}"
 
     lines = [
-        f"📄 CV screening result for position: {result['position']}",
-        f"🔢 Total score: {result['total_score']}/{result['max_score']} ({result['percentage']}%)",
-        f"📝 Recommendation: {result['recommendation']} - {result['status']}",
-        f"➡ Action: {result['action']}",
+        f" CV screening result for position: {result['position']}",
+        f" Total score: {result['total_score']}/{result['max_score']} ({result['percentage']}%)",
+        f" Recommendation: {result['recommendation']} - {result['status']}",
+        f" Action: {result['action']}",
         "",
         "Breakdown:",
     ]
