@@ -38,7 +38,7 @@ Paraline HR AI Assistant is powered by **LangGraph Multi-Agent Orchestration**:
 - Python 3.10+
 - Node.js 18+
 - [uv](https://github.com/astral-sh/uv) (Extremely fast Python package installer and resolver)
-- API Keys for Google Gemini (Optional for offline mode)
+- API Keys for Google Gemini (Set `OFFLINE_MODE=true` in `.env` or leave the key blank if you want to run offline without an API key)
 
 ### 1. Setup Backend (FastAPI & LangGraph)
 
@@ -53,9 +53,11 @@ uv pip install -r requirements.txt
 uv pip install langchain_experimental pandas # For Analytics Agent
 
 # 3. Create .env config
+# (Tip: Leave GOOGLE_API_KEY blank or set OFFLINE_MODE=true to use offline mock responses without calling Gemini API)
 echo "GOOGLE_API_KEY=your_gemini_key_here" > .env
 echo "MODEL_NAME=gemini-1.5-flash" >> .env
 echo "TEMPERATURE=0" >> .env
+echo "OFFLINE_MODE=false" >> .env
 
 # 4. Start FastAPI server
 uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
