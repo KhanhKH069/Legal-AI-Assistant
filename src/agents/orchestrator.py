@@ -12,10 +12,18 @@ from langgraph.prebuilt import ToolNode
 from src.agents.cv_agent import cv_agent_node
 from src.agents.onboard_agent import onboard_agent_node
 from src.agents.policy_agent import policy_agent_node
+from src.agents.analytics_agent import query_hr_data
 from src.core.config import config
 from src.tools.cv_tools import screen_cv_for_position
 from src.tools.onboard_tools import get_onboarding_checklist
+from src.tools.onboard_validation_tools import verify_onboarding_document
 from src.tools.policy_tools import calculate_leave_days, get_policy_info, search_hr_qa
+from src.tools.employee_data_tools import (
+    get_employee_profile,
+    get_leave_balance,
+    get_salary_info,
+)
+from src.tools.math_tools import calculate_math_expression
 
 
 class AgentState(TypedDict):
@@ -45,8 +53,9 @@ Available agents:
 - POLICY_AGENT: For HR policy questions (leave, salary, benefits, working hours)
 - ONBOARD_AGENT: For onboarding questions (new employee, checklist, documents)
 - CV_AGENT: For CV screening, CV scoring, and questions about how suitable a candidate is for a position
+- ANALYTICS_AGENT: For HR data analysis, creating charts, calculating statistics, querying employee lists based on data
 
-Respond with ONLY ONE WORD: POLICY_AGENT, ONBOARD_AGENT, CV_AGENT or END
+Respond with ONLY ONE WORD: POLICY_AGENT, ONBOARD_AGENT, CV_AGENT, ANALYTICS_AGENT or END
 
 Examples:
 - "How many leave days?" → POLICY_AGENT
@@ -55,6 +64,8 @@ Examples:
 - "Salary policy?" → POLICY_AGENT
 - "Đánh giá CV này cho vị trí Backend Developer" → CV_AGENT
 - "CV này đạt bao nhiêu điểm cho Software Engineer?" → CV_AGENT
+- "Tỉ lệ nghỉ việc tháng này là bao nhiêu?" → ANALYTICS_AGENT
+- "Vẽ biểu đồ phân bổ mức lương theo phòng ban" → ANALYTICS_AGENT
 """
 
     prompt = ChatPromptTemplate.from_messages(
@@ -79,6 +90,8 @@ def orchestrator_node(state: AgentState):
         next_agent = "onboard_agent"
     elif "CV" in response_clean:
         next_agent = "cv_agent"
+    elif "ANALYTICS" in response_clean:
+        next_agent = "analytics_agent"
     else:
         next_agent = "end"
 
@@ -100,6 +113,8 @@ def router(state: AgentState):
         return "onboard_agent"
     elif next_step == "cv_agent":
         return "cv_agent"
+    elif next_step == "analytics_agent":
+        return "analytics_agent"
     return "end"
 
 
@@ -113,9 +128,33 @@ def create_hr_agent_graph():
     workflow.add_node("onboard_agent", onboard_agent_node)
     workflow.add_node("cv_agent", cv_agent_node)
 
+    # Node for Analytics (No tools needed, it wraps its own tool)
+    def analytics_agent_node(state):
+        last_msg = state["messages"][-1].content
+        answer = query_hr_data(last_msg)
+        from langchain_core.messages import AIMessage
+
+        return {
+            "messages": [AIMessage(content=answer)],
+            "next": "end",
+            "user_intent": state.get("user_intent", ""),
+            "user_id": state.get("user_id", ""),
+            "user_info": state.get("user_info", {}),
+        }
+
+    workflow.add_node("analytics_agent", analytics_agent_node)
+
     # Tool nodes
-    policy_tools = [get_policy_info, calculate_leave_days, search_hr_qa]
-    onboard_tools = [get_onboarding_checklist, search_hr_qa]
+    policy_tools = [
+        get_policy_info,
+        calculate_leave_days,
+        search_hr_qa,
+        get_employee_profile,
+        get_leave_balance,
+        get_salary_info,
+        calculate_math_expression,
+    ]
+    onboard_tools = [get_onboarding_checklist, search_hr_qa, verify_onboarding_document]
     cv_tools = [screen_cv_for_position]
 
     workflow.add_node("policy_tools", ToolNode(policy_tools))
@@ -133,6 +172,7 @@ def create_hr_agent_graph():
             "policy_agent": "policy_agent",
             "onboard_agent": "onboard_agent",
             "cv_agent": "cv_agent",
+            "analytics_agent": "analytics_agent",
             "end": END,
         },
     )
@@ -144,5 +184,6 @@ def create_hr_agent_graph():
     workflow.add_edge("onboard_tools", END)
     workflow.add_edge("cv_agent", "cv_tools")
     workflow.add_edge("cv_tools", END)
+    workflow.add_edge("analytics_agent", END)
 
     return workflow.compile()

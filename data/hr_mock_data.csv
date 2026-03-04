@@ -1,0 +1,16 @@
+employee_id,name,department,position,salary,hire_date,performance_rating,status,leave_balance
+EMP001,Nguyen Van A,Engineering,Backend Developer,2500,2023-01-15,4.5,Active,15
+EMP002,Tran Thi B,HR,HR Specialist,1500,2022-05-10,4.0,Active,5
+EMP003,Le Thi C,Engineering,Frontend Developer,2200,2024-02-01,3.8,Active,12
+EMP004,Phan Van D,Sales,Sales Executive,1200,2023-11-20,4.2,Active,8
+EMP005,Hoang Thi E,Engineering,QA Engineer,1800,2021-08-05,4.8,Active,18
+EMP006,Vu Van F,Marketing,Marketing Manager,3000,2020-03-12,4.6,Active,20
+EMP007,Do Thi G,HR,HR Manager,3500,2019-11-25,4.3,Active,22
+EMP008,Ngo Van H,Engineering,Engineering Manager,4500,2018-06-10,4.9,Active,25
+EMP009,Bui Thi I,Sales,Sales Manager,3200,2021-01-20,4.1,Active,14
+EMP010,Dinh Van K,Marketing,Content Creator,1000,2024-01-05,3.9,Active,6
+EMP011,Tran Van L,Engineering,DevOps Engineer,2800,2022-09-15,4.4,Resigned,0
+EMP012,Le Thi M,Sales,Sales Executive,1300,2023-04-10,3.5,Resigned,0
+EMP013,Nguyen Van N,Marketing,SEO Specialist,1400,2023-07-22,4.0,Active,9
+EMP014,Hoang Van P,Engineering,AI Engineer,3000,2024-03-01,4.7,Active,10
+EMP015,Phan Thi Q,HR,Recruiter,1600,2023-10-05,4.2,Active,7

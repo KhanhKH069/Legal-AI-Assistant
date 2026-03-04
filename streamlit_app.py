@@ -466,15 +466,18 @@ st.markdown('<div class="chat-card">', unsafe_allow_html=True)
 st.markdown(
     """
 <div class="chat-header">
-    <h2> Trò chuyện với HR Assistant</h2>
+    <h2> Trò chuyện với HR Assistant & Employee Portal</h2>
 </div>
 """,
     unsafe_allow_html=True,
 )
 
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"], unsafe_allow_html=True)
+tab1, tab2, tab3 = st.tabs([" HR Assistant", " HR Dashboard", " My Onboarding"])
+
+with tab1:
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"], unsafe_allow_html=True)
 
 if prompt := st.chat_input("Nhập câu hỏi của bạn..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
@@ -520,6 +523,16 @@ if prompt := st.chat_input("Nhập câu hỏi của bạn..."):
             st.session_state.stats["not_found"] += 1
 
         st.session_state.messages.append({"role": "assistant", "content": resp})
+
+with tab2:
+    from hr_dashboard_page import show_hr_dashboard
+
+    show_hr_dashboard()
+
+with tab3:
+    from employee_portal_page import show_employee_portal
+
+    show_employee_portal()
 
 st.markdown("</div></div>", unsafe_allow_html=True)
 

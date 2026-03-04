@@ -116,7 +116,7 @@ def show_hr_dashboard():
 
                 with col2:
                     st.markdown(f"** Vị trí:** {result['position']}")
-                    st.markdown(f"** Nộp:** {result['timestamp']}")
+                    st.markdown(f"** Nộp:** {result.get('timestamp', 'N/A')}")
 
                 with col3:
                     # Status badge
@@ -175,19 +175,46 @@ def show_hr_dashboard():
                 st.markdown("---")
 
                 # Actions
-                col1, col2, col3 = st.columns(3)
+                st.markdown("####  Hành Động Tuyển Dụng")
+                colA, colB, colC = st.columns(3)
 
-                with col1:
-                    if st.button(" Email", key=f"email_{i}"):
-                        st.info(f"Send email to: {result['email']}")
+                with colA:
+                    if st.button(" Xem Email Mẫu", key=f"email_{i}"):
+                        st.session_state[f"show_email_{i}"] = True
 
-                with col2:
+                with colB:
                     if st.button(" View CV", key=f"cv_{i}"):
                         st.info(f"CV location: {result['cv_path']}")
 
-                with col3:
+                with colC:
                     if st.button(" Schedule Interview", key=f"interview_{i}"):
-                        st.success(f"Interview scheduled for {result['name']}")
+                        from src.tools.email_calendar_tools import schedule_google_meet
+
+                        meet_link = schedule_google_meet([result["email"]])
+                        st.success(
+                            f" Đã xếp lịch online lúc 14:00 ngày mai. Link: {meet_link}"
+                        )
+                        st.balloons()
+
+                # Email Preview Expander (chỉ hiện khi click)
+                if st.session_state.get(f"show_email_{i}", False):
+                    with st.expander(" Email Preview", expanded=True):
+                        from src.tools.email_calendar_tools import draft_interview_email
+
+                        # Mock time
+                        draft = draft_interview_email(
+                            result["name"], result["position"], "14:00 Ngày mai"
+                        )
+                        st.text_area(
+                            "Nội dung Email (AI Sinh)",
+                            value=draft,
+                            height=250,
+                            key=f"text_{i}",
+                        )
+                        if st.button(" Gửi Email", key=f"send_{i}"):
+                            st.success(f" Đã gửi email tới {result['email']}!")
+                            st.session_state[f"show_email_{i}"] = False
+                            st.rerun()
 
         # Export option
         st.markdown("---")
@@ -206,7 +233,7 @@ def show_hr_dashboard():
                         "Percentage": r["percentage"],
                         "Status": r["status"],
                         "Action": r["action"],
-                        "Timestamp": r["timestamp"],
+                        "Timestamp": r.get("timestamp", "N/A"),
                     }
                 )
 

@@ -5,6 +5,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from src.core.config import config
 from src.tools.onboard_tools import get_onboarding_checklist
 from src.tools.policy_tools import search_hr_qa
+from src.tools.onboard_validation_tools import verify_onboarding_document
 
 # Initialize LLM (only when required)
 llm = None
@@ -29,6 +30,9 @@ def create_onboard_agent():
     Available tools:
     - get_onboarding_checklist: Get phase checklists
     - search_hr_qa: Search Q&A database
+    - verify_onboarding_document: Verify the validity of user-uploaded onboarding documents like CCCD using an AI OCR.
+
+    If the user asks about checking their documents ("kiểm tra giấy tờ", "xác thực CCCD"), use verify_onboarding_document.
 
     Respond in Vietnamese when user asks in Vietnamese.
     """
@@ -40,7 +44,7 @@ def create_onboard_agent():
         ]
     )
 
-    tools = [get_onboarding_checklist, search_hr_qa]
+    tools = [get_onboarding_checklist, search_hr_qa, verify_onboarding_document]
     llm_with_tools = llm.bind_tools(tools)
     return prompt | llm_with_tools
 

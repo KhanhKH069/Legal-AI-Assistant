@@ -4,6 +4,12 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 from src.core.config import config
 from src.tools.policy_tools import calculate_leave_days, get_policy_info, search_hr_qa
+from src.tools.employee_data_tools import (
+    get_employee_profile,
+    get_leave_balance,
+    get_salary_info,
+)
+from src.tools.math_tools import calculate_math_expression
 
 # Initialize Gemini LLM (only when online and key available)
 llm = None
@@ -29,6 +35,12 @@ def create_policy_agent():
     - get_policy_info: Get HR policy details
     - calculate_leave_days: Calculate leave entitlement
     - search_hr_qa: Search Q&A database
+    - get_employee_profile: Retrieve basic information for a specific employee ID (e.g., EMP001).
+    - get_leave_balance: Retrieve remaining leave days for a specific employee ID.
+    - get_salary_info: Retrieve salary level and performance rating for a specific employee ID.
+    - calculate_math_expression: Helper tool to evaluate complex mathematical calculation (e.g Salary deduction, tax percentage, etc.).
+
+    If the user asks about their own information ("tôi", "my"), and you know their user_id, use it.
 
     Respond in Vietnamese when user asks in Vietnamese.
     """
@@ -40,7 +52,15 @@ def create_policy_agent():
         ]
     )
 
-    tools = [get_policy_info, calculate_leave_days, search_hr_qa]
+    tools = [
+        get_policy_info,
+        calculate_leave_days,
+        search_hr_qa,
+        get_employee_profile,
+        get_leave_balance,
+        get_salary_info,
+        calculate_math_expression,
+    ]
     llm_with_tools = llm.bind_tools(tools)
     return prompt | llm_with_tools
 
