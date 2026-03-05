@@ -1,4 +1,5 @@
 """Onboard Agent - Gemini Version"""
+
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_google_genai import ChatGoogleGenerativeAI  # type: ignore
 

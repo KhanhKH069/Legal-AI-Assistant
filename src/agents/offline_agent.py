@@ -1,4 +1,5 @@
 """Simple offline QA agent that uses local markdown files."""
+
 from pathlib import Path
 import re
 from typing import List, Tuple

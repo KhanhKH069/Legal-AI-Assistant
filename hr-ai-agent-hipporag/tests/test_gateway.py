@@ -1,4 +1,5 @@
 """Gateway tests"""
+
 from src.services.database import SQLDatabase
 
 from src.core.gateway import APIGateway

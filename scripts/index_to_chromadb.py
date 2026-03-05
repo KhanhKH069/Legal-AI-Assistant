@@ -104,7 +104,7 @@ def index_documents(docs_dir="./"):
             }
             metadatas.append(metadata)
 
-            ids.append(f"{md_file.stem}_q{i+1}")
+            ids.append(f"{md_file.stem}_q{i + 1}")
 
             # Add variations as separate docs (point to same answer)
             for var in qa["variations"]:
@@ -116,7 +116,7 @@ def index_documents(docs_dir="./"):
                 metadata_var["original_question"] = qa["question"]
                 metadatas.append(metadata_var)
 
-                ids.append(f"{md_file.stem}_q{i+1}_var{qa['variations'].index(var)}")
+                ids.append(f"{md_file.stem}_q{i + 1}_var{qa['variations'].index(var)}")
 
         # Add to ChromaDB
         vdb.add(
@@ -131,11 +131,11 @@ def index_documents(docs_dir="./"):
         )
         total_questions += len(qa_pairs)
 
-    print(f"\n{'='*50}")
+    print(f"\n{'=' * 50}")
     print(" Indexing complete!")
     print(f" Total: {total_questions} core questions")
     print(" Collection: hr_policies")
-    print(f"{'='*50}")
+    print(f"{'=' * 50}")
 
 
 if __name__ == "__main__":

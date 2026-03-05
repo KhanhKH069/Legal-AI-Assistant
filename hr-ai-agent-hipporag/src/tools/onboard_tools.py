@@ -1,4 +1,5 @@
 """Onboard Agent Tools"""
+
 from langchain_core.tools import tool
 
 from src.data.onboarding import ONBOARDING_DATA

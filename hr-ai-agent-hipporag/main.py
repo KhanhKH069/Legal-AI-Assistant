@@ -129,7 +129,7 @@ def demo():
     print(" DEMO:\n")
 
     for i, q in enumerate(questions, 1):
-        print(f"\n{'='*80}")
+        print(f"\n{'=' * 80}")
         print(f" Q{i}: {q}")
         print("=" * 80 + "\n")
 

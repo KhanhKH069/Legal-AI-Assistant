@@ -1,4 +1,5 @@
 """Configuration Management - Gemini API"""
+
 import os
 from dotenv import load_dotenv
 

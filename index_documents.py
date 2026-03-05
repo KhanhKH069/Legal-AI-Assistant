@@ -115,7 +115,7 @@ def index_documents():
                 "type": "main",
             }
             metadatas.append(metadata)
-            ids.append(f"{md_file.stem}_q{i+1}")
+            ids.append(f"{md_file.stem}_q{i + 1}")
 
             # Variations
             for j, var in enumerate(qa["variations"]):
@@ -130,7 +130,7 @@ def index_documents():
                     "original_question": qa["question"],
                 }
                 metadatas.append(metadata_var)
-                ids.append(f"{md_file.stem}_q{i+1}_v{j+1}")
+                ids.append(f"{md_file.stem}_q{i + 1}_v{j + 1}")
 
             total_variations += len(qa["variations"])
 

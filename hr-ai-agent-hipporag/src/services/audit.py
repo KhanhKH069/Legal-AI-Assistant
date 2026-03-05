@@ -1,4 +1,5 @@
 """Audit Logger Service"""
+
 import json
 import logging
 from datetime import datetime
