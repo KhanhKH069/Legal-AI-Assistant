@@ -16,10 +16,10 @@ from dotenv import load_dotenv
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 load_dotenv()
 
-from personal_info_handler import (
+from personal_info_handler import (  # noqa: E402
     is_personal_question,
     answer_personal_question,
-)  # noqa: E402
+)
 from src.tools.employee_data_tools import list_all_employees  # noqa: E402
 
 st.set_page_config(
