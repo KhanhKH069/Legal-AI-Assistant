@@ -158,3 +158,42 @@ export async function updateJobRequirement(
     body: JSON.stringify(payload)
   });
 }
+
+// ── Employee endpoints ──────────────────────────────────────────────────────
+
+export interface EmployeeSummary {
+  employee_id: string;
+  name: string;
+  department: string;
+  position: string;
+}
+
+export interface EmployeeMonthly {
+  employee_id: string;
+  name: string;
+  department: string;
+  position: string;
+  hire_date: string;
+  status: string;
+  salary_level: string;
+  performance_rating: number;
+  leave_balance: number;
+  month: string;
+  month_label: string;
+  working_days_in_month: number;
+  days_worked: number;
+  leave_taken_this_month: number;
+}
+
+export async function listEmployees(search?: string): Promise<EmployeeSummary[]> {
+  const qs = search ? `?search=${encodeURIComponent(search)}` : "";
+  return apiFetch<EmployeeSummary[]>(`/employees${qs}`);
+}
+
+export async function getEmployeeMonthly(
+  employeeId: string,
+  month?: string
+): Promise<EmployeeMonthly> {
+  const qs = month ? `?month=${encodeURIComponent(month)}` : "";
+  return apiFetch<EmployeeMonthly>(`/employees/${employeeId}/monthly${qs}`);
+}

@@ -16,6 +16,9 @@ from dotenv import load_dotenv
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 load_dotenv()
 
+from personal_info_handler import is_personal_question, answer_personal_question
+from src.tools.employee_data_tools import list_all_employees
+
 st.set_page_config(
     page_title="Paraline HR Assistant", layout="wide", initial_sidebar_state="auto"
 )
@@ -419,6 +422,12 @@ if "stats" not in st.session_state:
 if "debug" not in st.session_state:
     st.session_state.debug = False
 
+if "current_employee_id" not in st.session_state:
+    st.session_state.current_employee_id = None
+
+if "current_employee_name" not in st.session_state:
+    st.session_state.current_employee_name = None
+
 # ============================================
 # NAVIGATION
 # ============================================
@@ -475,6 +484,54 @@ st.markdown(
 tab1, tab2, tab3 = st.tabs([" HR Assistant", " HR Dashboard", " My Onboarding"])
 
 with tab1:
+    # ── Employee Identity Widget ──────────────────────────────────────────
+    try:
+        all_employees = list_all_employees()
+        emp_options = {
+            f"{e['id']} – {e['name']} ({e['department']})": e["id"]
+            for e in all_employees
+        }
+    except Exception:
+        all_employees = []
+        emp_options = {}
+
+    with st.expander(
+        f"🔐 {'Đã đăng nhập: ' + st.session_state.current_employee_name if st.session_state.current_employee_id else 'Xem thông tin cá nhân? Đăng nhập tại đây'}",
+        expanded=st.session_state.current_employee_id is None,
+    ):
+        if emp_options:
+            selected_label = st.selectbox(
+                "Chọn nhân viên của bạn:",
+                ["-- Chưa chọn --"] + list(emp_options.keys()),
+                key="emp_selectbox",
+                label_visibility="collapsed",
+            )
+            col_login, col_logout = st.columns([2, 1])
+            with col_login:
+                if st.button("✅ Xác nhận", use_container_width=True, key="btn_login"):
+                    if selected_label != "-- Chưa chọn --":
+                        st.session_state.current_employee_id = emp_options[
+                            selected_label
+                        ]
+                        st.session_state.current_employee_name = selected_label.split(
+                            " – "
+                        )[1].split(" (")[0]
+                        st.rerun()
+                    else:
+                        st.warning("Vui lòng chọn nhân viên trước.")
+            with col_logout:
+                if st.session_state.current_employee_id and st.button(
+                    "🚪 Đăng xuất", use_container_width=True, key="btn_logout"
+                ):
+                    st.session_state.current_employee_id = None
+                    st.session_state.current_employee_name = None
+                    st.rerun()
+        else:
+            st.info("Không tải được danh sách nhân viên.")
+
+    st.markdown("---")
+
+    # ── Chat messages ─────────────────────────────────────────────────────
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"], unsafe_allow_html=True)
@@ -487,40 +544,63 @@ if prompt := st.chat_input("Nhập câu hỏi của bạn..."):
 
     with st.chat_message("assistant"):
         placeholder = st.empty()
-
-        with st.spinner("Đang tìm kiếm..."):
-            result = query_vector_db(prompt)
-
         st.session_state.stats["total"] += 1
 
-        if result["found"]:
-            answer = result["answer"]
-            lines = answer.split("\n")
-            formatted_lines = []
-            for line in lines:
-                line = line.strip()
-                if line.startswith("- ") or line.startswith("• "):
-                    content = line[2:] if line.startswith("- ") else line[2:]
-                    formatted_lines.append(
-                        f'<span style="color: #333;">• {content}</span>'
-                    )
-                elif line:
-                    formatted_lines.append(f'<span style="color: #333;">{line}</span>')
-                else:
-                    formatted_lines.append("<br>")
+        # ── Route: personal question? ─────────────────────────────────────
+        if is_personal_question(prompt):
+            if st.session_state.current_employee_id:
+                raw = answer_personal_question(
+                    prompt, st.session_state.current_employee_id
+                )
+                resp = f'<div style="color: #333;">{raw}</div>'
+                placeholder.markdown(resp, unsafe_allow_html=True)
+                st.session_state.stats["found"] += 1
+            else:
+                resp = (
+                    '<div style="color: #333;">'
+                    "🔐 <strong>Vui lòng đăng nhập để xem thông tin cá nhân.</strong><br><br>"
+                    'Nhấn vào <em>"Xem thông tin cá nhân? Đăng nhập tại đây"</em> phía trên '
+                    "và chọn tên của bạn."
+                    "</div>"
+                )
+                placeholder.markdown(resp, unsafe_allow_html=True)
+                st.session_state.stats["not_found"] += 1
 
-            answer_html = "<br>".join(formatted_lines)
-            resp = f'<div style="color: #333;"><strong> Trả lời:</strong><br><br>{answer_html}</div>'
-
-            if st.session_state.debug:
-                resp += f"<br><br><small style='color: #666;'> {result['source']} |  {result['similarity']}%</small>"
-
-            placeholder.markdown(resp, unsafe_allow_html=True)
-            st.session_state.stats["found"] += 1
+        # ── Route: general HR policy → vector DB ─────────────────────────
         else:
-            resp = '<div style="color: #333;"> <strong>Không tìm thấy</strong><br><br>Xin lỗi, câu hỏi này chưa có trong knowledge base.<br><br> Vui lòng liên hệ HR: <strong>hr@paraline.com.vn</strong></div>'
-            placeholder.markdown(resp, unsafe_allow_html=True)
-            st.session_state.stats["not_found"] += 1
+            with st.spinner("Đang tìm kiếm..."):
+                result = query_vector_db(prompt)
+
+            if result["found"]:
+                answer = result["answer"]
+                lines = answer.split("\n")
+                formatted_lines = []
+                for line in lines:
+                    line = line.strip()
+                    if line.startswith("- ") or line.startswith("• "):
+                        content = line[2:] if line.startswith("- ") else line[2:]
+                        formatted_lines.append(
+                            f'<span style="color: #333;">• {content}</span>'
+                        )
+                    elif line:
+                        formatted_lines.append(
+                            f'<span style="color: #333;">{line}</span>'
+                        )
+                    else:
+                        formatted_lines.append("<br>")
+
+                answer_html = "<br>".join(formatted_lines)
+                resp = f'<div style="color: #333;"><strong> Trả lời:</strong><br><br>{answer_html}</div>'
+
+                if st.session_state.debug:
+                    resp += f"<br><br><small style='color: #666;'> {result['source']} |  {result['similarity']}%</small>"
+
+                placeholder.markdown(resp, unsafe_allow_html=True)
+                st.session_state.stats["found"] += 1
+            else:
+                resp = '<div style="color: #333;"> <strong>Không tìm thấy</strong><br><br>Xin lỗi, câu hỏi này chưa có trong knowledge base.<br><br> Vui lòng liên hệ HR: <strong>hr@paraline.com.vn</strong></div>'
+                placeholder.markdown(resp, unsafe_allow_html=True)
+                st.session_state.stats["not_found"] += 1
 
         st.session_state.messages.append({"role": "assistant", "content": resp})
 
