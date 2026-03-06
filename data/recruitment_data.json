@@ -1,0 +1,138 @@
+{
+    "pipelines": {
+        "ReactJS Developer": {
+            "open_positions": 2,
+            "pipeline_stages": {
+                "New Application": [
+                    {
+                        "candidate_id": "CND-001",
+                        "name": "Pham Van D",
+                        "applied_date": "2026-03-01",
+                        "score": null
+                    },
+                    {
+                        "candidate_id": "CND-002",
+                        "name": "Hoang Thi E",
+                        "applied_date": "2026-03-02",
+                        "score": null
+                    }
+                ],
+                "CV Screening": [
+                    {
+                        "candidate_id": "CND-003",
+                        "name": "Do Minh F",
+                        "applied_date": "2026-02-25",
+                        "score": 78
+                    },
+                    {
+                        "candidate_id": "CND-004",
+                        "name": "Vu Thi G",
+                        "applied_date": "2026-02-26",
+                        "score": 85
+                    }
+                ],
+                "Technical Interview": [
+                    {
+                        "candidate_id": "CND-005",
+                        "name": "Nguyen Quoc H",
+                        "applied_date": "2026-02-20",
+                        "score": 90,
+                        "interview_date": "2026-03-07"
+                    }
+                ],
+                "HR Interview": [
+                    {
+                        "candidate_id": "CND-006",
+                        "name": "Tran Bao I",
+                        "applied_date": "2026-02-15",
+                        "score": 88
+                    }
+                ],
+                "Offer Extended": [],
+                "Hired": [
+                    {
+                        "candidate_id": "CND-007",
+                        "name": "Le Thu J",
+                        "applied_date": "2026-02-01",
+                        "score": 92,
+                        "hired_date": "2026-03-01"
+                    }
+                ],
+                "Rejected": [
+                    {
+                        "candidate_id": "CND-008",
+                        "name": "Bui Minh K",
+                        "applied_date": "2026-02-18",
+                        "score": 45,
+                        "rejection_reason": "Low technical score"
+                    }
+                ]
+            },
+            "hiring_stats": {
+                "total_applicants": 8,
+                "in_pipeline": 6,
+                "hired": 1,
+                "rejected": 1,
+                "time_to_hire_avg_days": 28,
+                "conversion_rate": "12.5%"
+            }
+        },
+        "Backend Developer": {
+            "open_positions": 1,
+            "pipeline_stages": {
+                "New Application": [
+                    {
+                        "candidate_id": "CND-010",
+                        "name": "Mai Van L",
+                        "applied_date": "2026-03-03",
+                        "score": null
+                    }
+                ],
+                "CV Screening": [
+                    {
+                        "candidate_id": "CND-011",
+                        "name": "Trinh Thi M",
+                        "applied_date": "2026-03-01",
+                        "score": 80
+                    }
+                ],
+                "Technical Interview": [],
+                "HR Interview": [],
+                "Offer Extended": [
+                    {
+                        "candidate_id": "CND-012",
+                        "name": "Dang Van N",
+                        "applied_date": "2026-02-10",
+                        "score": 95,
+                        "offer_date": "2026-03-05",
+                        "offer_salary": "L4"
+                    }
+                ],
+                "Hired": [],
+                "Rejected": []
+            },
+            "hiring_stats": {
+                "total_applicants": 3,
+                "in_pipeline": 3,
+                "hired": 0,
+                "rejected": 0,
+                "time_to_hire_avg_days": null,
+                "conversion_rate": "0%"
+            }
+        }
+    },
+    "interview_schedules": [
+        {
+            "schedule_id": "SCH-001",
+            "candidate_id": "CND-005",
+            "position": "ReactJS Developer",
+            "interview_type": "Technical Interview",
+            "date": "2026-03-07",
+            "time": "10:00",
+            "duration_minutes": 60,
+            "interviewer": "Tech Lead Nguyen",
+            "meet_link": "https://meet.google.com/abc-defg-hij",
+            "status": "Scheduled"
+        }
+    ]
+}

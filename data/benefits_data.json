@@ -1,0 +1,124 @@
+{
+    "benefits_catalog": {
+        "health_insurance": {
+            "name": "Bảo hiểm sức khỏe",
+            "packages": {
+                "Basic": {
+                    "monthly_cost_company": 300000,
+                    "monthly_cost_employee": 100000,
+                    "coverage": [
+                        "Nội trú bệnh viện",
+                        "Cấp cứu",
+                        "Ngoại trú cơ bản"
+                    ],
+                    "max_annual_coverage": 50000000
+                },
+                "Standard": {
+                    "monthly_cost_company": 500000,
+                    "monthly_cost_employee": 150000,
+                    "coverage": [
+                        "Nội trú bệnh viện",
+                        "Cấp cứu",
+                        "Ngoại trú đầy đủ",
+                        "Nha khoa cơ bản"
+                    ],
+                    "max_annual_coverage": 100000000
+                },
+                "Premium": {
+                    "monthly_cost_company": 800000,
+                    "monthly_cost_employee": 200000,
+                    "coverage": [
+                        "Nội trú bệnh viện hạng A",
+                        "Cấp cứu quốc tế",
+                        "Ngoại trú cao cấp",
+                        "Nha khoa toàn diện",
+                        "Thị lực"
+                    ],
+                    "max_annual_coverage": 200000000
+                }
+            }
+        },
+        "meal_allowance": {
+            "name": "Phụ cấp ăn trưa",
+            "amount_per_day": 40000,
+            "max_days_per_month": 22,
+            "payment": "Trả theo ngày làm việc thực tế"
+        },
+        "transportation_allowance": {
+            "name": "Phụ cấp đi lại",
+            "tiers": {
+                "< 5km": 200000,
+                "5-15km": 400000,
+                "> 15km": 700000
+            },
+            "payment": "Trả hàng tháng cùng lương"
+        },
+        "training_budget": {
+            "name": "Ngân sách đào tạo",
+            "annual_amount": 5000000,
+            "eligible_after_months": 6,
+            "approved_categories": [
+                "Technical courses",
+                "Language courses",
+                "Leadership training",
+                "Certifications"
+            ]
+        },
+        "wfh_allowance": {
+            "name": "Phụ cấp làm việc từ xa",
+            "amount_per_month": 500000,
+            "eligible_after_months": 3,
+            "requirement": "Làm việc từ xa ít nhất 2 ngày/tuần"
+        },
+        "birthday_bonus": {
+            "name": "Thưởng sinh nhật",
+            "amount": 500000,
+            "additional": "Voucher ăn uống trị giá 300,000đ"
+        },
+        "annual_health_checkup": {
+            "name": "Khám sức khỏe định kỳ",
+            "frequency": "1 lần/năm",
+            "value": 1500000,
+            "clinic": "Bệnh viện Vinmec"
+        }
+    },
+    "employee_benefits": {
+        "EMP001": {
+            "health_insurance_package": "Standard",
+            "meal_allowance": true,
+            "transportation_allowance_tier": "5-15km",
+            "training_budget_used": 2000000,
+            "training_budget_remaining": 3000000,
+            "wfh_allowance": true,
+            "annual_checkup_done": false,
+            "benefit_changes_pending": []
+        },
+        "EMP002": {
+            "health_insurance_package": "Premium",
+            "meal_allowance": true,
+            "transportation_allowance_tier": "> 15km",
+            "training_budget_used": 5000000,
+            "training_budget_remaining": 0,
+            "wfh_allowance": false,
+            "annual_checkup_done": true,
+            "benefit_changes_pending": []
+        },
+        "EMP003": {
+            "health_insurance_package": "Basic",
+            "meal_allowance": true,
+            "transportation_allowance_tier": "< 5km",
+            "training_budget_used": 0,
+            "training_budget_remaining": 5000000,
+            "wfh_allowance": false,
+            "annual_checkup_done": false,
+            "benefit_changes_pending": [
+                {
+                    "type": "health_insurance",
+                    "from": "Basic",
+                    "to": "Standard",
+                    "status": "Pending Approval"
+                }
+            ]
+        }
+    }
+}

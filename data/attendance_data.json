@@ -1,0 +1,222 @@
+{
+    "attendance_records": {
+        "EMP001": {
+            "name": "Nguyen Van A",
+            "week": "2026-W10",
+            "daily_records": [
+                {
+                    "date": "2026-03-02",
+                    "day": "Monday",
+                    "check_in": "08:05",
+                    "check_out": "17:30",
+                    "total_hours": 9.4,
+                    "ot_hours": 0.4,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-03",
+                    "day": "Tuesday",
+                    "check_in": "08:00",
+                    "check_out": "18:00",
+                    "total_hours": 10.0,
+                    "ot_hours": 1.0,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-04",
+                    "day": "Wednesday",
+                    "check_in": "08:10",
+                    "check_out": "17:00",
+                    "total_hours": 8.8,
+                    "ot_hours": 0.0,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-05",
+                    "day": "Thursday",
+                    "check_in": null,
+                    "check_out": null,
+                    "total_hours": 0,
+                    "ot_hours": 0,
+                    "status": "Leave"
+                },
+                {
+                    "date": "2026-03-06",
+                    "day": "Friday",
+                    "check_in": "08:00",
+                    "check_out": "17:00",
+                    "total_hours": 9.0,
+                    "ot_hours": 0.0,
+                    "status": "Present"
+                }
+            ],
+            "weekly_summary": {
+                "total_working_days": 4,
+                "total_hours": 37.2,
+                "total_ot_hours": 1.4,
+                "absent_days": 0,
+                "leave_days": 1
+            }
+        },
+        "EMP002": {
+            "name": "Tran Thi B",
+            "week": "2026-W10",
+            "daily_records": [
+                {
+                    "date": "2026-03-02",
+                    "day": "Monday",
+                    "check_in": "08:30",
+                    "check_out": "17:30",
+                    "total_hours": 9.0,
+                    "ot_hours": 0.0,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-03",
+                    "day": "Tuesday",
+                    "check_in": "08:00",
+                    "check_out": "19:00",
+                    "total_hours": 11.0,
+                    "ot_hours": 2.0,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-04",
+                    "day": "Wednesday",
+                    "check_in": "08:00",
+                    "check_out": "17:00",
+                    "total_hours": 9.0,
+                    "ot_hours": 0.0,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-05",
+                    "day": "Thursday",
+                    "check_in": "08:00",
+                    "check_out": "17:00",
+                    "total_hours": 9.0,
+                    "ot_hours": 0.0,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-06",
+                    "day": "Friday",
+                    "check_in": "08:00",
+                    "check_out": "17:00",
+                    "total_hours": 9.0,
+                    "ot_hours": 0.0,
+                    "status": "Present"
+                }
+            ],
+            "weekly_summary": {
+                "total_working_days": 5,
+                "total_hours": 47.0,
+                "total_ot_hours": 2.0,
+                "absent_days": 0,
+                "leave_days": 0
+            }
+        },
+        "EMP003": {
+            "name": "Le Van C",
+            "week": "2026-W10",
+            "daily_records": [
+                {
+                    "date": "2026-03-02",
+                    "day": "Monday",
+                    "check_in": "09:00",
+                    "check_out": "17:00",
+                    "total_hours": 8.0,
+                    "ot_hours": 0.0,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-03",
+                    "day": "Tuesday",
+                    "check_in": null,
+                    "check_out": null,
+                    "total_hours": 0,
+                    "ot_hours": 0,
+                    "status": "Absent"
+                },
+                {
+                    "date": "2026-03-04",
+                    "day": "Wednesday",
+                    "check_in": "08:00",
+                    "check_out": "17:00",
+                    "total_hours": 9.0,
+                    "ot_hours": 0.0,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-05",
+                    "day": "Thursday",
+                    "check_in": "08:00",
+                    "check_out": "17:00",
+                    "total_hours": 9.0,
+                    "ot_hours": 0.0,
+                    "status": "Present"
+                },
+                {
+                    "date": "2026-03-06",
+                    "day": "Friday",
+                    "check_in": "08:00",
+                    "check_out": "20:00",
+                    "total_hours": 12.0,
+                    "ot_hours": 3.0,
+                    "status": "Present"
+                }
+            ],
+            "weekly_summary": {
+                "total_working_days": 4,
+                "total_hours": 38.0,
+                "total_ot_hours": 3.0,
+                "absent_days": 1,
+                "leave_days": 0
+            }
+        }
+    },
+    "leave_requests": [
+        {
+            "request_id": "LR-2026-001",
+            "employee_id": "EMP001",
+            "type": "Annual Leave",
+            "start_date": "2026-03-05",
+            "end_date": "2026-03-05",
+            "days": 1,
+            "reason": "Personal matter",
+            "status": "Approved",
+            "approved_by": "Manager",
+            "submitted_at": "2026-03-03T09:00:00"
+        },
+        {
+            "request_id": "LR-2026-002",
+            "employee_id": "EMP003",
+            "type": "Sick Leave",
+            "start_date": "2026-03-10",
+            "end_date": "2026-03-11",
+            "days": 2,
+            "reason": "Flu and fever",
+            "status": "Pending",
+            "approved_by": null,
+            "submitted_at": "2026-03-06T08:30:00"
+        },
+        {
+            "request_id": "LR-2026-003",
+            "employee_id": "EMP002",
+            "type": "Annual Leave",
+            "start_date": "2026-03-20",
+            "end_date": "2026-03-22",
+            "days": 3,
+            "reason": "Family vacation",
+            "status": "Pending",
+            "approved_by": null,
+            "submitted_at": "2026-03-06T10:00:00"
+        }
+    ],
+    "ot_policy": {
+        "max_ot_per_day_hours": 4,
+        "max_ot_per_month_hours": 40,
+        "ot_rate_multiplier": 1.5,
+        "weekend_ot_rate_multiplier": 2.0
+    }
+}

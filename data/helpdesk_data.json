@@ -1,0 +1,87 @@
+{
+    "tickets": [
+        {
+            "ticket_id": "TICK-2026-001",
+            "employee_id": "EMP001",
+            "category": "Equipment",
+            "subject": "Xin cấp laptop mới",
+            "description": "Laptop hiện tại bị chậm, ảnh hưởng đến công việc hàng ngày.",
+            "priority": "Medium",
+            "status": "In Progress",
+            "assigned_to": "IT Support Team",
+            "created_at": "2026-03-01T09:00:00",
+            "updated_at": "2026-03-03T14:00:00",
+            "resolution": null,
+            "comments": [
+                {
+                    "author": "IT Support",
+                    "message": "Đã ghi nhận yêu cầu, đang xem xét tồn kho thiết bị.",
+                    "timestamp": "2026-03-03T14:00:00"
+                }
+            ]
+        },
+        {
+            "ticket_id": "TICK-2026-002",
+            "employee_id": "EMP002",
+            "category": "Payroll",
+            "subject": "Sai lương tháng 2/2026",
+            "description": "Lương tháng 2 bị thiếu phụ cấp ăn trưa.",
+            "priority": "High",
+            "status": "Resolved",
+            "assigned_to": "Payroll Team",
+            "created_at": "2026-03-02T10:00:00",
+            "updated_at": "2026-03-04T16:00:00",
+            "resolution": "Đã điều chỉnh và bổ sung phụ cấp trong kỳ lương tháng 3.",
+            "comments": [
+                {
+                    "author": "Payroll Team",
+                    "message": "Đã xác nhận lỗi, sẽ bổ sung trong kỳ lương kế tiếp.",
+                    "timestamp": "2026-03-04T16:00:00"
+                }
+            ]
+        },
+        {
+            "ticket_id": "TICK-2026-003",
+            "employee_id": "EMP003",
+            "category": "Leave",
+            "subject": "Hỏi về chính sách nghỉ phép bù làm thêm",
+            "description": "Tuần trước làm thêm 3 giờ ngày thứ 7, muốn hỏi về chính sách nghỉ bù.",
+            "priority": "Low",
+            "status": "Open",
+            "assigned_to": "HR Team",
+            "created_at": "2026-03-06T08:00:00",
+            "updated_at": "2026-03-06T08:00:00",
+            "resolution": null,
+            "comments": []
+        }
+    ],
+    "categories": [
+        "Equipment",
+        "Payroll",
+        "Leave",
+        "Benefits",
+        "Training",
+        "HR Policy",
+        "IT Support",
+        "Other"
+    ],
+    "priority_levels": [
+        "Low",
+        "Medium",
+        "High",
+        "Critical"
+    ],
+    "status_flow": [
+        "Open",
+        "In Progress",
+        "Pending Employee",
+        "Resolved",
+        "Closed"
+    ],
+    "sla_hours": {
+        "Critical": 4,
+        "High": 24,
+        "Medium": 72,
+        "Low": 168
+    }
+}

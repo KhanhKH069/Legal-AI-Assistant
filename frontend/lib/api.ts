@@ -197,3 +197,145 @@ export async function getEmployeeMonthly(
   const qs = month ? `?month=${encodeURIComponent(month)}` : "";
   return apiFetch<EmployeeMonthly>(`/employees/${employeeId}/monthly${qs}`);
 }
+
+// ── Attendance endpoints ──────────────────────────────────────────────────────
+
+export interface AttendanceRecord {
+  employee_id: string;
+  attendance: {
+    name: string;
+    week: string;
+    daily_records: {
+      date: string;
+      day: string;
+      check_in: string | null;
+      check_out: string | null;
+      total_hours: number;
+      ot_hours: number;
+      status: string;
+    }[];
+    weekly_summary: {
+      total_working_days: number;
+      total_hours: number;
+      total_ot_hours: number;
+      absent_days: number;
+      leave_days: number;
+    };
+  };
+}
+
+export interface LeaveRequest {
+  request_id: string;
+  employee_id: string;
+  type: string;
+  start_date: string;
+  end_date: string;
+  days: number;
+  reason: string;
+  status: string;
+  approved_by: string | null;
+  submitted_at: string;
+}
+
+export async function getAttendance(employeeId: string): Promise<AttendanceRecord> {
+  return apiFetch<AttendanceRecord>(`/attendance/${employeeId}`);
+}
+
+export async function getLeaveRequests(employeeId: string): Promise<{ employee_id: string; leave_requests: LeaveRequest[] }> {
+  return apiFetch(`/attendance/${employeeId}/leave-requests`);
+}
+
+export async function submitLeaveRequest(payload: {
+  employee_id: string;
+  leave_type: string;
+  start_date: string;
+  end_date: string;
+  reason: string;
+}): Promise<{ status: string; request_id: string }> {
+  return apiFetch(`/attendance/leave-request`, { method: "POST", body: JSON.stringify(payload) });
+}
+
+// ── Helpdesk endpoints ────────────────────────────────────────────────────────
+
+export interface HelpdeskTicket {
+  ticket_id: string;
+  employee_id: string;
+  category: string;
+  subject: string;
+  description: string;
+  priority: string;
+  status: string;
+  assigned_to: string;
+  created_at: string;
+  updated_at: string;
+  resolution: string | null;
+  comments: { author: string; message: string; timestamp: string }[];
+}
+
+export async function listEmployeeTickets(employeeId: string): Promise<{ tickets: HelpdeskTicket[]; total: number }> {
+  return apiFetch(`/helpdesk/tickets/employee/${employeeId}`);
+}
+
+export async function createTicket(payload: {
+  employee_id: string;
+  category: string;
+  subject: string;
+  description: string;
+  priority: string;
+}): Promise<{ status: string; ticket_id: string }> {
+  return apiFetch(`/helpdesk/tickets`, { method: "POST", body: JSON.stringify(payload) });
+}
+
+export async function getHelpdeskCategories(): Promise<{ categories: string[]; priority_levels: string[] }> {
+  return apiFetch(`/helpdesk/categories`);
+}
+
+// ── Benefits endpoints ────────────────────────────────────────────────────────
+
+export interface EmployeeBenefits {
+  health_insurance_package: string;
+  meal_allowance: boolean;
+  transportation_allowance_tier: string;
+  training_budget_used: number;
+  training_budget_remaining: number;
+  wfh_allowance: boolean;
+  annual_checkup_done: boolean;
+  benefit_changes_pending: { type: string; from?: string; to?: string; status: string }[];
+}
+
+export async function getEmployeeBenefits(employeeId: string): Promise<{ employee_id: string; benefits: EmployeeBenefits }> {
+  return apiFetch(`/benefits/${employeeId}`);
+}
+
+export async function getBenefitsCatalog(): Promise<{ benefits_catalog: Record<string, any> }> {
+  return apiFetch(`/benefits/catalog`);
+}
+
+export async function requestBenefitChange(payload: {
+  employee_id: string;
+  benefit_type: string;
+  requested_change: string;
+}): Promise<{ status: string }> {
+  return apiFetch(`/benefits/change-request`, { method: "POST", body: JSON.stringify(payload) });
+}
+
+// ── Notifications endpoints ───────────────────────────────────────────────────
+
+export interface HRNotification {
+  notification_id: string;
+  recipient_id: string;
+  type: string;
+  title: string;
+  message: string;
+  channel: string;
+  is_read: boolean;
+  created_at: string;
+}
+
+export async function getNotifications(employeeId: string): Promise<{ notifications: HRNotification[]; unread: number }> {
+  return apiFetch(`/notifications/${employeeId}`);
+}
+
+export async function getAnnouncements(): Promise<{ announcements: { announcement_id: string; title: string; content: string; department: string; published_by: string; published_at: string }[] }> {
+  return apiFetch(`/notifications/announcements/all`);
+}

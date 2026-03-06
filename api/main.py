@@ -8,6 +8,7 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from pydantic import BaseModel
 
 from api.routers import applicants, files, job_requirements, screening, employees
+from api.routers import attendance, helpdesk, benefits, notification
 
 # from src.agents.orchestrator import create_hr_agent_graph  # Moved inside on_startup
 from src.db import init_db
@@ -36,6 +37,12 @@ app.include_router(screening.router)
 app.include_router(job_requirements.router)
 app.include_router(files.router)
 app.include_router(employees.router)
+
+# Routers for Odoo-inspired HR modules
+app.include_router(attendance.router)
+app.include_router(helpdesk.router)
+app.include_router(benefits.router)
+app.include_router(notification.router)
 
 
 @app.on_event("startup")

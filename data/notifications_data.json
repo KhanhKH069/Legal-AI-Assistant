@@ -1,0 +1,54 @@
+{
+    "notifications": [
+        {
+            "notification_id": "NOTIF-001",
+            "recipient_id": "EMP001",
+            "type": "Leave Approval",
+            "title": "Đơn nghỉ phép đã được duyệt",
+            "message": "Đơn nghỉ phép ngày 05/03/2026 của bạn đã được Manager duyệt.",
+            "channel": "system",
+            "is_read": false,
+            "created_at": "2026-03-03T15:00:00"
+        },
+        {
+            "notification_id": "NOTIF-002",
+            "recipient_id": "EMP001",
+            "type": "Announcement",
+            "title": "Thông báo: Nghỉ lễ Hùng Vương 18/04",
+            "message": "Công ty sẽ nghỉ lễ Giỗ Tổ Hùng Vương vào ngày 18/04/2026 (thứ Bảy). Bù vào ngày 17/04/2026 (thứ Sáu) nhân viên sẽ nghỉ.",
+            "channel": "announcement",
+            "is_read": true,
+            "created_at": "2026-03-01T09:00:00"
+        },
+        {
+            "notification_id": "NOTIF-003",
+            "recipient_id": "EMP002",
+            "type": "Ticket Update",
+            "title": "Ticket TICK-2026-002 đã được giải quyết",
+            "message": "Ticket về lương tháng 2 của bạn đã được giải quyết. Vui lòng xem chi tiết.",
+            "channel": "system",
+            "is_read": false,
+            "created_at": "2026-03-04T16:30:00"
+        },
+        {
+            "notification_id": "NOTIF-004",
+            "recipient_id": "ALL",
+            "type": "Announcement",
+            "title": "Kết quả đánh giá hiệu suất Q1/2026",
+            "message": "Kết quả đánh giá hiệu suất Q1/2026 đã được cập nhật. Vui lòng liên hệ HR để xem chi tiết.",
+            "channel": "announcement",
+            "is_read": false,
+            "created_at": "2026-03-06T08:00:00"
+        }
+    ],
+    "hr_announcements": [
+        {
+            "announcement_id": "ANN-001",
+            "title": "Chính sách WFH mới từ Q2/2026",
+            "content": "Từ tháng 4/2026, nhân viên được phép làm việc từ xa tối đa 3 ngày/tuần thay vì 2 ngày/tuần như hiện tại.",
+            "department": "All",
+            "published_by": "HR Manager",
+            "published_at": "2026-03-05T09:00:00"
+        }
+    ]
+}
