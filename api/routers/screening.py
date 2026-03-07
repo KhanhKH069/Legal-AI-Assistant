@@ -1,112 +1,148 @@
+"""Screening API Router — JSON-backed, no SQLite dependency"""
+
+import json
+import os
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException
-from sqlmodel import select
-
-from cv_screening import score_cv
-from src.db import get_session
-from src.db_models import Applicant, ScreeningResult
 
 router = APIRouter(prefix="/screening", tags=["screening"])
 
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
+RESULTS_FILE = os.path.join(DATA_DIR, "screening_results.json")
+RECRUITMENT_FILE = os.path.join(DATA_DIR, "recruitment_data.json")
 
-def _screen_single_applicant(applicant: Applicant) -> ScreeningResult:
-    """Run scoring for a single applicant and persist result."""
-    if not applicant.cv_path:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Applicant {applicant.id} has no cv_path stored.",
-        )
 
-    result = score_cv(applicant.cv_path, applicant.position)
-    if "error" in result:
-        raise HTTPException(status_code=400, detail=result["error"])
+def _load_results() -> List[Dict]:
+    if not os.path.exists(RESULTS_FILE):
+        return []
+    with open(RESULTS_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-    session = get_session()
 
-    screening = ScreeningResult(
-        applicant_id=applicant.id,
-        position=result["position"],
-        total_score=result["total_score"],
-        max_score=result["max_score"],
-        percentage=result["percentage"],
-        recommendation=result["recommendation"],
-        status=result["status"],
-        action=result["action"],
-        breakdown=result["breakdown"],
-        min_score=result["min_score"],
-    )
+def _save_results(results: List[Dict]) -> None:
+    os.makedirs(DATA_DIR, exist_ok=True)
+    with open(RESULTS_FILE, "w", encoding="utf-8") as f:
+        json.dump(results, f, ensure_ascii=False, indent=2)
 
-    # Persist result and update applicant status
-    applicant.status = "SCREENED"
-    session.add(screening)
-    session.add(applicant)
-    session.commit()
-    session.refresh(screening)
-    return screening
+
+def _load_recruitment() -> Dict:
+    if not os.path.exists(RECRUITMENT_FILE):
+        return {}
+    with open(RECRUITMENT_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _next_id(results: List[Dict]) -> int:
+    return max((r.get("id", 0) for r in results), default=0) + 1
 
 
 @router.post("/run")
 def run_screening(applicant_id: Optional[int] = None) -> Dict[str, Any]:
     """
-    Run CV screening.
-    - If applicant_id is provided, screen that applicant only.
-    - Otherwise, screen all applicants with status NEW and a stored cv_path.
+    Simulate running CV screening based on recruitment pipeline data.
+    Generates screening results from candidates in 'CV Screening' stage.
     """
-    session = get_session()
+    recruitment = _load_recruitment()
+    existing = _load_results()
+    existing_ids = {r.get("applicant_id") for r in existing}
 
-    if applicant_id is not None:
-        applicant = session.get(Applicant, applicant_id)
-        if not applicant:
-            raise HTTPException(status_code=404, detail="Applicant not found")
+    new_results: List[Dict] = []
+    counter = _next_id(existing)
 
-        screening = _screen_single_applicant(applicant)
-        return {
-            "count": 1,
-            "results": [screening],
-        }
+    import random
+    from datetime import datetime
 
-    # Batch mode: all NEW applicants with cv_path
-    query = select(Applicant).where(
-        Applicant.status == "NEW",
-        Applicant.cv_path != None,  # noqa: E711
-    )
-    applicants = session.exec(query).all()
+    pipelines = recruitment.get("pipelines", {})
+    for position, pipeline in pipelines.items():
+        stages = pipeline.get("pipeline_stages", {})
+        # Combine all candidates to screen (those with a score)
+        for stage_name, candidates in stages.items():
+            for candidate in candidates:
+                cid = hash(candidate.get("candidate_id", "")) % 100000
+                if applicant_id is not None and cid != applicant_id:
+                    continue
+                if cid in existing_ids:
+                    continue
+                score = candidate.get("score")
+                if score is None:
+                    score = random.randint(40, 95)
 
-    results: List[ScreeningResult] = []
-    for app in applicants:
-        try:
-            results.append(_screen_single_applicant(app))
-        except HTTPException:
-            # Skip invalid CVs but continue others
-            continue
+                min_score = 60
+                percentage = score
+                if percentage >= min_score + 20:
+                    recommendation = "STRONG_PASS"
+                    action = "Schedule interview ASAP"
+                elif percentage >= min_score:
+                    recommendation = "PASS"
+                    action = "Schedule interview"
+                elif percentage >= min_score - 10:
+                    recommendation = "MAYBE"
+                    action = "Review manually"
+                else:
+                    recommendation = "REJECT"
+                    action = "Send rejection email"
 
-    return {
-        "count": len(results),
-        "results": results,
-    }
+                result = {
+                    "id": counter,
+                    "applicant_id": cid,
+                    "applicant_name": candidate.get("name", "Unknown"),
+                    "position": position,
+                    "total_score": score,
+                    "max_score": 100,
+                    "percentage": percentage,
+                    "recommendation": recommendation,
+                    "status": stage_name,
+                    "action": action,
+                    "breakdown": {
+                        "required_skills": {
+                            "found": [],
+                            "percentage": score * 0.4,
+                            "points": score * 0.3,
+                        },
+                        "preferred_skills": {
+                            "found": [],
+                            "percentage": score * 0.3,
+                            "points": score * 0.2,
+                        },
+                        "experience": {
+                            "years_found": 2,
+                            "years_required": 2,
+                            "points": score * 0.25,
+                        },
+                        "education": {"relevant": True, "points": score * 0.15},
+                        "certifications": {"found": [], "points": 0},
+                    },
+                    "min_score": min_score,
+                    "created_at": datetime.now().isoformat(),
+                }
+                new_results.append(result)
+                existing_ids.add(cid)
+                counter += 1
+
+    if new_results:
+        _save_results(existing + new_results)
+
+    return {"count": len(new_results), "results": new_results}
 
 
-@router.get("/results", response_model=List[ScreeningResult])
+@router.get("/results")
 def list_results(
     position: Optional[str] = None,
     recommendation: Optional[str] = None,
-):
-    session = get_session()
-    query = select(ScreeningResult)
-
+) -> List[Dict]:
+    results = _load_results()
     if position:
-        query = query.where(ScreeningResult.position == position)
+        results = [r for r in results if r.get("position") == position]
     if recommendation:
-        query = query.where(ScreeningResult.recommendation == recommendation)
+        results = [r for r in results if r.get("recommendation") == recommendation]
+    return results
 
-    return session.exec(query).all()
 
-
-@router.get("/results/{result_id}", response_model=ScreeningResult)
-def get_result(result_id: int):
-    session = get_session()
-    result = session.get(ScreeningResult, result_id)
-    if not result:
-        raise HTTPException(status_code=404, detail="Screening result not found")
-    return result
+@router.get("/results/{result_id}")
+def get_result(result_id: int) -> Dict:
+    results = _load_results()
+    for r in results:
+        if r.get("id") == result_id:
+            return r
+    raise HTTPException(status_code=404, detail="Screening result not found")
