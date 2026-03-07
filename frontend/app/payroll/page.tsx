@@ -34,7 +34,7 @@ function PayrollBreakdown({ entry }: { entry: PayrollEntry }) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
             {/* Income */}
             <div style={{ background: "#0f172a", borderRadius: 12, padding: "20px" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#22c55e", marginBottom: 14, letterSpacing: "0.05em", textTransform: "uppercase" }}>💵 Thu Nhập</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#22c55e", marginBottom: 14, letterSpacing: "0.05em", textTransform: "uppercase" }}> Thu Nhập</div>
                 {incomes.map(item => (
                     <div key={item.label} style={{ marginBottom: 14 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 6 }}>
@@ -54,7 +54,7 @@ function PayrollBreakdown({ entry }: { entry: PayrollEntry }) {
 
             {/* Deductions */}
             <div style={{ background: "#0f172a", borderRadius: 12, padding: "20px" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#ef4444", marginBottom: 14, letterSpacing: "0.05em", textTransform: "uppercase" }}>📉 Khấu Trừ</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#ef4444", marginBottom: 14, letterSpacing: "0.05em", textTransform: "uppercase" }}> Khấu Trừ</div>
                 {deductions.map(item => (
                     <div key={item.label} style={{ marginBottom: 14 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 6 }}>
@@ -108,7 +108,7 @@ export default function PayrollPage() {
     };
 
     const statusColor = currentEntry?.status === "Paid" ? "#22c55e" : "#f59e0b";
-    const statusLabel = currentEntry?.status === "Paid" ? "✅ Đã thanh toán" : "⏳ Chờ thanh toán";
+    const statusLabel = currentEntry?.status === "Paid" ? " Đã thanh toán" : " Chờ thanh toán";
 
     return (
         <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#0f172a 0%,#1e293b 100%)", color: "#e2e8f0", fontFamily: "'Inter',sans-serif", padding: "32px 24px" }}>
@@ -118,7 +118,7 @@ export default function PayrollPage() {
                     <a href="/" style={{ color: "#94a3b8", textDecoration: "none", fontSize: 13 }}>← Trang chủ</a>
                     <div style={{ flex: 1 }}>
                         <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, background: "linear-gradient(90deg,#f59e0b,#fbbf24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                            💰 Bảng Lương
+                             Bảng Lương
                         </h1>
                         <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 14 }}>Xem chi tiết lương, OT, thưởng và khấu trừ theo tháng</p>
                     </div>
@@ -140,7 +140,7 @@ export default function PayrollPage() {
                     </select>
                 </div>
 
-                {loading && <div style={{ textAlign: "center", padding: 40, color: "#64748b" }}>⏳ Đang tải...</div>}
+                {loading && <div style={{ textAlign: "center", padding: 40, color: "#64748b" }}> Đang tải...</div>}
                 {error && <div style={{ padding: 16, borderRadius: 10, background: "rgba(239,68,68,0.1)", color: "#ef4444", marginBottom: 20 }}>❌ {error}</div>}
 
                 {currentEntry && record && (
@@ -180,11 +180,11 @@ export default function PayrollPage() {
                         {/* Summary cards */}
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 14, marginBottom: 24 }}>
                             {[
-                                { label: "Lương cơ bản", value: fmtVND(currentEntry.base_salary), color: "#22c55e", icon: "💼" },
-                                { label: `OT (${currentEntry.ot_hours}h)`, value: fmtVND(currentEntry.ot_pay), color: "#60a5fa", icon: "⏱️" },
-                                { label: "Thưởng KPI", value: fmtVND(currentEntry.kpi_bonus), color: "#a78bfa", icon: "🏆" },
-                                { label: "Tổng khấu trừ", value: `−${fmtVND(currentEntry.total_deductions)}`, color: "#ef4444", icon: "📉" },
-                                { label: "Lương thực nhận", value: fmtVND(currentEntry.net_salary), color: "#f59e0b", icon: "🏦" },
+                                { label: "Lương cơ bản", value: fmtVND(currentEntry.base_salary), color: "#22c55e", icon: "" },
+                                { label: `OT (${currentEntry.ot_hours}h)`, value: fmtVND(currentEntry.ot_pay), color: "#60a5fa", icon: "" },
+                                { label: "Thưởng KPI", value: fmtVND(currentEntry.kpi_bonus), color: "#a78bfa", icon: "" },
+                                { label: "Tổng khấu trừ", value: `−${fmtVND(currentEntry.total_deductions)}`, color: "#ef4444", icon: "" },
+                                { label: "Lương thực nhận", value: fmtVND(currentEntry.net_salary), color: "#f59e0b", icon: "" },
                             ].map(c => (
                                 <div key={c.label} style={{ background: "#1e293b", borderRadius: 12, padding: "18px 16px", border: "1px solid #334155" }}>
                                     <div style={{ fontSize: 18, marginBottom: 6 }}>{c.icon}</div>
@@ -197,7 +197,7 @@ export default function PayrollPage() {
                         {/* Breakdown chart */}
                         <div style={{ background: "#1e293b", borderRadius: 14, border: "1px solid #334155", marginBottom: 24, overflow: "hidden" }}>
                             <div style={{ padding: "18px 24px", borderBottom: "1px solid #334155" }}>
-                                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>📊 Chi Tiết Thu Nhập & Khấu Trừ</h3>
+                                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600 }}> Chi Tiết Thu Nhập & Khấu Trừ</h3>
                             </div>
                             <div style={{ padding: "20px 24px" }}>
                                 <PayrollBreakdown entry={currentEntry} />
@@ -239,7 +239,7 @@ export default function PayrollPage() {
                                                         <td style={{ padding: "14px 16px", fontSize: 13, color: "#94a3b8" }}>{entry.days_worked}/{entry.working_days}</td>
                                                         <td style={{ padding: "14px 16px" }}>
                                                             <span style={{ padding: "3px 12px", borderRadius: 20, fontSize: 12, fontWeight: 600, background: entry.status === "Paid" ? "rgba(34,197,94,0.15)" : "rgba(245,158,11,0.15)", color: entry.status === "Paid" ? "#22c55e" : "#f59e0b" }}>
-                                                                {entry.status === "Paid" ? "✅ Đã TT" : "⏳ Pending"}
+                                                                {entry.status === "Paid" ? " Đã TT" : " Pending"}
                                                             </span>
                                                         </td>
                                                     </tr>
@@ -249,7 +249,7 @@ export default function PayrollPage() {
                                     </table>
                                 </div>
                                 <div style={{ padding: "12px 24px", borderTop: "1px solid #0f172a", fontSize: 12, color: "#475569" }}>
-                                    💡 Click vào dòng để xem chi tiết tháng đó
+                                     Click vào dòng để xem chi tiết tháng đó
                                 </div>
                             </div>
                         )}

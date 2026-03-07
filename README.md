@@ -10,7 +10,7 @@ Hệ thống **HR AI Assistant** đa tác nhân cho Paraline Vietnam — đượ
 
 ---
 
-## 🤖 Kiến Trúc Multi-Agent (7 Agents)
+##  Kiến Trúc Multi-Agent (7 Agents)
 
 Orchestrator tự động phân tích intent và điều phối đến đúng agent:
 
@@ -23,47 +23,47 @@ User Query → Next.js UI → FastAPI → Orchestrator (Gemini)
       AGENT       AGENT       AGENT    AGENT     AGENT     AGENT    AGENT
 ```
 
-### 1. 📋 Policy Agent
+### 1.  Policy Agent
 - Trả lời câu hỏi chính sách HR qua RAG (Vector DB ChromaDB)
 - Tra cứu thông tin cá nhân: số ngày phép, lương, hồ sơ nhân viên
 - Xem **bảng lương chi tiết** (base salary, OT, thưởng KPI, khấu trừ, net salary)
 - Tích hợp **AI Calculator** (LLMMathChain) tính lương, thuế, ngày công
 
-### 2. 📝 Onboard Agent ✨
+### 2.  Onboard Agent
 - Checklist onboarding theo giai đoạn (Tuần 1 → Tháng 3)
 - **AI OCR** xác thực CCCD và tài liệu onboarding
 - **E-Signature**: ký điện tử Hợp đồng LĐ, NDA, Thỏa thuận thử việc
 - Xem và quản lý trạng thái tài liệu HR
 
-### 3. 💼 CV Agent ✨
+### 3.  CV Agent
 - Chấm điểm CV theo Job Description tự động
 - **Recruitment CRM**: theo dõi pipeline tuyển dụng theo stage
 - Lên lịch phỏng vấn + tạo Google Meet link
 - Thống kê tuyển dụng tổng hợp
 
-### 4. 📊 Analytics Agent
+### 4.  Analytics Agent
 - Chat với database HR bằng ngôn ngữ tự nhiên
 - Query `hr_mock_data.csv` qua Pandas DataFrame Agent
 - Tính KPIs, vẽ biểu đồ phân bổ lương, headcount, turnover
 
-### 5. 🕐 Attendance Agent 🆕
+### 5.  Attendance Agent
 - Xem bảng chấm công tuần (check-in/out, OT hours)
 - Nộp và theo dõi đơn nghỉ phép (Annual, Sick, Maternity…)
 - Tính lương OT theo hệ số (x1.5 / x2.0 / x3.0)
 
-### 6. 🎫 Helpdesk Agent 🆕
+### 6.  Helpdesk Agent
 - Tạo HR Support Ticket (Equipment, Payroll, Benefits, IT…)
 - Theo dõi trạng thái ticket theo SLA (4h → 7 ngày)
 - Hiển thị lịch sử comments và giải pháp
 
-### 7. 🎁 Benefits Agent 🆕
+### 7.  Benefits Agent
 - Xem gói phúc lợi cá nhân: bảo hiểm, phụ cấp, training budget
 - Duyệt catalog 3 gói bảo hiểm (Basic / Standard / Premium)
 - Gửi yêu cầu thay đổi gói phúc lợi
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Yêu Cầu
 - Python 3.10+, Node.js 18+
@@ -102,7 +102,7 @@ npm run dev
 
 ---
 
-## 🌐 Truy Cập
+##  Truy Cập
 
 | URL | Chức năng |
 |---|---|
@@ -113,7 +113,7 @@ npm run dev
 | `http://localhost:3000/helpdesk` | HR Support Ticket |
 | `http://localhost:3000/benefits` | Phúc lợi & bảo hiểm |
 | `http://localhost:3000/notifications` | Thông báo nội bộ |
-| `http://localhost:3000/payroll` | **💰 Bảng lương** — Xem lương, OT, thưởng, khấu trừ |
+| `http://localhost:3000/payroll` | ** Bảng lương** — Xem lương, OT, thưởng, khấu trừ |
 | `http://localhost:3000/hr-dashboard` | HR Analytics Dashboard |
 | `http://localhost:3000/apply` | Form ứng tuyển |
 | `http://localhost:8000/docs` | FastAPI Swagger Docs |
@@ -139,7 +139,7 @@ npm run dev
 
 ---
 
-## 🗺️ Sơ Đồ Chi Tiết
+##  Sơ Đồ Chi Tiết
 
 ```mermaid
 flowchart TD
@@ -157,12 +157,12 @@ flowchart TD
 
     subgraph "LangGraph — 7 Agents"
         O --> PA["Policy Agent"]
-        O --> OA["Onboard Agent\n✨ + E-Sign"]
-        O --> CA["CV Agent\n✨ + CRM Pipeline"]
+        O --> OA["Onboard Agent\n + E-Sign"]
+        O --> CA["CV Agent\n + CRM Pipeline"]
         O --> AA["Analytics Agent"]
-        O --> ATT["Attendance Agent 🆕"]
-        O --> HD["Helpdesk Agent 🆕"]
-        O --> BE["Benefits Agent 🆕"]
+        O --> ATT["Attendance Agent "]
+        O --> HD["Helpdesk Agent "]
+        O --> BE["Benefits Agent "]
     end
 
     subgraph "Tools & Data"
@@ -178,7 +178,7 @@ flowchart TD
 
 ---
 
-## 📁 Cấu Trúc Dự Án
+##  Cấu Trúc Dự Án
 
 ```
 hr-ai-agent-pure-vector/
@@ -189,22 +189,22 @@ hr-ai-agent-pure-vector/
 │       ├── applicants.py            ← CRUD ứng viên
 │       ├── screening.py             ← CV screening results
 │       ├── employees.py             ← Employee data
-│       ├── attendance.py            ← 🆕 Check-in/out, leave requests
-│       ├── helpdesk.py              ← 🆕 HR support tickets
-│       ├── benefits.py              ← 🆕 Employee benefits
-│       ├── notification.py          ← 🆕 HR announcements
-│       └── payroll.py               ← 🆕 Bảng lương theo tháng
+│       ├── attendance.py            ←  Check-in/out, leave requests
+│       ├── helpdesk.py              ←  HR support tickets
+│       ├── benefits.py              ←  Employee benefits
+│       ├── notification.py          ←  HR announcements
+│       └── payroll.py               ←  Bảng lương theo tháng
 │
 ├── src/
 │   ├── agents/
 │   │   ├── orchestrator.py          ← LangGraph graph (7 agents, routing)
 │   │   ├── policy_agent.py
-│   │   ├── onboard_agent.py         ← ✨ + E-Signature, document mgmt
-│   │   ├── cv_agent.py              ← ✨ + Recruitment CRM, interview scheduling
+│   │   ├── onboard_agent.py         ←  + E-Signature, document mgmt
+│   │   ├── cv_agent.py              ←  + Recruitment CRM, interview scheduling
 │   │   ├── analytics_agent.py
-│   │   ├── attendance_agent.py      ← 🆕
-│   │   ├── helpdesk_agent.py        ← 🆕
-│   │   └── benefits_agent.py        ← 🆕
+│   │   ├── attendance_agent.py      ←
+│   │   ├── helpdesk_agent.py        ←
+│   │   └── benefits_agent.py        ←
 │   └── tools/
 │       ├── policy_tools.py
 │       ├── employee_data_tools.py
@@ -213,39 +213,39 @@ hr-ai-agent-pure-vector/
 │       ├── cv_tools.py
 │       ├── email_calendar_tools.py
 │       ├── math_tools.py            ← LLMMathChain (Gemini, temp=0)
-│       ├── document_tools.py        ← 🆕 E-signature & document management
-│       ├── attendance_tools.py      ← 🆕
-│       ├── helpdesk_tools.py        ← 🆕
-│       ├── benefits_tools.py        ← 🆕
-│       ├── recruitment_tools.py     ← 🆕
-│       ├── notification_tools.py    ← 🆕
-│       └── payroll_tools.py         ← 🆕 Bảng lương AI tools
+│       ├── document_tools.py        ←  E-signature & document management
+│       ├── attendance_tools.py      ←
+│       ├── helpdesk_tools.py        ←
+│       ├── benefits_tools.py        ←
+│       ├── recruitment_tools.py     ←
+│       ├── notification_tools.py    ←
+│       └── payroll_tools.py         ←  Bảng lương AI tools
 │
 ├── data/
 │   ├── hr_mock_data.csv             ← HR analytics dataset
-│   ├── attendance_data.json         ← 🆕 Check-in records, OT, leave requests
-│   ├── helpdesk_data.json           ← 🆕 HR support tickets
-│   ├── benefits_data.json           ← 🆕 Insurance packages, allowances
-│   ├── recruitment_data.json        ← 🆕 Recruitment pipeline & interviews
-│   ├── notifications_data.json      ← 🆕 Internal notifications
-│   └── payroll_data.json            ← 🆕 Bảng lương 3 tháng (EMP001–EMP005)
+│   ├── attendance_data.json         ←  Check-in records, OT, leave requests
+│   ├── helpdesk_data.json           ←  HR support tickets
+│   ├── benefits_data.json           ←  Insurance packages, allowances
+│   ├── recruitment_data.json        ←  Recruitment pipeline & interviews
+│   ├── notifications_data.json      ←  Internal notifications
+│   └── payroll_data.json            ←  Bảng lương 3 tháng (EMP001–EMP005)
 │
 ├── documents/                       ← Knowledge Base (RAG sources)
-│   ├── benefits_policy.md           ← 🆕 Chính sách phúc lợi
-│   ├── attendance_policy.md         ← 🆕 Quy định chấm công & OT
-│   ├── helpdesk_guide.md            ← 🆕 Hướng dẫn HR Helpdesk
-│   ├── esignature_guide.md          ← 🆕 Quy trình ký điện tử
-│   └── recruitment_process.md       ← 🆕 Quy trình tuyển dụng
+│   ├── benefits_policy.md           ←  Chính sách phúc lợi
+│   ├── attendance_policy.md         ←  Quy định chấm công & OT
+│   ├── helpdesk_guide.md            ←  Hướng dẫn HR Helpdesk
+│   ├── esignature_guide.md          ←  Quy trình ký điện tử
+│   └── recruitment_process.md       ←  Quy trình tuyển dụng
 │
 ├── frontend/                        ← Next.js 16 App Router
 │   ├── app/
-│   │   ├── portal/page.tsx          ← 🆕 HR Portal hub (điều hướng tất cả module)
+│   │   ├── portal/page.tsx          ←  HR Portal hub (điều hướng tất cả module)
 │   │   ├── chat/page.tsx            ← AI Chatbot UI
-│   │   ├── attendance/page.tsx      ← 🆕 Bảng chấm công & nghỉ phép
-│   │   ├── helpdesk/page.tsx        ← 🆕 HR Support Ticket management
-│   │   ├── benefits/page.tsx        ← 🆕 Phúc lợi & bảo hiểm
-│   │   ├── notifications/page.tsx   ← 🆕 Thông báo nội bộ
-│   │   ├── payroll/page.tsx         ← 🆕 Bảng lương (summary cards, breakdown, history)
+│   │   ├── attendance/page.tsx      ←  Bảng chấm công & nghỉ phép
+│   │   ├── helpdesk/page.tsx        ←  HR Support Ticket management
+│   │   ├── benefits/page.tsx        ←  Phúc lợi & bảo hiểm
+│   │   ├── notifications/page.tsx   ←  Thông báo nội bộ
+│   │   ├── payroll/page.tsx         ←  Bảng lương (summary cards, breakdown, history)
 │   │   ├── hr-dashboard/page.tsx    ← HR Analytics
 │   │   └── apply/page.tsx           ← Form ứng tuyển
 │   └── lib/
@@ -259,21 +259,21 @@ hr-ai-agent-pure-vector/
 
 ---
 
-## 🔌 API Endpoints
+##  API Endpoints
 
 ### Chat
 | Method | Endpoint | Mô tả |
 |---|---|---|
 | `POST` | `/chat` | Gửi tin nhắn tới multi-agent system |
 
-### Attendance 🆕
+### Attendance
 | Method | Endpoint | Mô tả |
 |---|---|---|
 | `GET` | `/attendance/{employee_id}` | Bảng chấm công tuần |
 | `GET` | `/attendance/{employee_id}/leave-requests` | Danh sách đơn nghỉ |
 | `POST` | `/attendance/leave-request` | Nộp đơn nghỉ phép |
 
-### Helpdesk 🆕
+### Helpdesk
 | Method | Endpoint | Mô tả |
 |---|---|---|
 | `POST` | `/helpdesk/tickets` | Tạo ticket mới |
@@ -281,14 +281,14 @@ hr-ai-agent-pure-vector/
 | `GET` | `/helpdesk/tickets/employee/{id}` | Tickets theo nhân viên |
 | `GET` | `/helpdesk/categories` | Danh mục & SLA |
 
-### Benefits 🆕
+### Benefits
 | Method | Endpoint | Mô tả |
 |---|---|---|
 | `GET` | `/benefits/{employee_id}` | Phúc lợi nhân viên |
 | `GET` | `/benefits/catalog` | Catalog gói phúc lợi |
 | `POST` | `/benefits/change-request` | Yêu cầu thay đổi |
 
-### Notifications 🆕
+### Notifications
 | Method | Endpoint | Mô tả |
 |---|---|---|
 | `GET` | `/notifications/{employee_id}` | Thông báo cá nhân |
@@ -296,7 +296,7 @@ hr-ai-agent-pure-vector/
 | `POST` | `/notifications/broadcast` | Công bố toàn công ty |
 | `GET` | `/notifications/announcements/all` | Tất cả thông báo chung |
 
-### Payroll 🆕
+### Payroll
 | Method | Endpoint | Mô tả |
 |---|---|---|
 | `GET` | `/payroll/{employee_id}` | Lịch sử lương toàn bộ |
@@ -305,7 +305,7 @@ hr-ai-agent-pure-vector/
 
 ---
 
-## 🤝 Đóng Góp
+##  Đóng Góp
 
 - Dùng `uv` để quản lý Python packages
 - Python 3.10+, Node.js 18+
@@ -314,8 +314,8 @@ hr-ai-agent-pure-vector/
 
 ---
 
-## 📄 License
+##  License
 
 MIT License — Dự án mã nguồn mở, tự do sử dụng và tùy chỉnh cho mục đích HR automation.
 
-**Paraline Software • Japan Quality in Vietnam 🇯🇵🇻🇳**
+**Paraline Software • Japan Quality in Vietnam **

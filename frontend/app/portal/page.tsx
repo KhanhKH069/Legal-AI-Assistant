@@ -5,7 +5,7 @@ import { getNotifications, getAnnouncements } from "@/lib/api";
 const MODULES = [
     {
         href: "/chat",
-        icon: "🤖",
+        icon: "",
         title: "AI Chatbot",
         desc: "Hỏi đáp thông minh về HR, chính sách, onboarding",
         gradient: "linear-gradient(135deg,#22c55e,#16a34a)",
@@ -13,7 +13,7 @@ const MODULES = [
     },
     {
         href: "/attendance",
-        icon: "🕐",
+        icon: "",
         title: "Chấm Công",
         desc: "Xem giờ làm, OT, nộp đơn nghỉ phép",
         gradient: "linear-gradient(135deg,#10b981,#059669)",
@@ -21,7 +21,7 @@ const MODULES = [
     },
     {
         href: "/helpdesk",
-        icon: "🎫",
+        icon: "",
         title: "HR Helpdesk",
         desc: "Tạo & theo dõi ticket hỗ trợ HR",
         gradient: "linear-gradient(135deg,#fb923c,#ea580c)",
@@ -29,7 +29,7 @@ const MODULES = [
     },
     {
         href: "/benefits",
-        icon: "🎁",
+        icon: "",
         title: "Phúc Lợi",
         desc: "Bảo hiểm, phụ cấp, đào tạo",
         gradient: "linear-gradient(135deg,#a78bfa,#7c3aed)",
@@ -37,7 +37,7 @@ const MODULES = [
     },
     {
         href: "/notifications",
-        icon: "🔔",
+        icon: "",
         title: "Thông Báo",
         desc: "Thông báo nội bộ và công bố từ HR",
         gradient: "linear-gradient(135deg,#60a5fa,#2563eb)",
@@ -45,7 +45,7 @@ const MODULES = [
     },
     {
         href: "/hr-dashboard",
-        icon: "📊",
+        icon: "",
         title: "HR Dashboard",
         desc: "Báo cáo, KPIs và analytics tổng hợp",
         gradient: "linear-gradient(135deg,#f59e0b,#d97706)",
@@ -53,7 +53,7 @@ const MODULES = [
     },
     {
         href: "/apply",
-        icon: "💼",
+        icon: "",
         title: "Tuyển Dụng",
         desc: "Nộp CV và quản lý ứng viên",
         gradient: "linear-gradient(135deg,#ec4899,#be185d)",
@@ -61,7 +61,7 @@ const MODULES = [
     },
     {
         href: "/payroll",
-        icon: "💰",
+        icon: "",
         title: "Bảng Lương",
         desc: "Xem lương, OT, thưởng, khấu trừ theo tháng",
         gradient: "linear-gradient(135deg,#f59e0b,#d97706)",
@@ -93,7 +93,7 @@ export default function PortalPage() {
                 </div>
                 <div style={{ display: "flex", gap: 8 }}>
                     <a href="/chat" style={{ padding: "8px 18px", borderRadius: 8, background: "rgba(34,197,94,0.1)", color: "#22c55e", fontSize: 13, fontWeight: 600, textDecoration: "none", border: "1px solid rgba(34,197,94,0.2)" }}>
-                        💬 Chat với AI
+                         Chat với AI
                     </a>
                 </div>
             </nav>
@@ -102,7 +102,7 @@ export default function PortalPage() {
                 {/* Hero */}
                 <div style={{ textAlign: "center", marginBottom: 56 }}>
                     <div style={{ display: "inline-block", padding: "6px 16px", borderRadius: 20, background: "rgba(34,197,94,0.1)", color: "#22c55e", fontSize: 13, fontWeight: 600, marginBottom: 20, border: "1px solid rgba(34,197,94,0.2)" }}>
-                        🚀 Paraline HR AI Platform — Powered by Gemini
+                         Paraline HR AI Platform — Powered by Gemini
                     </div>
                     <h1 style={{ fontSize: 48, fontWeight: 800, margin: "0 0 16px", lineHeight: 1.15 }}>
                         HR Portal{" "}
@@ -173,11 +173,11 @@ export default function PortalPage() {
                 {/* Recent Announcements */}
                 {announcements.length > 0 && (
                     <div>
-                        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20 }}>📢 Thông Báo Gần Đây</h2>
+                        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20 }}> Thông Báo Gần Đây</h2>
                         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                             {announcements.map(a => (
                                 <div key={a.announcement_id} style={{ background: "#1e293b", borderRadius: 12, padding: "18px 22px", border: "1px solid #334155", display: "flex", gap: 16, alignItems: "flex-start" }}>
-                                    <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(96,165,250,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>📢</div>
+                                    <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(96,165,250,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}></div>
                                     <div>
                                         <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 4 }}>{a.title}</div>
                                         <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6, marginBottom: 6 }}>{a.content.slice(0, 120)}...</div>
