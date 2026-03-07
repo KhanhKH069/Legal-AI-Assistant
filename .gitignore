@@ -21,3 +21,6 @@ node_modules/
 
 # VSCode
 .vscode/
+
+# Local files
+project_tree.txt
