@@ -1,6 +1,6 @@
 # Paraline HR AI Agent
 
-Hệ thống **HR AI Assistant** đa tác nhân cho Paraline Vietnam — được xây dựng với Next.js frontend, Python/FastAPI backend và LangGraph orchestration. Tích hợp **10 module Odoo-inspired** giúp quản lý toàn bộ vòng đời nhân sự thông qua AI chatbot và giao diện web hiện đại.
+Hệ thống **HR AI Assistant** đa tác nhân cho Paraline Vietnam — được xây dựng với Next.js frontend, Python/FastAPI backend và LangGraph orchestration. Tích hợp **11 module Odoo-inspired** giúp quản lý toàn bộ vòng đời nhân sự thông qua AI chatbot và giao diện web hiện đại.
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688.svg)](https://fastapi.tiangolo.com)
@@ -26,6 +26,7 @@ User Query → Next.js UI → FastAPI → Orchestrator (Gemini)
 ### 1. 📋 Policy Agent
 - Trả lời câu hỏi chính sách HR qua RAG (Vector DB ChromaDB)
 - Tra cứu thông tin cá nhân: số ngày phép, lương, hồ sơ nhân viên
+- Xem **bảng lương chi tiết** (base salary, OT, thưởng KPI, khấu trừ, net salary)
 - Tích hợp **AI Calculator** (LLMMathChain) tính lương, thuế, ngày công
 
 ### 2. 📝 Onboard Agent ✨
@@ -112,6 +113,7 @@ npm run dev
 | `http://localhost:3000/helpdesk` | HR Support Ticket |
 | `http://localhost:3000/benefits` | Phúc lợi & bảo hiểm |
 | `http://localhost:3000/notifications` | Thông báo nội bộ |
+| `http://localhost:3000/payroll` | **💰 Bảng lương** — Xem lương, OT, thưởng, khấu trừ |
 | `http://localhost:3000/hr-dashboard` | HR Analytics Dashboard |
 | `http://localhost:3000/apply` | Form ứng tuyển |
 | `http://localhost:8000/docs` | FastAPI Swagger Docs |
@@ -121,6 +123,8 @@ npm run dev
 | Câu hỏi | Agent xử lý |
 |---|---|
 | `"Nghỉ phép còn lại của tôi (EMP001) là bao nhiêu?"` | Policy Agent |
+| `"Lương tháng 3 của EMP001 là bao nhiêu?"` | Policy Agent |
+| `"Cho tôi xem lịch sử lương 3 tháng của EMP002"` | Policy Agent |
 | `"Tài liệu nào của tôi chưa ký?"` | Onboard Agent |
 | `"Ký hợp đồng lao động cho EMP001"` | Onboard Agent |
 | `"Đánh giá CV này cho vị trí ReactJS Developer"` | CV Agent |
@@ -162,7 +166,7 @@ flowchart TD
     end
 
     subgraph "Tools & Data"
-        PA --- PT["Policy Tools\nVector DB · Math · Employee DB"]
+        PA --- PT["Policy Tools\nVector DB · Math · Employee DB · Payroll"]
         OA --- OT["Onboard Tools\nChecklist · OCR · E-Signature"]
         CA --- CT["CV Tools\nScreening · Pipeline · Interview"]
         AA --- AT["Pandas DataFrame Agent\nhr_mock_data.csv"]
@@ -188,7 +192,8 @@ hr-ai-agent-pure-vector/
 │       ├── attendance.py            ← 🆕 Check-in/out, leave requests
 │       ├── helpdesk.py              ← 🆕 HR support tickets
 │       ├── benefits.py              ← 🆕 Employee benefits
-│       └── notification.py          ← 🆕 HR announcements
+│       ├── notification.py          ← 🆕 HR announcements
+│       └── payroll.py               ← 🆕 Bảng lương theo tháng
 │
 ├── src/
 │   ├── agents/
@@ -207,13 +212,14 @@ hr-ai-agent-pure-vector/
 │       ├── onboard_validation_tools.py
 │       ├── cv_tools.py
 │       ├── email_calendar_tools.py
-│       ├── math_tools.py
+│       ├── math_tools.py            ← LLMMathChain (Gemini, temp=0)
 │       ├── document_tools.py        ← 🆕 E-signature & document management
 │       ├── attendance_tools.py      ← 🆕
 │       ├── helpdesk_tools.py        ← 🆕
 │       ├── benefits_tools.py        ← 🆕
 │       ├── recruitment_tools.py     ← 🆕
-│       └── notification_tools.py    ← 🆕
+│       ├── notification_tools.py    ← 🆕
+│       └── payroll_tools.py         ← 🆕 Bảng lương AI tools
 │
 ├── data/
 │   ├── hr_mock_data.csv             ← HR analytics dataset
@@ -221,7 +227,8 @@ hr-ai-agent-pure-vector/
 │   ├── helpdesk_data.json           ← 🆕 HR support tickets
 │   ├── benefits_data.json           ← 🆕 Insurance packages, allowances
 │   ├── recruitment_data.json        ← 🆕 Recruitment pipeline & interviews
-│   └── notifications_data.json      ← 🆕 Internal notifications
+│   ├── notifications_data.json      ← 🆕 Internal notifications
+│   └── payroll_data.json            ← 🆕 Bảng lương 3 tháng (EMP001–EMP005)
 │
 ├── documents/                       ← Knowledge Base (RAG sources)
 │   ├── benefits_policy.md           ← 🆕 Chính sách phúc lợi
@@ -238,6 +245,7 @@ hr-ai-agent-pure-vector/
 │   │   ├── helpdesk/page.tsx        ← 🆕 HR Support Ticket management
 │   │   ├── benefits/page.tsx        ← 🆕 Phúc lợi & bảo hiểm
 │   │   ├── notifications/page.tsx   ← 🆕 Thông báo nội bộ
+│   │   ├── payroll/page.tsx         ← 🆕 Bảng lương (summary cards, breakdown, history)
 │   │   ├── hr-dashboard/page.tsx    ← HR Analytics
 │   │   └── apply/page.tsx           ← Form ứng tuyển
 │   └── lib/
@@ -287,6 +295,13 @@ hr-ai-agent-pure-vector/
 | `POST` | `/notifications/send` | Gửi thông báo |
 | `POST` | `/notifications/broadcast` | Công bố toàn công ty |
 | `GET` | `/notifications/announcements/all` | Tất cả thông báo chung |
+
+### Payroll 🆕
+| Method | Endpoint | Mô tả |
+|---|---|---|
+| `GET` | `/payroll/{employee_id}` | Lịch sử lương toàn bộ |
+| `GET` | `/payroll/{employee_id}/month/{YYYY-MM}` | Bảng lương tháng cụ thể |
+| `GET` | `/payroll/summary/all` | Tổng hợp lương toàn công ty |
 
 ---
 

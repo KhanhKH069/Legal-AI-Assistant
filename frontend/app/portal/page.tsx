@@ -59,6 +59,14 @@ const MODULES = [
         gradient: "linear-gradient(135deg,#ec4899,#be185d)",
         badge: null,
     },
+    {
+        href: "/payroll",
+        icon: "💰",
+        title: "Bảng Lương",
+        desc: "Xem lương, OT, thưởng, khấu trừ theo tháng",
+        gradient: "linear-gradient(135deg,#f59e0b,#d97706)",
+        badge: null,
+    },
 ];
 
 export default function PortalPage() {

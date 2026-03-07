@@ -56,6 +56,10 @@ from src.tools.recruitment_tools import (
 from src.tools.notification_tools import (
     get_employee_notifications,
 )
+from src.tools.payroll_tools import (
+    get_payroll_record,
+    get_payroll_history,
+)
 
 
 class AgentState(TypedDict):
@@ -213,6 +217,8 @@ def create_hr_agent_graph():
         get_leave_balance,
         get_salary_info,
         calculate_math_expression,
+        get_payroll_record,
+        get_payroll_history,
     ]
     onboard_tools = [
         get_onboarding_checklist,

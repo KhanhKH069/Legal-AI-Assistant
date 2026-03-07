@@ -339,3 +339,56 @@ export async function getNotifications(employeeId: string): Promise<{ notificati
 export async function getAnnouncements(): Promise<{ announcements: { announcement_id: string; title: string; content: string; department: string; published_by: string; published_at: string }[] }> {
   return apiFetch(`/notifications/announcements/all`);
 }
+
+// ── Payroll endpoints ─────────────────────────────────────────────────────────
+
+export interface PayrollEntry {
+  month: string;
+  month_label: string;
+  working_days: number;
+  days_worked: number;
+  leave_days: number;
+  absent_days: number;
+  base_salary: number;
+  ot_hours: number;
+  ot_rate: number;
+  ot_pay: number;
+  kpi_bonus: number;
+  other_bonus: number;
+  social_insurance: number;
+  health_insurance: number;
+  unemployment_insurance: number;
+  income_tax: number;
+  total_deductions: number;
+  gross_salary: number;
+  net_salary: number;
+  payment_date: string;
+  status: string;
+}
+
+export interface PayrollRecord {
+  employee_id: string;
+  name: string;
+  department: string;
+  position: string;
+  salary_history: PayrollEntry[];
+}
+
+export interface PayrollMonthRecord {
+  employee_id: string;
+  name: string;
+  department: string;
+  position: string;
+  payroll: PayrollEntry;
+}
+
+export async function getPayrollHistory(employeeId: string): Promise<PayrollRecord> {
+  return apiFetch<PayrollRecord>(`/payroll/${employeeId}`);
+}
+
+export async function getPayrollMonth(
+  employeeId: string,
+  month: string
+): Promise<PayrollMonthRecord> {
+  return apiFetch<PayrollMonthRecord>(`/payroll/${employeeId}/month/${month}`);
+}
