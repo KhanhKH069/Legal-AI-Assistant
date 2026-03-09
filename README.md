@@ -37,6 +37,8 @@ User Query → Next.js UI → FastAPI → Orchestrator (Gemini)
 
 ### 3.  CV Agent
 - Chấm điểm CV theo Job Description tự động
+- **Sinh Bộ câu hỏi phỏng vấn (Technical Assessment):** Tự động tạo list câu hỏi chuyên môn dựa vào điểm số và chức danh ứng tuyển
+- **AI Draft Email (Feedback & Follow-up):** Tự động soạn sẵn nội dung email thư mời hoặc phản hồi rớt, tuỳ theo năng lực ứng viên
 - **Recruitment CRM**: theo dõi pipeline tuyển dụng theo stage
 - Lên lịch phỏng vấn + tạo Google Meet link
 - Thống kê tuyển dụng tổng hợp

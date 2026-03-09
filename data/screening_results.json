@@ -427,5 +427,496 @@
     },
     "min_score": 60,
     "created_at": "2026-03-07T16:26:35.988189"
+  },
+  {
+    "id": 12,
+    "applicant_id": 1549,
+    "applicant_name": "Pham Van D",
+    "position": "ReactJS Developer",
+    "total_score": 72,
+    "max_score": 100,
+    "percentage": 72,
+    "recommendation": "PASS",
+    "status": "New Application",
+    "action": "Schedule interview",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 28.8,
+        "points": 21.599999999999998
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 21.599999999999998,
+        "points": 14.4
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 18.0
+      },
+      "education": {
+        "relevant": true,
+        "points": 10.799999999999999
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
+      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
+      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
+    ],
+    "draft_email": "Kính gửi Pham Van D,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033252"
+  },
+  {
+    "id": 13,
+    "applicant_id": 95232,
+    "applicant_name": "Hoang Thi E",
+    "position": "ReactJS Developer",
+    "total_score": 53,
+    "max_score": 100,
+    "percentage": 53,
+    "recommendation": "MAYBE",
+    "status": "New Application",
+    "action": "Review manually",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 21.200000000000003,
+        "points": 15.899999999999999
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 15.899999999999999,
+        "points": 10.600000000000001
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 13.25
+      },
+      "education": {
+        "relevant": true,
+        "points": 7.949999999999999
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
+      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
+      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
+    ],
+    "draft_email": "Kính gửi Hoang Thi E,\n\nCảm ơn bạn đã ứng tuyển vị trí ReactJS Developer. Để bộ phận tuyển dụng hiểu rõ hơn về kỹ năng của bạn, chúng tôi muốn mời bạn hoàn thành một bài đánh giá năng lực ngắn trước khi xếp lịch phỏng vấn. Vui lòng kiểm tra link bài test bên dưới.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033322"
+  },
+  {
+    "id": 14,
+    "applicant_id": 73924,
+    "applicant_name": "Do Minh F",
+    "position": "ReactJS Developer",
+    "total_score": 78,
+    "max_score": 100,
+    "percentage": 78,
+    "recommendation": "PASS",
+    "status": "CV Screening",
+    "action": "Schedule interview",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 31.200000000000003,
+        "points": 23.4
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 23.4,
+        "points": 15.600000000000001
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 19.5
+      },
+      "education": {
+        "relevant": true,
+        "points": 11.7
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
+      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
+      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
+    ],
+    "draft_email": "Kính gửi Do Minh F,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033343"
+  },
+  {
+    "id": 15,
+    "applicant_id": 61213,
+    "applicant_name": "Vu Thi G",
+    "position": "ReactJS Developer",
+    "total_score": 85,
+    "max_score": 100,
+    "percentage": 85,
+    "recommendation": "STRONG_PASS",
+    "status": "CV Screening",
+    "action": "Schedule interview ASAP",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 34.0,
+        "points": 25.5
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 25.5,
+        "points": 17.0
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 21.25
+      },
+      "education": {
+        "relevant": true,
+        "points": 12.75
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
+      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
+      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
+    ],
+    "draft_email": "Kính gửi Vu Thi G,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033355"
+  },
+  {
+    "id": 16,
+    "applicant_id": 16919,
+    "applicant_name": "Nguyen Quoc H",
+    "position": "ReactJS Developer",
+    "total_score": 90,
+    "max_score": 100,
+    "percentage": 90,
+    "recommendation": "STRONG_PASS",
+    "status": "Technical Interview",
+    "action": "Schedule interview ASAP",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 36.0,
+        "points": 27.0
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 27.0,
+        "points": 18.0
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 22.5
+      },
+      "education": {
+        "relevant": true,
+        "points": 13.5
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
+      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
+      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
+    ],
+    "draft_email": "Kính gửi Nguyen Quoc H,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033366"
+  },
+  {
+    "id": 17,
+    "applicant_id": 33195,
+    "applicant_name": "Tran Bao I",
+    "position": "ReactJS Developer",
+    "total_score": 88,
+    "max_score": 100,
+    "percentage": 88,
+    "recommendation": "STRONG_PASS",
+    "status": "HR Interview",
+    "action": "Schedule interview ASAP",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 35.2,
+        "points": 26.4
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 26.4,
+        "points": 17.6
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 22.0
+      },
+      "education": {
+        "relevant": true,
+        "points": 13.2
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
+      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
+      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
+    ],
+    "draft_email": "Kính gửi Tran Bao I,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033379"
+  },
+  {
+    "id": 18,
+    "applicant_id": 90293,
+    "applicant_name": "Le Thu J",
+    "position": "ReactJS Developer",
+    "total_score": 92,
+    "max_score": 100,
+    "percentage": 92,
+    "recommendation": "STRONG_PASS",
+    "status": "Hired",
+    "action": "Schedule interview ASAP",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 36.800000000000004,
+        "points": 27.599999999999998
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 27.599999999999998,
+        "points": 18.400000000000002
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 23.0
+      },
+      "education": {
+        "relevant": true,
+        "points": 13.799999999999999
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
+      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
+      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
+    ],
+    "draft_email": "Kính gửi Le Thu J,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033389"
+  },
+  {
+    "id": 19,
+    "applicant_id": 88347,
+    "applicant_name": "Bui Minh K",
+    "position": "ReactJS Developer",
+    "total_score": 45,
+    "max_score": 100,
+    "percentage": 45,
+    "recommendation": "REJECT",
+    "status": "Rejected",
+    "action": "Send rejection email",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 18.0,
+        "points": 13.5
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 13.5,
+        "points": 9.0
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 11.25
+      },
+      "education": {
+        "relevant": true,
+        "points": 6.75
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [],
+    "draft_email": "Kính gửi Bui Minh K,\n\nCảm ơn bạn đã quan tâm và ứng tuyển cho vị trí ReactJS Developer. Dù hồ sơ của bạn rất thú vị, tuy nhiên ở thời điểm hiện tại, chúng tôi đang ưu tiên các ứng viên có kinh nghiệm phù hợp hơn với định hướng của dự án. Chúng tôi sẽ lưu thông tin của bạn vào Talent Pool cho các cơ hội trong tương lai.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033400"
+  },
+  {
+    "id": 20,
+    "applicant_id": 71092,
+    "applicant_name": "Mai Van L",
+    "position": "Backend Developer",
+    "total_score": 92,
+    "max_score": 100,
+    "percentage": 92,
+    "recommendation": "STRONG_PASS",
+    "status": "New Application",
+    "action": "Schedule interview ASAP",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 36.800000000000004,
+        "points": 27.599999999999998
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 27.599999999999998,
+        "points": 18.400000000000002
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 23.0
+      },
+      "education": {
+        "relevant": true,
+        "points": 13.799999999999999
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Sự khác biệt lớn nhất giữa asyncio và multi-threading trong Python là gì?",
+      "Làm thế nào để bạn scale một hệ thống API chịu tải lớn?",
+      "Kinh nghiệm xử lý transaction an toàn trong SQL Database?"
+    ],
+    "draft_email": "Kính gửi Mai Van L,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí Backend Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033421"
+  },
+  {
+    "id": 21,
+    "applicant_id": 19172,
+    "applicant_name": "Trinh Thi M",
+    "position": "Backend Developer",
+    "total_score": 80,
+    "max_score": 100,
+    "percentage": 80,
+    "recommendation": "STRONG_PASS",
+    "status": "CV Screening",
+    "action": "Schedule interview ASAP",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 32.0,
+        "points": 24.0
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 24.0,
+        "points": 16.0
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 20.0
+      },
+      "education": {
+        "relevant": true,
+        "points": 12.0
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Sự khác biệt lớn nhất giữa asyncio và multi-threading trong Python là gì?",
+      "Làm thế nào để bạn scale một hệ thống API chịu tải lớn?",
+      "Kinh nghiệm xử lý transaction an toàn trong SQL Database?"
+    ],
+    "draft_email": "Kính gửi Trinh Thi M,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí Backend Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033434"
+  },
+  {
+    "id": 22,
+    "applicant_id": 82725,
+    "applicant_name": "Dang Van N",
+    "position": "Backend Developer",
+    "total_score": 95,
+    "max_score": 100,
+    "percentage": 95,
+    "recommendation": "STRONG_PASS",
+    "status": "Offer Extended",
+    "action": "Schedule interview ASAP",
+    "breakdown": {
+      "required_skills": {
+        "found": [],
+        "percentage": 38.0,
+        "points": 28.5
+      },
+      "preferred_skills": {
+        "found": [],
+        "percentage": 28.5,
+        "points": 19.0
+      },
+      "experience": {
+        "years_found": 2,
+        "years_required": 2,
+        "points": 23.75
+      },
+      "education": {
+        "relevant": true,
+        "points": 14.25
+      },
+      "certifications": {
+        "found": [],
+        "points": 0
+      }
+    },
+    "min_score": 60,
+    "interview_questions": [
+      "Sự khác biệt lớn nhất giữa asyncio và multi-threading trong Python là gì?",
+      "Làm thế nào để bạn scale một hệ thống API chịu tải lớn?",
+      "Kinh nghiệm xử lý transaction an toàn trong SQL Database?"
+    ],
+    "draft_email": "Kính gửi Dang Van N,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí Backend Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
+    "created_at": "2026-03-09T23:14:44.033509"
   }
 ]

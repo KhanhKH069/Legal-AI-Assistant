@@ -83,6 +83,59 @@ def run_screening(applicant_id: Optional[int] = None) -> Dict[str, Any]:
                     recommendation = "REJECT"
                     action = "Send rejection email"
 
+                # Generate Mock Technical Assessment Questions
+                interview_questions = []
+                if recommendation in ["STRONG_PASS", "PASS", "MAYBE"]:
+                    p_lower = position.lower()
+                    if "react" in p_lower or "frontend" in p_lower:
+                        interview_questions = [
+                            "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
+                            "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
+                            "Sự khác biệt giữa SSR và SSG trong Next.js là gì?",
+                        ]
+                    elif (
+                        "python" in p_lower or "backend" in p_lower or "data" in p_lower
+                    ):
+                        interview_questions = [
+                            "Sự khác biệt lớn nhất giữa asyncio và multi-threading trong Python là gì?",
+                            "Làm thế nào để bạn scale một hệ thống API chịu tải lớn?",
+                            "Kinh nghiệm xử lý transaction an toàn trong SQL Database?",
+                        ]
+                    else:
+                        interview_questions = [
+                            "Dự án nào khiến bạn tự hào nhất và vì sao?",
+                            "Kinh nghiệm giải quyết xung đột ý kiến với các thành viên trong team?",
+                            "Bạn áp dụng mô hình thiết kế (Design Pattern) nào nhiều nhất?",
+                        ]
+
+                # Generate AI Draft Email for Feedback/Follow-up
+                c_name = candidate.get("name", "Bạn")
+                if recommendation in ["STRONG_PASS", "PASS"]:
+                    draft_email = (
+                        f"Kính gửi {c_name},\n\n"
+                        f"Chúng tôi rất ấn tượng với CV của bạn cho vị trí {position} tại Paraline. "
+                        "HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) "
+                        "trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\n"
+                        "Trân trọng,\nParaline AI Recruitment Team"
+                    )
+                elif recommendation == "MAYBE":
+                    draft_email = (
+                        f"Kính gửi {c_name},\n\n"
+                        f"Cảm ơn bạn đã ứng tuyển vị trí {position}. "
+                        "Để bộ phận tuyển dụng hiểu rõ hơn về kỹ năng của bạn, chúng tôi muốn mời bạn hoàn thành "
+                        "một bài đánh giá năng lực ngắn trước khi xếp lịch phỏng vấn. Vui lòng kiểm tra link bài test bên dưới.\n\n"
+                        "Trân trọng,\nParaline AI Recruitment Team"
+                    )
+                else:
+                    draft_email = (
+                        f"Kính gửi {c_name},\n\n"
+                        f"Cảm ơn bạn đã quan tâm và ứng tuyển cho vị trí {position}. "
+                        "Dù hồ sơ của bạn rất thú vị, tuy nhiên ở thời điểm hiện tại, chúng tôi đang ưu tiên "
+                        "các ứng viên có kinh nghiệm phù hợp hơn với định hướng của dự án. Chúng tôi sẽ lưu thông tin "
+                        "của bạn vào Talent Pool cho các cơ hội trong tương lai.\n\n"
+                        "Trân trọng,\nParaline AI Recruitment Team"
+                    )
+
                 result = {
                     "id": counter,
                     "applicant_id": cid,
@@ -114,6 +167,8 @@ def run_screening(applicant_id: Optional[int] = None) -> Dict[str, Any]:
                         "certifications": {"found": [], "points": 0},
                     },
                     "min_score": min_score,
+                    "interview_questions": interview_questions,
+                    "draft_email": draft_email,
                     "created_at": datetime.now().isoformat(),
                 }
                 new_results.append(result)
