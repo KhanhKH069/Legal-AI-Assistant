@@ -1,4 +1,6 @@
-"""Configuration Management - Gemini API"""
+"""Configuration Management - Gemini API
+# Triggering reload
+"""
 
 import os
 from dotenv import load_dotenv
@@ -14,8 +16,8 @@ class Config:
         # Gemini API Configuration
         self.google_api_key = os.getenv("GOOGLE_API_KEY", "")
         # set a valid model name for the Google Generative AI API
-        # common choices: gemini-1.0, gemini-1.0-mini, gemini-1.0-small
-        self.model_name = os.getenv("MODEL_NAME", "gemini-1.0")
+        # Use environment model or default to gemini-2.5-flash
+        self.model_name = os.getenv("MODEL_NAME", "gemini-2.5-flash")
         # Feature Flags
         self.enable_analytics = os.getenv("ENABLE_ANALYTICS", "true").lower() == "true"
         self.enable_audit_log = os.getenv("ENABLE_AUDIT_LOG", "true").lower() == "true"
@@ -29,7 +31,7 @@ class Config:
             print(f"[CONFIG] {mode_desc} – Gemini calls will be skipped")
         else:
             print(f"[CONFIG] using Gemini model: {self.model_name}")
-        self.temperature = float(os.getenv("TEMPERATURE", "0.7"))
+        self.temperature = float(os.getenv("TEMPERATURE", "0.0"))
         self.max_tokens = int(os.getenv("MAX_TOKENS", "4000"))
 
         # Gateway Configuration

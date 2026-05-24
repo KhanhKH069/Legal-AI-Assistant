@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paraline AI Recruitment</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Phosphor Icons for modern UI icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo-icon"><i class="ph ph-robot"></i></div>
+                    <div>
+                        <h1 class="brand-name">Paraline AI</h1>
+                        <p class="brand-subtitle">Smart Recruitment Assistant</p>
+                    </div>
+                </div>
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Online</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chat Area -->
+        <main class="chat-container" id="chatContainer">
+            <div class="message-wrapper ai-message-wrapper">
+                <div class="avatar ai-avatar"><i class="ph ph-sparkle"></i></div>
+                <div class="message ai-message">
+                    <p>Chào bạn! Mình là AI Recruitment Assistant của Paraline. Bạn có thể hỏi mình thông tin tuyển dụng, chế độ phúc lợi, hoặc tải CV lên để mình quét và tư vấn xem bạn phù hợp với vị trí nào nhé!</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Typing Indicator (Hidden by default) -->
+        <div class="typing-indicator" id="typingIndicator">
+            <span></span><span></span><span></span>
+        </div>
+
+        <!-- Input Area -->
+        <footer class="app-footer">
+            <form id="chatForm" class="input-form">
+                <!-- File upload button -->
+                <div class="file-upload-wrapper">
+                    <input type="file" id="cvUpload" accept=".pdf" class="hidden-input">
+                    <button type="button" class="btn-icon" id="btnUpload" title="Upload CV (PDF)">
+                        <i class="ph ph-paperclip"></i>
+                    </button>
+                </div>
+
+                <input type="text" id="chatInput" placeholder="Nhập tin nhắn hoặc tải lên CV..." autocomplete="off">
+
+                <button type="submit" class="btn-primary" id="btnSend">
+                    <i class="ph ph-paper-plane-right"></i>
+                </button>
+            </form>
+            <div id="uploadStatus" class="upload-status"></div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

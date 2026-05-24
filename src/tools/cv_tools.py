@@ -48,4 +48,65 @@ def screen_cv_for_position(cv_path: str, position: str) -> str:
     lines.append(f"- Education: {edu.get('points', 0)}/15")
     lines.append(f"- Certifications: {cert.get('points', 0)}/10")
 
+    # Add raw extracted sections for LLM to read
+    if result.get("raw_skills"):
+        lines.append(f"\n[Extracted Skills Section]\n{result['raw_skills']}")
+    if result.get("raw_projects"):
+        lines.append(f"\n[Extracted Projects Section]\n{result['raw_projects']}")
+
+    return "\n".join(lines)
+
+
+@tool
+def get_job_requirements(position: str) -> str:
+    """Get the job requirements for a specific position (e.g. 'Frontend Developer - Junior').
+
+    Returns the required skills, preferred skills, experience years, education, etc.
+    """
+    import json
+    import os
+
+    config_path = os.path.join(
+        os.path.dirname(__file__), "..", "..", "job_requirements_config.json"
+    )
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            config = json.load(f)
+    except Exception as e:
+        return f"Cannot load job requirements: {e}"
+
+    # Match position
+    reqs = None
+    for k, v in config.items():
+        if position.lower() in k.lower() or k.lower() in position.lower():
+            reqs = v
+            break
+
+    if not reqs:
+        # Show some available positions
+        available = ", ".join(list(config.keys())[:5]) + "..."
+        return f"Không tìm thấy yêu cầu cho vị trí '{position}'. Các vị trí hiện có ví dụ: {available}"
+
+    lines = [f"### Yêu cầu cho vị trí: {position}"]
+
+    req_skills = reqs.get("required_skills", {})
+    if req_skills.get("keywords"):
+        lines.append("**Kỹ năng bắt buộc:** " + ", ".join(req_skills["keywords"]))
+
+    pref_skills = reqs.get("preferred_skills", {})
+    if pref_skills.get("keywords"):
+        lines.append("**Kỹ năng ưu tiên:** " + ", ".join(pref_skills["keywords"]))
+
+    exp = reqs.get("experience", {})
+    if exp.get("years"):
+        lines.append(f"**Kinh nghiệm:** Ít nhất {exp['years']} năm")
+
+    edu = reqs.get("education", {})
+    if edu.get("keywords"):
+        lines.append("**Học vấn:** " + ", ".join(edu["keywords"]))
+
+    cert = reqs.get("certifications", {})
+    if cert.get("keywords"):
+        lines.append("**Chứng chỉ:** " + ", ".join(cert["keywords"]))
+
     return "\n".join(lines)

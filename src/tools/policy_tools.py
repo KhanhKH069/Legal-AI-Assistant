@@ -24,5 +24,24 @@ def calculate_leave_days(employment_type: str, work_months: int) -> str:
 
 @tool
 def search_hr_qa(question: str) -> str:
-    """Search HR Q&A"""
-    return "Q&A search functionality"
+    """Search HR Q&A and Policies knowledge base. Use this tool when the user asks any question about company policies, rules, benefits, etc."""
+    try:
+        from src.services.hybrid_retriever import get_hybrid_retriever
+
+        retriever = get_hybrid_retriever()
+        results = retriever.retrieve(question, top_k=3)
+
+        if not results:
+            return "No relevant information found in the HR knowledge base."
+
+        formatted_results = []
+        for i, res in enumerate(results):
+            content = res["content"]
+            source = res["metadata"].get("source_file", "Unknown")
+            formatted_results.append(
+                f"--- Result {i + 1} (Source: {source}) ---\n{content}"
+            )
+
+        return "\n\n".join(formatted_results)
+    except Exception as e:
+        return f"Error searching knowledge base: {e}"

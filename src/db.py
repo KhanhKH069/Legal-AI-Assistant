@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 from typing import Iterator
 
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import Session, create_engine
 
 from src.core.config import config
 
@@ -11,7 +11,8 @@ engine = create_engine(config.database_url, echo=False)
 def init_db() -> None:
     """Create all tables if they don't exist."""
 
-    SQLModel.metadata.create_all(engine)
+    # Do not call create_all() here, as Alembic will handle migrations
+    pass
 
 
 def get_session() -> Session:

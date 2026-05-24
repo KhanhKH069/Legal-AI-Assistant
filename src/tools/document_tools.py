@@ -221,3 +221,78 @@ def get_document_template(document_type: str) -> str:
         f"   📝 Trường thông tin cần điền: {fields}\n"
         f"   ⏳ Hiệu lực: {validity}"
     )
+
+
+@tool
+def check_expiring_contracts(days_ahead: int = 30) -> str:
+    """Check for employee contracts expiring within the specified number of days.
+    Helps HR proactively reach out for contract renewal before expiry.
+
+    Args:
+        days_ahead: Number of days ahead to check (default 30, max 365)
+    """
+    import json
+    import os as _os
+    from datetime import date, timedelta
+
+    days_ahead = min(max(days_ahead, 1), 365)
+    cutoff = date.today() + timedelta(days=days_ahead)
+
+    emp_path = _os.path.join(
+        _os.path.dirname(__file__), "..", "..", "data", "employees_data.json"
+    )
+    try:
+        with open(emp_path, encoding="utf-8") as f:
+            employees = json.load(f).get("employees", [])
+    except FileNotFoundError:
+        return "Khong tim thay file du lieu nhan vien."
+
+    expiring = []
+    for emp in employees:
+        if emp.get("status") != "Active":
+            continue
+        contract = emp.get("contract", {})
+        end_str = contract.get("end", "")
+        if not end_str:
+            continue
+        try:
+            end_date = date.fromisoformat(end_str)
+        except ValueError:
+            continue
+        if date.today() <= end_date <= cutoff:
+            days_left = (end_date - date.today()).days
+            expiring.append(
+                {
+                    "employee_id": emp["employee_id"],
+                    "name": emp["name"],
+                    "position": emp["position"],
+                    "department": emp["department"],
+                    "end_date": end_str,
+                    "days_left": days_left,
+                }
+            )
+
+    if not expiring:
+        return (
+            f"Khong co hop dong nao het han trong {days_ahead} ngay toi. "
+            f"(Kiem tra den {cutoff})"
+        )
+
+    # Sort by soonest expiry first
+    expiring.sort(key=lambda x: x["days_left"])
+
+    lines = [
+        f"Canh bao hop dong sap het han trong {days_ahead} ngay toi:",
+        f"(Cap nhat den: {cutoff})\n",
+    ]
+    for e in expiring:
+        urgent = e["days_left"] <= 7
+        label = "[KHAN CAP]" if urgent else "[SAP HET HAN]"
+        lines.append(
+            f"{label} {e['employee_id']} | {e['name']:20} | "
+            f"{e['position']:25} | {e['department']:15} | "
+            f"Het han: {e['end_date']} ({e['days_left']} ngay)"
+        )
+
+    lines.append(f"\nTong cong: {len(expiring)} hop dong can gia han.")
+    return "\n".join(lines)

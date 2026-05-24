@@ -1,0 +1,20 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy các file cấu hình
+COPY package.json package-lock.json ./
+
+# Cài đặt thư viện
+RUN npm ci
+
+# Copy toàn bộ mã nguồn
+COPY . .
+
+# Build dự án (yêu cầu cấu hình biến môi trường khi build nếu cần)
+RUN npm run build
+
+EXPOSE 3000
+
+# Khởi chạy Next.js trong môi trường production
+CMD ["npm", "start"]

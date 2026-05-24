@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./chroma_db:/app/chroma_db
+      - ./chroma_db_offline:/app/chroma_db_offline
+      - ./documents:/app/documents
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-paraline_super_secret_key_2026}
+      - OFFLINE_MODE=false
+    restart: always

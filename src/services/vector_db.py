@@ -18,11 +18,57 @@ class VectorDB:
         self.persist_directory = persist_directory
         Path(persist_directory).mkdir(parents=True, exist_ok=True)
 
-        # Initialize ChromaDB client
+        # Initialize ChromaDB client (0.6.x compatible)
         self.client = chromadb.PersistentClient(
             path=persist_directory,
             settings=Settings(anonymized_telemetry=False, allow_reset=True),
         )
+
+        self.embedding_function = None
+        from src.core.config import config
+
+        if config.google_api_key and not config.enable_offline_mode:
+            try:
+                from chromadb.api.types import EmbeddingFunction, Documents, Embeddings
+                from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+                class GoogleEmbedding(EmbeddingFunction):
+                    def __init__(self, api_key: str):
+                        self.emb = GoogleGenerativeAIEmbeddings(
+                            model="models/gemini-embedding-2", google_api_key=api_key
+                        )
+
+                    def __call__(self, input: Documents) -> Embeddings:
+                        embeddings = []
+                        for text in input:
+                            res = self.emb.embed_query(text)
+                            embeddings.append(res)
+                        return embeddings
+
+                self.embedding_function = GoogleEmbedding(config.google_api_key)
+            except Exception as e:
+                print(f"Failed to init Google Embeddings: {e}")
+        else:
+            try:
+                from chromadb.utils import embedding_functions
+
+                # Try best multilingual model first, fall back to smaller model
+                try:
+                    self.embedding_function = (
+                        embedding_functions.SentenceTransformerEmbeddingFunction(
+                            model_name="intfloat/multilingual-e5-large"
+                        )
+                    )
+                    print("[VectorDB] Using multilingual-e5-large embedding model")
+                except Exception:
+                    self.embedding_function = (
+                        embedding_functions.SentenceTransformerEmbeddingFunction(
+                            model_name="paraphrase-multilingual-MiniLM-L12-v2"
+                        )
+                    )
+                    print("[VectorDB] Using MiniLM-L12-v2 embedding model (fallback)")
+            except Exception as e:
+                print(f"Failed to init Multilingual Embeddings: {e}")
 
     def create_collection(self, collection_name: str, reset: bool = False):
         """Create or get a collection"""
@@ -33,7 +79,9 @@ class VectorDB:
                 pass
 
         return self.client.get_or_create_collection(
-            name=collection_name, metadata={"hnsw:space": "cosine"}
+            name=collection_name,
+            metadata={"hnsw:space": "cosine"},
+            embedding_function=self.embedding_function,
         )
 
     def add_documents(
@@ -57,7 +105,9 @@ class VectorDB:
     def query(self, collection_name: str, query_text: str, n_results: int = 3) -> Dict:
         """Query the collection"""
         try:
-            collection = self.client.get_collection(collection_name)
+            collection = self.client.get_collection(
+                collection_name, embedding_function=self.embedding_function
+            )
 
             results = collection.query(query_texts=[query_text], n_results=n_results)
 
@@ -67,10 +117,23 @@ class VectorDB:
             print(f"Query error: {e}")
             return {"documents": [[]], "metadatas": [[]], "distances": [[]]}
 
+    def get_all_documents(self, collection_name: str) -> Dict:
+        """Get all documents from collection for BM25 indexing"""
+        try:
+            collection = self.client.get_collection(
+                collection_name, embedding_function=self.embedding_function
+            )
+            return collection.get()
+        except Exception as e:
+            print(f"Error getting documents: {e}")
+            return {"ids": [], "documents": [], "metadatas": []}
+
     def get_collection_count(self, collection_name: str) -> int:
         """Get number of documents in collection"""
         try:
-            collection = self.client.get_collection(collection_name)
+            collection = self.client.get_collection(
+                collection_name, embedding_function=self.embedding_function
+            )
             return collection.count()
         except Exception:
             return 0

@@ -1,323 +1,226 @@
 # Paraline HR AI Agent
 
-Hệ thống **HR AI Assistant** đa tác nhân cho Paraline Vietnam — được xây dựng với Next.js frontend, Python/FastAPI backend và LangGraph orchestration. Tích hợp **11 module Odoo-inspired** giúp quản lý toàn bộ vòng đời nhân sự thông qua AI chatbot và giao diện web hiện đại.
+Hệ thống **HR AI Assistant** đa tác nhân cho Paraline Vietnam — kiến trúc Microservices hiện đại: **Next.js 15 frontend**, **Python/FastAPI backend**, và **LangGraph orchestration**. Tích hợp **8 AI agents**, hỗ trợ **Dual-Mode Portal** (Nhân viên & Ứng viên), và **AI Performance Dashboard** thời gian thực.
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688.svg)](https://fastapi.tiangolo.com)
-[![Next.js](https://img.shields.io/badge/Next.js-Frontend-000000.svg)](https://nextjs.org)
-[![LangGraph](https://img.shields.io/badge/LangGraph-7--Agent-FF9900.svg)](https://python.langchain.com/)
-[![Gemini](https://img.shields.io/badge/Gemini-AI-4285F4.svg)](https://ai.google.dev/)
+[![Next.js](https://img.shields.io/badge/Next.js_15-Frontend-000000.svg)](https://nextjs.org)
+[![LangGraph](https://img.shields.io/badge/LangGraph-8--Agent-FF9900.svg)](https://python.langchain.com/)
+[![SQLite](https://img.shields.io/badge/SQLite-Database-003B57.svg)](https://sqlite.org/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED.svg)](https://www.docker.com/)
 
 ---
 
-##  Kiến Trúc Multi-Agent (7 Agents)
-
-Orchestrator tự động phân tích intent và điều phối đến đúng agent:
+## 🏗️ Kiến Trúc Hệ Thống
 
 ```
-User Query → Next.js UI → FastAPI → Orchestrator (Gemini)
-                                          │
-           ┌──────────┬──────────┬────────┼────────┬──────────┬──────────┐
-           ▼          ▼          ▼        ▼        ▼          ▼          ▼
-      POLICY      ONBOARD      CV    ANALYTICS ATTENDANCE HELPDESK BENEFITS
-      AGENT       AGENT       AGENT    AGENT     AGENT     AGENT    AGENT
+Người dùng
+│
+├── 🟣 Guest / Ứng viên ──► localhost:3000/guest   (Không cần đăng nhập)
+│                                  │
+│                            Guest Chat UI ──► POST /chat/guest/stream
+│                                  │                 │
+│                            Guest Graph (giới hạn)  │
+│                            └─ Recruitment Agent    │
+│                               (screen CV, job info)│
+│
+└── 🟢 Nhân viên / Admin ──► localhost:3000         (Đăng nhập JWT)
+                                   │
+                            Employee HR Portal
+                            ├─ Dashboard + Metrics
+                            ├─ HR Assistant Chat ──► POST /chat/stream
+                            │                              │
+                            │                      Employee Graph (full)
+                            │                      └─ 8 AI Agents
+                            └─ Quản lý nhân sự
 ```
-
-### 1.  Policy Agent
-- Trả lời câu hỏi chính sách HR qua RAG (Vector DB ChromaDB)
-- Tra cứu thông tin cá nhân: số ngày phép, lương, hồ sơ nhân viên
-- Xem **bảng lương chi tiết** (base salary, OT, thưởng KPI, khấu trừ, net salary)
-- Tích hợp **AI Calculator** (LLMMathChain) tính lương, thuế, ngày công
-
-### 2.  Onboard Agent
-- Checklist onboarding theo giai đoạn (Tuần 1 → Tháng 3)
-- **AI OCR** xác thực CCCD và tài liệu onboarding
-- **E-Signature**: ký điện tử Hợp đồng LĐ, NDA, Thỏa thuận thử việc
-- Xem và quản lý trạng thái tài liệu HR
-
-### 3.  CV Agent
-- Chấm điểm CV theo Job Description tự động
-- **Sinh Bộ câu hỏi phỏng vấn (Technical Assessment):** Tự động tạo list câu hỏi chuyên môn dựa vào điểm số và chức danh ứng tuyển
-- **AI Draft Email (Feedback & Follow-up):** Tự động soạn sẵn nội dung email thư mời hoặc phản hồi rớt, tuỳ theo năng lực ứng viên
-- **Recruitment CRM**: theo dõi pipeline tuyển dụng theo stage
-- Lên lịch phỏng vấn + tạo Google Meet link
-- Thống kê tuyển dụng tổng hợp
-
-### 4.  Analytics Agent
-- Chat với database HR bằng ngôn ngữ tự nhiên
-- Query `hr_mock_data.csv` qua Pandas DataFrame Agent
-- Tính KPIs, vẽ biểu đồ phân bổ lương, headcount, turnover
-
-### 5.  Attendance Agent
-- Xem bảng chấm công tuần (check-in/out, OT hours)
-- Nộp và theo dõi đơn nghỉ phép (Annual, Sick, Maternity…)
-- Tính lương OT theo hệ số (x1.5 / x2.0 / x3.0)
-
-### 6.  Helpdesk Agent
-- Tạo HR Support Ticket (Equipment, Payroll, Benefits, IT…)
-- Theo dõi trạng thái ticket theo SLA (4h → 7 ngày)
-- Hiển thị lịch sử comments và giải pháp
-
-### 7.  Benefits Agent
-- Xem gói phúc lợi cá nhân: bảo hiểm, phụ cấp, training budget
-- Duyệt catalog 3 gói bảo hiểm (Basic / Standard / Premium)
-- Gửi yêu cầu thay đổi gói phúc lợi
 
 ---
 
-##  Quick Start
+## 🔀 Dual-Mode Portal (Tính Năng Nổi Bật)
 
-### Yêu Cầu
-- Python 3.10+, Node.js 18+
-- [uv](https://github.com/astral-sh/uv) — Python package manager siêu nhanh
-- Google Gemini API Key (hoặc bật `OFFLINE_MODE=true` để chạy offline)
+### 👤 Guest Portal — Cổng Ứng Viên (`/guest`)
+- **Không cần đăng nhập** — ứng viên bấm vào và hỏi ngay
+- Chỉ trả lời câu hỏi về: vị trí tuyển dụng, quy trình phỏng vấn, văn hóa công ty, phúc lợi tổng quan
+- **Bảo mật tuyệt đối**: Guest Graph bị cắt đứt hoàn toàn khỏi database nhân sự → rủi ro Prompt Injection Data Leakage = **0%**
+- Giao diện màu **tím** (Purple) thân thiện, gợi ý câu hỏi liên quan đến tuyển dụng
 
-### 1. Backend (FastAPI + LangGraph)
+### 🏢 Employee Portal — Cổng Nội Bộ (`/dashboard`)
+- Yêu cầu đăng nhập **JWT** với mã nhân viên
+- Toàn quyền truy cập 8 AI Agents chuyên biệt
+- Giao diện màu **xanh lá** (Emerald) chuyên nghiệp
+
+---
+
+## 🧠 Hệ Thống Multi-Agent (8 Agents)
+
+```
+User Message → FastAPI → Orchestrator (Gemini LLM classify intent)
+                                │
+    ┌──────┬──────┬──────┬──────┼──────┬──────┬──────┬──────┐
+    ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼
+ POLICY ONBOARD  CV  ANALYTICS ATTEND HELP BENEFITS APPRAISE OFFLINE
+```
+
+| Agent | Chức năng |
+|-------|-----------|
+| **Policy Agent** | Giải đáp chính sách HR qua RAG (ChromaDB), tra cứu lương, tính thuế TNCN 7 bậc |
+| **Onboard Agent** | Checklist onboarding, ký hợp đồng điện tử, cảnh báo hợp đồng hết hạn |
+| **CV Agent** | Chấm điểm CV, Recruitment CRM Pipeline, lên lịch phỏng vấn |
+| **Analytics Agent** | Chat với database HR bằng ngôn ngữ tự nhiên (Pandas) |
+| **Attendance Agent** | Chấm công, OT, nộp đơn nghỉ phép với **Human-in-the-Loop** |
+| **Helpdesk Agent** | Tạo và theo dõi HR Support Ticket |
+| **Benefits Agent** | Gói bảo hiểm, phụ cấp, quyền lợi cá nhân |
+| **Appraisal Agent** | Đánh giá hiệu suất, quản lý kỹ năng, Skill Gap Analysis |
+
+---
+
+## 📊 AI Performance Dashboard (Mới)
+
+Trang **`/dashboard/metrics`** hiển thị real-time (auto-refresh mỗi 15 giây):
+
+- **Tổng số request** (phân chia Nhân viên / Khách)
+- **Cache Hit Rate** — bao nhiêu câu hỏi được trả lời từ bộ nhớ đệm
+- **Thời gian phản hồi trung bình** theo từng Agent
+- **Agent Usage Chart** — horizontal bar chart màu sắc từng agent
+- **20 yêu cầu gần nhất** — timestamp, user, agent, câu hỏi preview, thời gian xử lý
+
+---
+
+## ⚡ Tối Ưu Hiệu Suất
+
+### LangChain LLM Cache (SQLite)
+Khi cùng một prompt được gửi lên LLM (bao gồm context RAG), hệ thống trả về ngay lập tức từ `data/llm_cache.db` mà **không cần gọi API Google**. Đặc biệt hiệu quả với Orchestrator routing.
+
+### LangSmith Tracing (tuỳ chọn)
+Thêm `LANGSMITH_API_KEY` vào `.env` để kích hoạt tracing toàn bộ AI pipeline lên LangSmith Dashboard. Giúp debug từng bước: Orchestrator → Agent → Tool → Response.
+
+---
+
+## 🔒 Bảo Mật & Xác Thực
+
+- **JWT Authentication**: Bảo vệ toàn bộ Employee API với Bearer token
+- **bcrypt Password Hashing**: Mật khẩu mã hóa an toàn trong SQLite
+- **Role-Based Access Control (RBAC)**:
+  - `admin/manager`: Toàn quyền, hiển thị nút Duyệt đơn trong chat
+  - `employee`: Chỉ xem dữ liệu cá nhân, bị chặn HTTP 403 nếu vượt quyền
+- **Guest Isolation**: Guest Graph độc lập hoàn toàn, không thể truy cập database nhân sự
+
+**Tài khoản demo:**
+- Admin: `EMP001` / `password123`
+- Nhân viên: `EMP016` / `password123`
+- Khách: Bấm "Tiếp tục với tư cách Khách" trên trang đăng nhập
+
+---
+
+## 🚀 Khởi Chạy (Docker — Khuyên dùng)
 
 ```bash
-# Tạo môi trường ảo
-uv venv
-.venv\Scripts\activate          # Windows
-# source .venv/bin/activate     # Mac/Linux
+# 1 lệnh duy nhất — tự dựng Frontend + Backend + Database
+docker-compose up --build -d
+```
 
-# Cài dependencies
+| Dịch vụ | URL |
+|---------|-----|
+| HR Portal (Nhân viên) | http://localhost:3000 |
+| Guest Portal (Ứng viên) | http://localhost:3000/guest |
+| API Documentation | http://localhost:8000/docs |
+| AI Metrics (sau đăng nhập) | http://localhost:3000/dashboard/metrics |
+
+### Cấu hình (`.env`)
+```env
+# Bắt buộc để chạy Online mode
+GOOGLE_API_KEY=YOUR_GEMINI_API_KEY_HERE
+
+# Tuỳ chọn — kích hoạt LangSmith Tracing
+LANGSMITH_API_KEY=YOUR_LANGSMITH_API_KEY_HERE
+
+# Tuỳ chọn — mặc định đã có giá trị
+OFFLINE_MODE=false
+MODEL_NAME=gemini-1.5-flash
+JWT_SECRET_KEY=paraline_super_secret_key_2026
+```
+
+### Chạy thủ công (Developer mode)
+
+**Backend:**
+```bash
+uv venv && .\.venv\Scripts\activate
 uv pip install -r requirements.txt
-
-# Tạo file .env
-echo GOOGLE_API_KEY=your_gemini_key_here > .env
-echo MODEL_NAME=gemini-1.5-flash >> .env
-echo TEMPERATURE=0 >> .env
-echo OFFLINE_MODE=false >> .env
-
-# Khởi chạy server
 uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 2. Frontend (Next.js)
-
+**Frontend:**
 ```bash
 cd frontend
-npm install
-echo NEXT_PUBLIC_API_BASE=http://localhost:8000 > .env.local
-npm run dev
+npm install && npm run dev
 ```
 
 ---
 
-##  Truy Cập
-
-| URL | Chức năng |
-|---|---|
-| `http://localhost:3000` | Trang chủ Paraline |
-| `http://localhost:3000/portal` | **HR Portal** — Hub điều hướng tất cả module |
-| `http://localhost:3000/chat` | AI Chatbot HR |
-| `http://localhost:3000/attendance` | Bảng chấm công & nghỉ phép |
-| `http://localhost:3000/helpdesk` | HR Support Ticket |
-| `http://localhost:3000/benefits` | Phúc lợi & bảo hiểm |
-| `http://localhost:3000/notifications` | Thông báo nội bộ |
-| `http://localhost:3000/payroll` | ** Bảng lương** — Xem lương, OT, thưởng, khấu trừ |
-| `http://localhost:3000/hr-dashboard` | HR Analytics Dashboard |
-| `http://localhost:3000/apply` | Form ứng tuyển |
-| `http://localhost:8000/docs` | FastAPI Swagger Docs |
-
-### Ví Dụ Query Chatbot
-
-| Câu hỏi | Agent xử lý |
-|---|---|
-| `"Nghỉ phép còn lại của tôi (EMP001) là bao nhiêu?"` | Policy Agent |
-| `"Lương tháng 3 của EMP001 là bao nhiêu?"` | Policy Agent |
-| `"Cho tôi xem lịch sử lương 3 tháng của EMP002"` | Policy Agent |
-| `"Tài liệu nào của tôi chưa ký?"` | Onboard Agent |
-| `"Ký hợp đồng lao động cho EMP001"` | Onboard Agent |
-| `"Đánh giá CV này cho vị trí ReactJS Developer"` | CV Agent |
-| `"Pipeline tuyển dụng ReactJS đến stage nào rồi?"` | CV Agent |
-| `"Mức lương trung bình Engineering là bao nhiêu?"` | Analytics Agent |
-| `"Tuần này EMP001 làm mấy tiếng OT?"` | Attendance Agent |
-| `"Tôi muốn nghỉ phép 10–12/03"` | Attendance Agent |
-| `"Tạo ticket xin đổi laptop"` | Helpdesk Agent |
-| `"Ticket TICK-2026-001 đang ở trạng thái nào?"` | Helpdesk Agent |
-| `"Gói bảo hiểm của EMP001 gồm những gì?"` | Benefits Agent |
-| `"Tôi muốn đổi gói bảo hiểm từ Basic lên Standard"` | Benefits Agent |
-
----
-
-##  Sơ Đồ Chi Tiết
-
-```mermaid
-flowchart TD
-    subgraph "Client"
-        U["User"] --> F["Next.js Portal / Chat"]
-    end
-
-    subgraph "API Layer (FastAPI)"
-        F --> B["POST /chat"]
-        B --> O["Orchestrator (Gemini)"]
-
-        style B fill:#009688,color:#fff
-        style O fill:#FF9900,color:#fff
-    end
-
-    subgraph "LangGraph — 7 Agents"
-        O --> PA["Policy Agent"]
-        O --> OA["Onboard Agent\n + E-Sign"]
-        O --> CA["CV Agent\n + CRM Pipeline"]
-        O --> AA["Analytics Agent"]
-        O --> ATT["Attendance Agent "]
-        O --> HD["Helpdesk Agent "]
-        O --> BE["Benefits Agent "]
-    end
-
-    subgraph "Tools & Data"
-        PA --- PT["Policy Tools\nVector DB · Math · Employee DB · Payroll"]
-        OA --- OT["Onboard Tools\nChecklist · OCR · E-Signature"]
-        CA --- CT["CV Tools\nScreening · Pipeline · Interview"]
-        AA --- AT["Pandas DataFrame Agent\nhr_mock_data.csv"]
-        ATT --- ATTT["Attendance Tools\nattendance_data.json"]
-        HD --- HDT["Helpdesk Tools\nhelpdesk_data.json"]
-        BE --- BET["Benefits Tools\nbenefits_data.json"]
-    end
-```
-
----
-
-##  Cấu Trúc Dự Án
+## 🗂️ Cấu Trúc Dự Án
 
 ```
 hr-ai-agent-pure-vector/
 │
-├── api/
-│   ├── main.py                      ← FastAPI app + CORS + router registration
-│   └── routers/
-│       ├── applicants.py            ← CRUD ứng viên
-│       ├── screening.py             ← CV screening results
-│       ├── employees.py             ← Employee data
-│       ├── attendance.py            ←  Check-in/out, leave requests
-│       ├── helpdesk.py              ←  HR support tickets
-│       ├── benefits.py              ←  Employee benefits
-│       ├── notification.py          ←  HR announcements
-│       └── payroll.py               ←  Bảng lương theo tháng
+├── api/                          ← FastAPI Backend
+│   ├── main.py                   ← App chính: Chat, Metrics, SSE Streaming
+│   ├── auth.py                   ← JWT + bcrypt
+│   ├── models.py                 ← SQLModel schemas
+│   ├── database.py               ← SQLite connection
+│   └── routers/                  ← 16 API routers (employees, attendance, ...)
 │
 ├── src/
-│   ├── agents/
-│   │   ├── orchestrator.py          ← LangGraph graph (7 agents, routing)
-│   │   ├── policy_agent.py
-│   │   ├── onboard_agent.py         ←  + E-Signature, document mgmt
-│   │   ├── cv_agent.py              ←  + Recruitment CRM, interview scheduling
-│   │   ├── analytics_agent.py
-│   │   ├── attendance_agent.py      ←
-│   │   ├── helpdesk_agent.py        ←
-│   │   └── benefits_agent.py        ←
-│   └── tools/
-│       ├── policy_tools.py
-│       ├── employee_data_tools.py
-│       ├── onboard_tools.py
-│       ├── onboard_validation_tools.py
-│       ├── cv_tools.py
-│       ├── email_calendar_tools.py
-│       ├── math_tools.py            ← LLMMathChain (Gemini, temp=0)
-│       ├── document_tools.py        ←  E-signature & document management
-│       ├── attendance_tools.py      ←
-│       ├── helpdesk_tools.py        ←
-│       ├── benefits_tools.py        ←
-│       ├── recruitment_tools.py     ←
-│       ├── notification_tools.py    ←
-│       └── payroll_tools.py         ←  Bảng lương AI tools
+│   ├── agents/                   ← 8 AI Agents + Orchestrator + Guest Graph
+│   │   └── orchestrator.py       ← Employee Graph + Guest Graph (tách biệt)
+│   ├── services/
+│   │   ├── metrics.py            ← AI Performance Metrics Collector (Mới)
+│   │   ├── hybrid_retriever.py   ← Vector + BM25 Hybrid Search
+│   │   └── vector_db.py          ← ChromaDB + Multilingual Embeddings
+│   └── tools/                    ← 15+ tool modules (policy, attendance, ...)
 │
-├── data/
-│   ├── hr_mock_data.csv             ← HR analytics dataset
-│   ├── attendance_data.json         ←  Check-in records, OT, leave requests
-│   ├── helpdesk_data.json           ←  HR support tickets
-│   ├── benefits_data.json           ←  Insurance packages, allowances
-│   ├── recruitment_data.json        ←  Recruitment pipeline & interviews
-│   ├── notifications_data.json      ←  Internal notifications
-│   └── payroll_data.json            ←  Bảng lương 3 tháng (EMP001–EMP005)
+├── config/
+│   └── prompts.yaml              ← System prompts cho tất cả agents (+ guest)
 │
-├── documents/                       ← Knowledge Base (RAG sources)
-│   ├── benefits_policy.md           ←  Chính sách phúc lợi
-│   ├── attendance_policy.md         ←  Quy định chấm công & OT
-│   ├── helpdesk_guide.md            ←  Hướng dẫn HR Helpdesk
-│   ├── esignature_guide.md          ←  Quy trình ký điện tử
-│   └── recruitment_process.md       ←  Quy trình tuyển dụng
+├── frontend/                     ← Next.js 15 App Router
+│   └── src/app/
+│       ├── page.tsx              ← Trang Login (có nút Guest)
+│       ├── guest/                ← Guest Portal (màu tím, không cần auth)
+│       └── dashboard/
+│           ├── chat/             ← Employee HR Chat
+│           ├── employees/        ← Quản lý nhân sự
+│           ├── profile/          ← Hồ sơ cá nhân
+│           └── metrics/          ← AI Performance Dashboard (Mới)
 │
-├── frontend/                        ← Next.js 16 App Router
-│   ├── app/
-│   │   ├── portal/page.tsx          ←  HR Portal hub (điều hướng tất cả module)
-│   │   ├── chat/page.tsx            ← AI Chatbot UI
-│   │   ├── attendance/page.tsx      ←  Bảng chấm công & nghỉ phép
-│   │   ├── helpdesk/page.tsx        ←  HR Support Ticket management
-│   │   ├── benefits/page.tsx        ←  Phúc lợi & bảo hiểm
-│   │   ├── notifications/page.tsx   ←  Thông báo nội bộ
-│   │   ├── payroll/page.tsx         ←  Bảng lương (summary cards, breakdown, history)
-│   │   ├── hr-dashboard/page.tsx    ← HR Analytics
-│   │   └── apply/page.tsx           ← Form ứng tuyển
-│   └── lib/
-│       ├── api.ts                   ← API client (tất cả endpoints)
-│       └── types.ts                 ← TypeScript types
-│
-├── requirements.txt
-├── .env                             ← GOOGLE_API_KEY, OFFLINE_MODE, ...
-└── README.md
+├── documents/                    ← Tài liệu HR (Markdown) cho RAG
+├── data/                         ← SQLite DBs: paraline.db, llm_cache.db
+├── chroma_db/                    ← Vector store (persist)
+├── docker/
+│   └── Dockerfile.backend        ← Python/FastAPI Docker image
+├── docker-compose.yml            ← Orchestrate toàn bộ hệ thống
+└── requirements.txt
 ```
 
 ---
 
-##  API Endpoints
+## 🌟 Tính Năng Nổi Bật
 
-### Chat
-| Method | Endpoint | Mô tả |
-|---|---|---|
-| `POST` | `/chat` | Gửi tin nhắn tới multi-agent system |
-
-### Attendance
-| Method | Endpoint | Mô tả |
-|---|---|---|
-| `GET` | `/attendance/{employee_id}` | Bảng chấm công tuần |
-| `GET` | `/attendance/{employee_id}/leave-requests` | Danh sách đơn nghỉ |
-| `POST` | `/attendance/leave-request` | Nộp đơn nghỉ phép |
-
-### Helpdesk
-| Method | Endpoint | Mô tả |
-|---|---|---|
-| `POST` | `/helpdesk/tickets` | Tạo ticket mới |
-| `GET` | `/helpdesk/tickets/{ticket_id}` | Xem ticket |
-| `GET` | `/helpdesk/tickets/employee/{id}` | Tickets theo nhân viên |
-| `GET` | `/helpdesk/categories` | Danh mục & SLA |
-
-### Benefits
-| Method | Endpoint | Mô tả |
-|---|---|---|
-| `GET` | `/benefits/{employee_id}` | Phúc lợi nhân viên |
-| `GET` | `/benefits/catalog` | Catalog gói phúc lợi |
-| `POST` | `/benefits/change-request` | Yêu cầu thay đổi |
-
-### Notifications
-| Method | Endpoint | Mô tả |
-|---|---|---|
-| `GET` | `/notifications/{employee_id}` | Thông báo cá nhân |
-| `POST` | `/notifications/send` | Gửi thông báo |
-| `POST` | `/notifications/broadcast` | Công bố toàn công ty |
-| `GET` | `/notifications/announcements/all` | Tất cả thông báo chung |
-
-### Payroll
-| Method | Endpoint | Mô tả |
-|---|---|---|
-| `GET` | `/payroll/{employee_id}` | Lịch sử lương toàn bộ |
-| `GET` | `/payroll/{employee_id}/month/{YYYY-MM}` | Bảng lương tháng cụ thể |
-| `GET` | `/payroll/summary/all` | Tổng hợp lương toàn công ty |
+| Tính năng | Mô tả |
+|-----------|-------|
+| **Dual-Mode Portal** | Guest (ứng viên) và Employee (nội bộ) dùng UI riêng, Agent riêng, bảo mật riêng |
+| **AI Streaming** | Server-Sent Events (SSE) — response "nhả chữ" realtime như ChatGPT |
+| **Human-in-the-Loop** | Dừng lại chờ Manager bấm "Duyệt" trước khi thực hiện thao tác nhạy cảm |
+| **Multilingual RAG** | Embedding Tiếng Việt chính xác với `paraphrase-multilingual-MiniLM-L12-v2` |
+| **LLM Cache** | SQLite-backed cache — câu hỏi trùng trả về ngay, tiết kiệm API cost |
+| **AI Metrics Dashboard** | Real-time monitoring: agent usage, response time, cache hit rate |
+| **LangSmith Tracing** | Debug AI pipeline chi tiết từng bước (opt-in qua API key) |
+| **Offline Fallback** | Tự động chuyển về KB nội bộ khi mất mạng hoặc thiếu API key |
+| **RBAC** | Phân quyền cấp API: Admin / Manager / Employee / Guest |
 
 ---
 
-##  Đóng Góp
+## 📄 License
 
-- Dùng `uv` để quản lý Python packages
-- Python 3.10+, Node.js 18+
-- Format code: Black (Python), Prettier (TypeScript)
-- Lint: Flake8 / Ruff (Python), ESLint (TypeScript)
+MIT License — Mã nguồn mở, tự do sử dụng và tùy chỉnh.
 
----
-
-##  License
-
-MIT License — Dự án mã nguồn mở, tự do sử dụng và tùy chỉnh cho mục đích HR automation.
-
-**Paraline Software • Japan Quality in Vietnam **
+**Paraline Software • Japan Quality in Vietnam 🇯🇵🇻🇳**

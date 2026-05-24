@@ -1,922 +1,250 @@
 [
   {
     "id": 1,
-    "applicant_id": 69438,
-    "applicant_name": "Pham Van D",
-    "position": "ReactJS Developer",
-    "total_score": 78,
+    "name": "Nguyen Van Lam Hung",
+    "email": "lamhung13102005@gmail.com",
+    "phone": " 0379181310",
+    "position": "AI Engineer - Intern",
+    "cv_path": "cv_uploads\\CV Nguyễn Văn Lâm Hùng AI intern.pdf",
+    "status": " Not Recommended",
+    "total_score": 66.9,
     "max_score": 100,
-    "percentage": 78,
-    "recommendation": "PASS",
-    "status": "New Application",
-    "action": "Schedule interview",
+    "percentage": 66.9,
+    "recommendation": "REJECT",
+    "action": "Send rejection email",
     "breakdown": {
       "required_skills": {
-        "found": [],
-        "percentage": 31.200000000000003,
-        "points": 23.4
+        "found": [
+          "numpy",
+          "pandas",
+          "scikit-learn"
+        ],
+        "percentage": 37.5,
+        "points": 7.5
       },
       "preferred_skills": {
-        "found": [],
-        "percentage": 23.4,
-        "points": 15.600000000000001
+        "found": [
+          "sql (basic queries)",
+          "matplotlib",
+          "basic cloud computing concepts (e.g., aws s3, ec2)",
+          "docker (basic understanding)"
+        ],
+        "percentage": 44.44444444444444,
+        "points": 4.444444444444445
       },
       "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 19.5
+        "years_found": 0,
+        "years_required": 0,
+        "points": 5
       },
       "education": {
         "relevant": true,
-        "points": 11.7
+        "points": 10
       },
       "certifications": {
         "found": [],
-        "points": 0
+        "points": 0.0
+      },
+      "semantic_match": {
+        "points": 40.0
       }
     },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988096"
+    "interview_questions": [
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với python programming. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với tensorflow. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với git version control. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Mô tả dự án lớn nhất bạn từng tham gia và vai trò của bạn trong đó?",
+      "Bạn xử lý thế nào khi gặp bất đồng quan điểm với quản lý về mặt kỹ thuật?"
+    ],
+    "min_score": 40,
+    "raw_projects": "📅\n13/10/2005\ntalk2book ( 11/2025 - now )\n📞\n0379181310\nteam lead: https://github.com/lam-hung-ai/talk2book\n• goal: engineered a voice-driven system for booking flights and hotels,\ntranslating natural language intent into complex business transactions\n• tech stack: langchain, mcp (fastapimcp), openai whisper & tts,\nfastapi, sqlmodel (postgresql), webrtc.\n• agentic ai architecture: designed an mcp-based agent system to\nconnect llms directly with complex travel databases, enabling\nautonomous tool-calling (e.g., search_flights, create_booking)\n• reasoning pipeline: developed complex prompt systems for a 4-step\nautonomous process (location identification -> hotel search ->\navailability check -> booking) using uuid data.\n• real-time voice pipeline: implemented a real-time audio processing\nflow: recording -> whisper transcribe -> agent reasoning -> tts\nstreaming.\n• manage project: established a professional git workflow, utilizing uv\nfor environment optimization and ruff for code quality within a 5-\nmember team.\nkey achievement: created a \"virtual receptionist\" capable of intent\nrecognition and live database transactions, rather than just providing\nstatic text replies.\n✉\nlamhung13102005@gmail.com\n🌐\ngithub.com/lam-hung-ai\n\nno. 1002 lang street, hanoi",
+    "raw_skills": "chatbot fb ( 5/2025 - 7/2025 )\npersonal project: https://github.com/lam-hung-ai/chatbot_fb\npython, pytorch\n• goal: create an empathetic childcare consultancy system providing\npersonalized advice based on real-world contexts\n• tech stack: langgraph, langchain, qdrant (vector db), fastapi,\nvietnamese embedding model (aiteamvn).\n•  key contributions:\n• advanced agentic orchestration: architected a complex stategraph\n(langgraph) framework, integrating an autonomous router\nmechanism to seamlessly manage conversational flows between social\ninteractions and deep document retrieval.\n• precision-driven rag & safety: enhanced retrieval accuracy by 40%\nthrough advanced query optimization nodes and a proactive\ninformation gathering mechanism, ensuring high-quality input data\nfor safe and reliable childcare advice.\n• production-grade scalability: developed a robust backend system\nusing fastapi (async/await) and facebook webhooks, optimized for\nhigh-concurrency processing of thousands of requests.\nkey achievement: created an ai agent capable of step-by-step\n\"reasoning\" to deliver solutions grounded in specialized literature rather\nthan just general llm knowledge, significantly mitigating hallucinations\nscikit-learn, numpy, pandas,\nmatplotlib\nfastapi, sqlmodel, pydantic,\npostgres\ndocker, ubuntu (linux)\nlangchain, langgraph, mcp, faiss,\nqdrain\nenglish\n• proficient in reading research\npapers\n• active listening skills\n• good communication skills with\neffective expression of ideas",
+    "applicant_name": "Nguyen Van Lam Hung",
+    "applicant_id": 4
   },
   {
     "id": 2,
-    "applicant_id": 34159,
-    "applicant_name": "Hoang Thi E",
-    "position": "ReactJS Developer",
-    "total_score": 72,
+    "name": "Nguyen Van Hung Lam",
+    "email": "lamhung13102005@gmail.com",
+    "phone": "0379181310",
+    "position": "AI Engineer - Intern",
+    "cv_path": "cv_uploads\\CV Nguyễn Văn Lâm Hùng AI intern.pdf",
+    "status": " Not Recommended",
+    "total_score": 66.9,
     "max_score": 100,
-    "percentage": 72,
-    "recommendation": "PASS",
-    "status": "New Application",
-    "action": "Schedule interview",
+    "percentage": 66.9,
+    "recommendation": "REJECT",
+    "action": "Send rejection email",
     "breakdown": {
       "required_skills": {
-        "found": [],
-        "percentage": 28.8,
-        "points": 21.599999999999998
+        "found": [
+          "numpy",
+          "pandas",
+          "scikit-learn"
+        ],
+        "percentage": 37.5,
+        "points": 7.5
       },
       "preferred_skills": {
-        "found": [],
-        "percentage": 21.599999999999998,
-        "points": 14.4
+        "found": [
+          "sql (basic queries)",
+          "matplotlib",
+          "basic cloud computing concepts (e.g., aws s3, ec2)",
+          "docker (basic understanding)"
+        ],
+        "percentage": 44.44444444444444,
+        "points": 4.444444444444445
       },
       "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 18.0
+        "years_found": 0,
+        "years_required": 0,
+        "points": 5
       },
       "education": {
         "relevant": true,
-        "points": 10.799999999999999
+        "points": 10
       },
       "certifications": {
         "found": [],
-        "points": 0
+        "points": 0.0
+      },
+      "semantic_match": {
+        "points": 40.0
       }
     },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988147"
+    "interview_questions": [
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với python programming. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với tensorflow. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với git version control. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Mô tả dự án lớn nhất bạn từng tham gia và vai trò của bạn trong đó?",
+      "Bạn xử lý thế nào khi gặp bất đồng quan điểm với quản lý về mặt kỹ thuật?"
+    ],
+    "min_score": 40,
+    "raw_projects": "📅\n13/10/2005\ntalk2book ( 11/2025 - now )\n📞\n0379181310\nteam lead: https://github.com/lam-hung-ai/talk2book\n• goal: engineered a voice-driven system for booking flights and hotels,\ntranslating natural language intent into complex business transactions\n• tech stack: langchain, mcp (fastapimcp), openai whisper & tts,\nfastapi, sqlmodel (postgresql), webrtc.\n• agentic ai architecture: designed an mcp-based agent system to\nconnect llms directly with complex travel databases, enabling\nautonomous tool-calling (e.g., search_flights, create_booking)\n• reasoning pipeline: developed complex prompt systems for a 4-step\nautonomous process (location identification -> hotel search ->\navailability check -> booking) using uuid data.\n• real-time voice pipeline: implemented a real-time audio processing\nflow: recording -> whisper transcribe -> agent reasoning -> tts\nstreaming.\n• manage project: established a professional git workflow, utilizing uv\nfor environment optimization and ruff for code quality within a 5-\nmember team.\nkey achievement: created a \"virtual receptionist\" capable of intent\nrecognition and live database transactions, rather than just providing\nstatic text replies.\n✉\nlamhung13102005@gmail.com\n🌐\ngithub.com/lam-hung-ai\n\nno. 1002 lang street, hanoi",
+    "raw_skills": "chatbot fb ( 5/2025 - 7/2025 )\npersonal project: https://github.com/lam-hung-ai/chatbot_fb\npython, pytorch\n• goal: create an empathetic childcare consultancy system providing\npersonalized advice based on real-world contexts\n• tech stack: langgraph, langchain, qdrant (vector db), fastapi,\nvietnamese embedding model (aiteamvn).\n•  key contributions:\n• advanced agentic orchestration: architected a complex stategraph\n(langgraph) framework, integrating an autonomous router\nmechanism to seamlessly manage conversational flows between social\ninteractions and deep document retrieval.\n• precision-driven rag & safety: enhanced retrieval accuracy by 40%\nthrough advanced query optimization nodes and a proactive\ninformation gathering mechanism, ensuring high-quality input data\nfor safe and reliable childcare advice.\n• production-grade scalability: developed a robust backend system\nusing fastapi (async/await) and facebook webhooks, optimized for\nhigh-concurrency processing of thousands of requests.\nkey achievement: created an ai agent capable of step-by-step\n\"reasoning\" to deliver solutions grounded in specialized literature rather\nthan just general llm knowledge, significantly mitigating hallucinations\nscikit-learn, numpy, pandas,\nmatplotlib\nfastapi, sqlmodel, pydantic,\npostgres\ndocker, ubuntu (linux)\nlangchain, langgraph, mcp, faiss,\nqdrain\nenglish\n• proficient in reading research\npapers\n• active listening skills\n• good communication skills with\neffective expression of ideas",
+    "applicant_name": "Nguyen Van Hung Lam",
+    "applicant_id": 6
   },
   {
     "id": 3,
-    "applicant_id": 20367,
-    "applicant_name": "Do Minh F",
-    "position": "ReactJS Developer",
-    "total_score": 78,
+    "name": "Doan Duc Thang",
+    "email": "ducthang8558@gmail.com",
+    "phone": "0978 851 058",
+    "position": "AI Engineer - Intern",
+    "cv_path": "cv_uploads\\Doan Duc Thang_AI Engineer.pdf",
+    "status": " Not Recommended",
+    "total_score": 45.3,
     "max_score": 100,
-    "percentage": 78,
-    "recommendation": "PASS",
-    "status": "CV Screening",
-    "action": "Schedule interview",
+    "percentage": 45.3,
+    "recommendation": "REJECT",
+    "action": "Send rejection email",
     "breakdown": {
       "required_skills": {
-        "found": [],
-        "percentage": 31.200000000000003,
-        "points": 23.4
+        "found": [
+          "scikit-learn",
+          "tensorflow"
+        ],
+        "percentage": 25.0,
+        "points": 5.0
       },
       "preferred_skills": {
-        "found": [],
-        "percentage": 23.4,
-        "points": 15.600000000000001
+        "found": [
+          "sql (basic queries)",
+          "docker (basic understanding)",
+          "computer vision (basic concepts)"
+        ],
+        "percentage": 33.33333333333333,
+        "points": 3.3333333333333326
       },
       "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 19.5
+        "years_found": 0,
+        "years_required": 0,
+        "points": 5
       },
       "education": {
-        "relevant": true,
-        "points": 11.7
+        "relevant": false,
+        "points": 0
       },
       "certifications": {
         "found": [],
-        "points": 0
+        "points": 0.0
+      },
+      "semantic_match": {
+        "points": 32.0
       }
     },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988154"
+    "interview_questions": [
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với python programming. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với numpy. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với pandas. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Mô tả dự án lớn nhất bạn từng tham gia và vai trò của bạn trong đó?",
+      "Bạn xử lý thế nào khi gặp bất đồng quan điểm với quản lý về mặt kỹ thuật?"
+    ],
+    "min_score": 40,
+    "raw_projects": "",
+    "raw_skills": "ai skills: computer vision, llms, rag-chatbot, mlops, docker\nprogramming languages: c++, python\nframework: scikit-learn, tensorflow, pytorch, langchain, langgraph, onnx,  tensorrt\nenglish communication: intermediate",
+    "applicant_name": "Doan Duc Thang",
+    "applicant_id": 3
   },
   {
     "id": 4,
-    "applicant_id": 93635,
-    "applicant_name": "Vu Thi G",
-    "position": "ReactJS Developer",
-    "total_score": 85,
+    "name": "Doan Duc Thang",
+    "email": "ducthang8558@gmail.com",
+    "phone": "0978 851 058",
+    "position": "AI Engineer - Intern",
+    "cv_path": "cv_uploads\\Doan Duc Thang_AI Engineer.pdf",
+    "status": " Not Recommended",
+    "total_score": 45.3,
     "max_score": 100,
-    "percentage": 85,
-    "recommendation": "STRONG_PASS",
-    "status": "CV Screening",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 34.0,
-        "points": 25.5
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 25.5,
-        "points": 17.0
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 21.25
-      },
-      "education": {
-        "relevant": true,
-        "points": 12.75
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988159"
-  },
-  {
-    "id": 5,
-    "applicant_id": 24127,
-    "applicant_name": "Nguyen Quoc H",
-    "position": "ReactJS Developer",
-    "total_score": 90,
-    "max_score": 100,
-    "percentage": 90,
-    "recommendation": "STRONG_PASS",
-    "status": "Technical Interview",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 36.0,
-        "points": 27.0
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 27.0,
-        "points": 18.0
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 22.5
-      },
-      "education": {
-        "relevant": true,
-        "points": 13.5
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988162"
-  },
-  {
-    "id": 6,
-    "applicant_id": 9976,
-    "applicant_name": "Tran Bao I",
-    "position": "ReactJS Developer",
-    "total_score": 88,
-    "max_score": 100,
-    "percentage": 88,
-    "recommendation": "STRONG_PASS",
-    "status": "HR Interview",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 35.2,
-        "points": 26.4
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 26.4,
-        "points": 17.6
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 22.0
-      },
-      "education": {
-        "relevant": true,
-        "points": 13.2
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988167"
-  },
-  {
-    "id": 7,
-    "applicant_id": 84202,
-    "applicant_name": "Le Thu J",
-    "position": "ReactJS Developer",
-    "total_score": 92,
-    "max_score": 100,
-    "percentage": 92,
-    "recommendation": "STRONG_PASS",
-    "status": "Hired",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 36.800000000000004,
-        "points": 27.599999999999998
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 27.599999999999998,
-        "points": 18.400000000000002
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 23.0
-      },
-      "education": {
-        "relevant": true,
-        "points": 13.799999999999999
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988171"
-  },
-  {
-    "id": 8,
-    "applicant_id": 29215,
-    "applicant_name": "Bui Minh K",
-    "position": "ReactJS Developer",
-    "total_score": 45,
-    "max_score": 100,
-    "percentage": 45,
+    "percentage": 45.3,
     "recommendation": "REJECT",
-    "status": "Rejected",
     "action": "Send rejection email",
     "breakdown": {
       "required_skills": {
-        "found": [],
-        "percentage": 18.0,
-        "points": 13.5
+        "found": [
+          "scikit-learn",
+          "tensorflow"
+        ],
+        "percentage": 25.0,
+        "points": 5.0
       },
       "preferred_skills": {
-        "found": [],
-        "percentage": 13.5,
-        "points": 9.0
+        "found": [
+          "sql (basic queries)",
+          "docker (basic understanding)",
+          "computer vision (basic concepts)"
+        ],
+        "percentage": 33.33333333333333,
+        "points": 3.3333333333333326
       },
       "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 11.25
+        "years_found": 0,
+        "years_required": 0,
+        "points": 5
       },
       "education": {
-        "relevant": true,
-        "points": 6.75
+        "relevant": false,
+        "points": 0
       },
       "certifications": {
         "found": [],
-        "points": 0
+        "points": 0.0
+      },
+      "semantic_match": {
+        "points": 32.0
       }
     },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988175"
-  },
-  {
-    "id": 9,
-    "applicant_id": 61611,
-    "applicant_name": "Mai Van L",
-    "position": "Backend Developer",
-    "total_score": 82,
-    "max_score": 100,
-    "percentage": 82,
-    "recommendation": "STRONG_PASS",
-    "status": "New Application",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 32.800000000000004,
-        "points": 24.599999999999998
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 24.599999999999998,
-        "points": 16.400000000000002
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 20.5
-      },
-      "education": {
-        "relevant": true,
-        "points": 12.299999999999999
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988183"
-  },
-  {
-    "id": 10,
-    "applicant_id": 40678,
-    "applicant_name": "Trinh Thi M",
-    "position": "Backend Developer",
-    "total_score": 80,
-    "max_score": 100,
-    "percentage": 80,
-    "recommendation": "STRONG_PASS",
-    "status": "CV Screening",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 32.0,
-        "points": 24.0
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 24.0,
-        "points": 16.0
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 20.0
-      },
-      "education": {
-        "relevant": true,
-        "points": 12.0
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988186"
-  },
-  {
-    "id": 11,
-    "applicant_id": 68547,
-    "applicant_name": "Dang Van N",
-    "position": "Backend Developer",
-    "total_score": 95,
-    "max_score": 100,
-    "percentage": 95,
-    "recommendation": "STRONG_PASS",
-    "status": "Offer Extended",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 38.0,
-        "points": 28.5
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 28.5,
-        "points": 19.0
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 23.75
-      },
-      "education": {
-        "relevant": true,
-        "points": 14.25
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "created_at": "2026-03-07T16:26:35.988189"
-  },
-  {
-    "id": 12,
-    "applicant_id": 1549,
-    "applicant_name": "Pham Van D",
-    "position": "ReactJS Developer",
-    "total_score": 72,
-    "max_score": 100,
-    "percentage": 72,
-    "recommendation": "PASS",
-    "status": "New Application",
-    "action": "Schedule interview",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 28.8,
-        "points": 21.599999999999998
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 21.599999999999998,
-        "points": 14.4
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 18.0
-      },
-      "education": {
-        "relevant": true,
-        "points": 10.799999999999999
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
     "interview_questions": [
-      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
-      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
-      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với python programming. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với numpy. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Theo CV, bạn có vẻ chưa có nhiều kinh nghiệm với pandas. Bạn dự định học hỏi kỹ năng này như thế nào?",
+      "Mô tả dự án lớn nhất bạn từng tham gia và vai trò của bạn trong đó?",
+      "Bạn xử lý thế nào khi gặp bất đồng quan điểm với quản lý về mặt kỹ thuật?"
     ],
-    "draft_email": "Kính gửi Pham Van D,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033252"
-  },
-  {
-    "id": 13,
-    "applicant_id": 95232,
-    "applicant_name": "Hoang Thi E",
-    "position": "ReactJS Developer",
-    "total_score": 53,
-    "max_score": 100,
-    "percentage": 53,
-    "recommendation": "MAYBE",
-    "status": "New Application",
-    "action": "Review manually",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 21.200000000000003,
-        "points": 15.899999999999999
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 15.899999999999999,
-        "points": 10.600000000000001
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 13.25
-      },
-      "education": {
-        "relevant": true,
-        "points": 7.949999999999999
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [
-      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
-      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
-      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
-    ],
-    "draft_email": "Kính gửi Hoang Thi E,\n\nCảm ơn bạn đã ứng tuyển vị trí ReactJS Developer. Để bộ phận tuyển dụng hiểu rõ hơn về kỹ năng của bạn, chúng tôi muốn mời bạn hoàn thành một bài đánh giá năng lực ngắn trước khi xếp lịch phỏng vấn. Vui lòng kiểm tra link bài test bên dưới.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033322"
-  },
-  {
-    "id": 14,
-    "applicant_id": 73924,
-    "applicant_name": "Do Minh F",
-    "position": "ReactJS Developer",
-    "total_score": 78,
-    "max_score": 100,
-    "percentage": 78,
-    "recommendation": "PASS",
-    "status": "CV Screening",
-    "action": "Schedule interview",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 31.200000000000003,
-        "points": 23.4
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 23.4,
-        "points": 15.600000000000001
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 19.5
-      },
-      "education": {
-        "relevant": true,
-        "points": 11.7
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [
-      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
-      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
-      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
-    ],
-    "draft_email": "Kính gửi Do Minh F,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033343"
-  },
-  {
-    "id": 15,
-    "applicant_id": 61213,
-    "applicant_name": "Vu Thi G",
-    "position": "ReactJS Developer",
-    "total_score": 85,
-    "max_score": 100,
-    "percentage": 85,
-    "recommendation": "STRONG_PASS",
-    "status": "CV Screening",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 34.0,
-        "points": 25.5
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 25.5,
-        "points": 17.0
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 21.25
-      },
-      "education": {
-        "relevant": true,
-        "points": 12.75
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [
-      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
-      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
-      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
-    ],
-    "draft_email": "Kính gửi Vu Thi G,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033355"
-  },
-  {
-    "id": 16,
-    "applicant_id": 16919,
-    "applicant_name": "Nguyen Quoc H",
-    "position": "ReactJS Developer",
-    "total_score": 90,
-    "max_score": 100,
-    "percentage": 90,
-    "recommendation": "STRONG_PASS",
-    "status": "Technical Interview",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 36.0,
-        "points": 27.0
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 27.0,
-        "points": 18.0
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 22.5
-      },
-      "education": {
-        "relevant": true,
-        "points": 13.5
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [
-      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
-      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
-      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
-    ],
-    "draft_email": "Kính gửi Nguyen Quoc H,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033366"
-  },
-  {
-    "id": 17,
-    "applicant_id": 33195,
-    "applicant_name": "Tran Bao I",
-    "position": "ReactJS Developer",
-    "total_score": 88,
-    "max_score": 100,
-    "percentage": 88,
-    "recommendation": "STRONG_PASS",
-    "status": "HR Interview",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 35.2,
-        "points": 26.4
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 26.4,
-        "points": 17.6
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 22.0
-      },
-      "education": {
-        "relevant": true,
-        "points": 13.2
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [
-      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
-      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
-      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
-    ],
-    "draft_email": "Kính gửi Tran Bao I,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033379"
-  },
-  {
-    "id": 18,
-    "applicant_id": 90293,
-    "applicant_name": "Le Thu J",
-    "position": "ReactJS Developer",
-    "total_score": 92,
-    "max_score": 100,
-    "percentage": 92,
-    "recommendation": "STRONG_PASS",
-    "status": "Hired",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 36.800000000000004,
-        "points": 27.599999999999998
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 27.599999999999998,
-        "points": 18.400000000000002
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 23.0
-      },
-      "education": {
-        "relevant": true,
-        "points": 13.799999999999999
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [
-      "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
-      "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
-      "Sự khác biệt giữa SSR và SSG trong Next.js là gì?"
-    ],
-    "draft_email": "Kính gửi Le Thu J,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí ReactJS Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033389"
-  },
-  {
-    "id": 19,
-    "applicant_id": 88347,
-    "applicant_name": "Bui Minh K",
-    "position": "ReactJS Developer",
-    "total_score": 45,
-    "max_score": 100,
-    "percentage": 45,
-    "recommendation": "REJECT",
-    "status": "Rejected",
-    "action": "Send rejection email",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 18.0,
-        "points": 13.5
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 13.5,
-        "points": 9.0
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 11.25
-      },
-      "education": {
-        "relevant": true,
-        "points": 6.75
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [],
-    "draft_email": "Kính gửi Bui Minh K,\n\nCảm ơn bạn đã quan tâm và ứng tuyển cho vị trí ReactJS Developer. Dù hồ sơ của bạn rất thú vị, tuy nhiên ở thời điểm hiện tại, chúng tôi đang ưu tiên các ứng viên có kinh nghiệm phù hợp hơn với định hướng của dự án. Chúng tôi sẽ lưu thông tin của bạn vào Talent Pool cho các cơ hội trong tương lai.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033400"
-  },
-  {
-    "id": 20,
-    "applicant_id": 71092,
-    "applicant_name": "Mai Van L",
-    "position": "Backend Developer",
-    "total_score": 92,
-    "max_score": 100,
-    "percentage": 92,
-    "recommendation": "STRONG_PASS",
-    "status": "New Application",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 36.800000000000004,
-        "points": 27.599999999999998
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 27.599999999999998,
-        "points": 18.400000000000002
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 23.0
-      },
-      "education": {
-        "relevant": true,
-        "points": 13.799999999999999
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [
-      "Sự khác biệt lớn nhất giữa asyncio và multi-threading trong Python là gì?",
-      "Làm thế nào để bạn scale một hệ thống API chịu tải lớn?",
-      "Kinh nghiệm xử lý transaction an toàn trong SQL Database?"
-    ],
-    "draft_email": "Kính gửi Mai Van L,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí Backend Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033421"
-  },
-  {
-    "id": 21,
-    "applicant_id": 19172,
-    "applicant_name": "Trinh Thi M",
-    "position": "Backend Developer",
-    "total_score": 80,
-    "max_score": 100,
-    "percentage": 80,
-    "recommendation": "STRONG_PASS",
-    "status": "CV Screening",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 32.0,
-        "points": 24.0
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 24.0,
-        "points": 16.0
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 20.0
-      },
-      "education": {
-        "relevant": true,
-        "points": 12.0
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [
-      "Sự khác biệt lớn nhất giữa asyncio và multi-threading trong Python là gì?",
-      "Làm thế nào để bạn scale một hệ thống API chịu tải lớn?",
-      "Kinh nghiệm xử lý transaction an toàn trong SQL Database?"
-    ],
-    "draft_email": "Kính gửi Trinh Thi M,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí Backend Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033434"
-  },
-  {
-    "id": 22,
-    "applicant_id": 82725,
-    "applicant_name": "Dang Van N",
-    "position": "Backend Developer",
-    "total_score": 95,
-    "max_score": 100,
-    "percentage": 95,
-    "recommendation": "STRONG_PASS",
-    "status": "Offer Extended",
-    "action": "Schedule interview ASAP",
-    "breakdown": {
-      "required_skills": {
-        "found": [],
-        "percentage": 38.0,
-        "points": 28.5
-      },
-      "preferred_skills": {
-        "found": [],
-        "percentage": 28.5,
-        "points": 19.0
-      },
-      "experience": {
-        "years_found": 2,
-        "years_required": 2,
-        "points": 23.75
-      },
-      "education": {
-        "relevant": true,
-        "points": 14.25
-      },
-      "certifications": {
-        "found": [],
-        "points": 0
-      }
-    },
-    "min_score": 60,
-    "interview_questions": [
-      "Sự khác biệt lớn nhất giữa asyncio và multi-threading trong Python là gì?",
-      "Làm thế nào để bạn scale một hệ thống API chịu tải lớn?",
-      "Kinh nghiệm xử lý transaction an toàn trong SQL Database?"
-    ],
-    "draft_email": "Kính gửi Dang Van N,\n\nChúng tôi rất ấn tượng với CV của bạn cho vị trí Backend Developer tại Paraline. HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\nTrân trọng,\nParaline AI Recruitment Team",
-    "created_at": "2026-03-09T23:14:44.033509"
+    "min_score": 40,
+    "raw_projects": "",
+    "raw_skills": "ai skills: computer vision, llms, rag-chatbot, mlops, docker\nprogramming languages: c++, python\nframework: scikit-learn, tensorflow, pytorch, langchain, langgraph, onnx,  tensorrt\nenglish communication: intermediate",
+    "applicant_name": "Doan Duc Thang",
+    "applicant_id": 7
   }
 ]

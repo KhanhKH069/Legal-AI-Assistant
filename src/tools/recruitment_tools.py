@@ -209,3 +209,107 @@ def get_hiring_stats() -> str:
     )
 
     return "\n".join(lines)
+
+
+@tool
+def convert_applicant_to_employee(
+    applicant_id: str,
+    position: str,
+    department: str,
+    start_date: str,
+    salary_vnd: int,
+) -> str:
+    """Convert a hired applicant into a new employee record and trigger onboarding.
+    Use this after an applicant has been marked HIRED in the recruitment pipeline.
+
+    Args:
+        applicant_id: Applicant/candidate ID (e.g. CAND-001)
+        position: Job position the candidate was hired for
+        department: Department the new employee will join
+        start_date: Official start date in YYYY-MM-DD format
+        salary_vnd: Agreed monthly salary in VND (e.g. 25000000)
+    """
+    import json
+    import os as _os
+
+    emp_path = _os.path.join(
+        _os.path.dirname(__file__), "..", "..", "data", "employees_data.json"
+    )
+    try:
+        with open(emp_path, encoding="utf-8") as f:
+            emp_data = json.load(f)
+    except FileNotFoundError:
+        emp_data = {"employees": [], "total": 0}
+
+    existing_ids = [e["employee_id"] for e in emp_data["employees"]]
+    # Generate next EMP ID
+    nums = [int(e[3:]) for e in existing_ids if e.startswith("EMP") and e[3:].isdigit()]
+    new_num = max(nums) + 1 if nums else 101
+    new_emp_id = f"EMP{new_num:03d}"
+
+    # Generate onboarding checklist
+    onboarding_checklist = [
+        {"task": "Ky hop dong lao dong", "due": "Day 1", "status": "Pending"},
+        {"task": "Ky NDA", "due": "Day 1", "status": "Pending"},
+        {"task": "Dang ky BHXH/BHYT", "due": "Week 1", "status": "Pending"},
+        {"task": "Dang ky tai khoan ngan hang", "due": "Week 1", "status": "Pending"},
+        {"task": "Nhan thiet bi lam viec", "due": "Day 1", "status": "Pending"},
+        {"task": "Tao tai khoan he thong IT", "due": "Day 1", "status": "Pending"},
+        {"task": "Tham quan van phong & gap team", "due": "Day 1", "status": "Pending"},
+        {"task": "Training quy trinh noi bo", "due": "Week 2", "status": "Pending"},
+        {"task": "Review 30-day checklist", "due": "Month 1", "status": "Pending"},
+    ]
+
+    new_employee = {
+        "employee_id": new_emp_id,
+        "name": f"New Employee (from {applicant_id})",
+        "gender": "M",
+        "department": department,
+        "position": position,
+        "level": "Junior",
+        "email": f"{new_emp_id.lower()}@paraline.vn",
+        "phone": "",
+        "hire_date": start_date,
+        "status": "Active",
+        "manager_id": None,
+        "salary_vnd": salary_vnd,
+        "leave_balance": 12,
+        "performance_rating": 0.0,
+        "skills": [],
+        "contract": {
+            "start": start_date,
+            "end": str(
+                __import__("datetime")
+                .date.fromisoformat(start_date)
+                .replace(
+                    year=__import__("datetime").date.fromisoformat(start_date).year + 1
+                )
+            ),
+        },
+        "address": "",
+        "emergency_contact": {},
+        "education": "",
+        "source_applicant_id": applicant_id,
+        "onboarding_checklist": onboarding_checklist,
+    }
+
+    emp_data["employees"].append(new_employee)
+    emp_data["total"] = len(emp_data["employees"])
+
+    with open(emp_path, "w", encoding="utf-8") as f:
+        json.dump(emp_data, f, ensure_ascii=False, indent=2)
+
+    checklist_summary = "\n".join(
+        f"  - {item['task']} ({item['due']})" for item in onboarding_checklist
+    )
+
+    return (
+        f"Chuyen doi ung vien thanh nhan vien thanh cong!\n"
+        f"- Ma nhan vien moi: {new_emp_id}\n"
+        f"- Vi tri: {position} | Phong ban: {department}\n"
+        f"- Ngay bat dau: {start_date}\n"
+        f"- Luong co ban: {salary_vnd:,} VND/thang\n\n"
+        f"Onboarding checklist da duoc tao tu dong ({len(onboarding_checklist)} tasks):\n"
+        f"{checklist_summary}\n\n"
+        f"Email chao mung va huong dan onboarding se duoc gui den {new_emp_id}@paraline.vn"
+    )

@@ -19,26 +19,12 @@ if not config.enable_offline_mode and config.google_api_key:
     )
 
 
+from src.core.prompt_loader import get_prompt
+
+
 def create_benefits_agent():
     """Create Benefits Agent."""
-    system_prompt = """Bạn là Benefits Agent — chuyên gia phúc lợi nhân viên tại Paraline.
-
-    Vai trò của bạn:
-    - Giải thích chi tiết các gói phúc lợi, bảo hiểm, phụ cấp của công ty
-    - Tra cứu phúc lợi hiện tại của một nhân viên cụ thể
-    - Hỗ trợ nhân viên đăng ký thay đổi gói phúc lợi
-
-    Công cụ có sẵn:
-    - get_employee_benefits: Xem phúc lợi hiện tại của một nhân viên
-    - get_benefits_catalog: Xem toàn bộ danh mục phúc lợi công ty
-    - request_benefit_change: Nộp yêu cầu thay đổi gói phúc lợi
-
-    Khi nhân viên hỏi về "bảo hiểm", "phụ cấp", "phúc lợi của tôi", hãy dùng get_employee_benefits.
-    Khi hỏi "các gói bảo hiểm", "công ty có những phúc lợi gì", hãy dùng get_benefits_catalog.
-    Khi muốn "đổi gói", "đăng ký thêm", hãy dùng request_benefit_change.
-
-    Trả lời bằng tiếng Việt khi người dùng hỏi bằng tiếng Việt.
-    """
+    system_prompt = get_prompt("benefits_agent")
 
     prompt = ChatPromptTemplate.from_messages(
         [

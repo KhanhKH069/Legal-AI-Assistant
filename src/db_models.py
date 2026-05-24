@@ -33,6 +33,7 @@ class ScreeningResult(SQLModel, table=True):  # type: ignore[call-arg]
     status: str
     action: str
     breakdown: Dict[str, Any] = Field(sa_column=Column(JSON))
+    interview_questions: Optional[Any] = Field(sa_column=Column(JSON), default=None)
     min_score: float
     created_at: datetime = Field(default_factory=datetime.utcnow)
 

@@ -1,0 +1,14 @@
+__pycache__
+.venv
+.env
+chroma_db/
+chroma_db_offline/
+data/sql_db/hr_agent.db
+data/paraline.db
+data/logs/
+cv_uploads/
+*.pyc
+*.pyo
+.pytest_cache
+.ruff_cache
+tests/

@@ -1,61 +1,364 @@
 {
-  "Software Engineer": {
+  "Software Engineer - Intern": {
     "position_info": {
-      "title": "Software Engineer",
+      "title": "Software Engineer - Intern",
       "department": "Engineering",
-      "level": "Mid-Senior",
-      "salary_range": "15-30 triệu VND"
+      "level": "Intern",
+      "salary_range": "$20-$40/hour"
     },
     "technical_skills": {
       "required": {
-        "programming": [
-          "Python",
-          "JavaScript",
-          "Java"
-        ],
-        "databases": [
-          "SQL",
-          "PostgreSQL",
-          "MongoDB"
-        ],
-        "tools": [
-          "Git",
-          "Docker",
-          "Linux"
-        ],
-        "frameworks": [
-          "Django/Flask",
-          "React/Vue",
-          "REST API"
+        "skills": [
+          "Python Programming",
+          "Data Structures",
+          "Algorithms",
+          "Object-Oriented Programming (OOP) principles",
+          "Git Version Control",
+          "Command Line Interface (CLI) proficiency",
+          "Basic Debugging Techniques",
+          "Problem Solving Logic"
         ]
       },
       "preferred": {
-        "cloud": [
-          "AWS",
-          "Azure",
-          "GCP"
-        ],
-        "devops": [
-          "Kubernetes",
-          "Jenkins",
-          "CI/CD"
-        ],
-        "testing": [
-          "Pytest",
-          "Jest",
-          "Unit Testing"
-        ],
-        "other": [
-          "Microservices",
-          "GraphQL",
-          "Redis"
+        "skills": [
+          "SQL (SELECT, INSERT, UPDATE, DELETE)",
+          "HTML5, CSS3, JavaScript (ES6+)",
+          "RESTful API concepts",
+          "Linux/Unix OS familiarity",
+          "Unit Testing frameworks (e.g., Pytest, JUnit)",
+          "Web Framework exposure (e.g., Flask, Django, Node.js Express, Spring Boot, React, Angular, Vue.js)",
+          "Cloud Computing fundamentals (AWS EC2, S3, Azure VMs, GCP Compute Engine)",
+          "Agile/Scrum methodology understanding",
+          "Docker fundamentals"
         ]
       },
       "weight": 50
     },
     "experience": {
-      "min_years": 2,
-      "max_years": 8,
+      "min_years": 0,
+      "max_years": 1,
+      "preferred_years": 0,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce"
+      ],
+      "specific_experience": [
+        "Full-stack development",
+        "API design & development",
+        "Database optimization",
+        "Team collaboration"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Computer Engineering"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Physics",
+        "Electronics"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [],
+      "nice_to_have": [
+        "Scrum Master",
+        "TOGAF",
+        "ITIL"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Teamwork",
+        "Communication",
+        "Problem solving",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Leadership",
+        "Mentoring",
+        "Agile/Scrum experience",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 40,
+      "excellent_score": 60,
+      "auto_reject_below": 20,
+      "auto_interview_above": 65
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Software Engineer - Fresher": {
+    "position_info": {
+      "title": "Software Engineer - Fresher",
+      "department": "Engineering",
+      "level": "Fresher",
+      "salary_range": "Entry-level competitive salary"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Python programming",
+          "Data Structures and Algorithms",
+          "Object-Oriented Programming (OOP) principles",
+          "Git version control",
+          "SQL fundamentals",
+          "Linux/Unix command line",
+          "Problem-solving methodologies"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "HTML5",
+          "CSS3",
+          "JavaScript (ES6+)",
+          "RESTful API concepts",
+          "Web framework exposure (e.g., Flask, Express.js)",
+          "Unit Testing principles",
+          "Agile/Scrum methodology",
+          "Cloud computing fundamentals (e.g., AWS EC2/S3 basics)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 2,
+      "preferred_years": 1,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce"
+      ],
+      "specific_experience": [
+        "Full-stack development",
+        "API design & development",
+        "Database optimization",
+        "Team collaboration"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Computer Engineering",
+        "Master of Computer Applications"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Physics",
+        "Electronics"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "None required"
+      ],
+      "nice_to_have": [
+        "Scrum Master",
+        "TOGAF",
+        "ITIL"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Teamwork",
+        "Communication",
+        "Problem solving",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Leadership",
+        "Mentoring",
+        "Agile/Scrum experience",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 45,
+      "excellent_score": 65,
+      "auto_reject_below": 25,
+      "auto_interview_above": 70
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Software Engineer - Junior": {
+    "position_info": {
+      "title": "Software Engineer - Junior",
+      "department": "Engineering",
+      "level": "Junior",
+      "salary_range": "$60,000 - $90,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Object-Oriented Programming (OOP)",
+          "Python",
+          "Java",
+          "Git & GitHub/GitLab",
+          "Data Structures & Algorithms",
+          "SQL (e.g., PostgreSQL, MySQL)",
+          "RESTful API principles",
+          "Web Framework (e.g., Spring Boot, Flask, Express.js)",
+          "Unit Testing frameworks",
+          "Debugging methodologies"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Cloud Platform exposure (e.g., AWS EC2/S3, Azure App Service, GCP Compute Engine)",
+          "Docker fundamentals",
+          "CI/CD pipeline concepts (e.g., Jenkins, GitHub Actions)",
+          "Frontend Framework (e.g., React, Angular, Vue.js)",
+          "NoSQL Databases (e.g., MongoDB, Redis)",
+          "Agile/Scrum methodologies",
+          "Linux/Unix command line proficiency",
+          "Microservices architecture understanding",
+          "Asynchronous programming",
+          "Test-Driven Development (TDD) concepts"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 1,
+      "max_years": 3,
+      "preferred_years": 2,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce"
+      ],
+      "specific_experience": [
+        "Full-stack development",
+        "API design & development",
+        "Database optimization",
+        "Team collaboration"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Computer Engineering",
+        "Bootcamp Graduate"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Physics",
+        "Electronics"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Cloud Practitioner",
+        "Azure Fundamentals",
+        "Google Cloud Digital Leader",
+        "Oracle Certified Associate, Java SE Programmer"
+      ],
+      "nice_to_have": [
+        "Scrum Master",
+        "TOGAF",
+        "ITIL"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Teamwork",
+        "Communication",
+        "Problem solving",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Leadership",
+        "Mentoring",
+        "Agile/Scrum experience",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 50,
+      "excellent_score": 70,
+      "auto_reject_below": 30,
+      "auto_interview_above": 75
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Software Engineer - Middle": {
+    "position_info": {
+      "title": "Software Engineer - Middle",
+      "department": "Engineering",
+      "level": "Middle",
+      "salary_range": "80,000 - 120,000 USD"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Java",
+          "Spring Boot",
+          "RESTful API Development",
+          "SQL Databases (PostgreSQL, MySQL)",
+          "Git",
+          "Unit Testing (JUnit, Mockito)",
+          "Agile/Scrum Methodologies",
+          "Docker"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Cloud Platforms (AWS, Azure, GCP)",
+          "CI/CD Pipelines (Jenkins, GitLab CI)",
+          "Microservices Architecture",
+          "NoSQL Databases (MongoDB, Redis)",
+          "Kafka/RabbitMQ",
+          "Kubernetes (basic concepts)",
+          "Frontend Frameworks (React, Angular)",
+          "Performance Optimization",
+          "System Design Principles"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 3,
+      "max_years": 5,
       "preferred_years": 3,
       "industries": [
         "Software",
@@ -88,10 +391,9 @@
     },
     "certifications": {
       "preferred": [
-        "AWS Certified Developer",
-        "Google Cloud Professional",
-        "Oracle Certified Professional",
-        "Certified Kubernetes Administrator"
+        "AWS Certified Developer - Associate",
+        "Microsoft Certified: Azure Developer Associate",
+        "Oracle Certified Professional, Java SE Programmer"
       ],
       "nice_to_have": [
         "Scrum Master",
@@ -116,75 +418,482 @@
       "weight": 10
     },
     "scoring": {
-      "min_pass_score": 60,
-      "excellent_score": 80,
-      "auto_reject_below": 40,
-      "auto_interview_above": 85
+      "min_pass_score": 55,
+      "excellent_score": 75,
+      "auto_reject_below": 35,
+      "auto_interview_above": 80
     },
     "disqualifiers": [
-      "Không có kinh nghiệm lập trình",
-      "Không có học vấn liên quan và không có kinh nghiệm",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
       "CV không đầy đủ thông tin"
     ]
   },
-  "Frontend Developer": {
+  "Software Engineer - Senior": {
     "position_info": {
-      "title": "Frontend Developer",
+      "title": "Software Engineer - Senior",
       "department": "Engineering",
-      "level": "Junior-Mid",
-      "salary_range": "12-25 triệu VND"
+      "level": "Senior",
+      "salary_range": "$120,000 - $180,000"
     },
     "technical_skills": {
       "required": {
-        "core": [
-          "HTML5",
-          "CSS3",
-          "JavaScript",
-          "ES6+"
-        ],
-        "frameworks": [
-          "React",
-          "Vue.js",
-          "Angular"
-        ],
-        "styling": [
-          "Sass/SCSS",
-          "Tailwind CSS",
-          "Responsive Design"
-        ],
-        "tools": [
-          "Git",
-          "Webpack",
-          "npm/yarn"
+        "skills": [
+          "Distributed Systems Architecture",
+          "Microservices Design Patterns",
+          "Cloud Native Development (AWS/Azure/GCP)",
+          "Container Orchestration (Kubernetes, Docker Swarm)",
+          "Advanced Database Optimization (SQL/NoSQL)",
+          "CI/CD Pipeline Automation (Jenkins, GitLab CI, GitHub Actions)",
+          "Performance Profiling & Tuning",
+          "API Design & Development (RESTful, gRPC)",
+          "Test Automation Frameworks (e.g., JUnit, Pytest, Mockito)",
+          "Git Advanced Workflows (GitFlow, Trunk-Based Development)"
         ]
       },
       "preferred": {
-        "advanced": [
-          "TypeScript",
-          "Next.js",
-          "Nuxt.js"
-        ],
-        "state": [
-          "Redux",
-          "Vuex",
-          "MobX"
-        ],
-        "testing": [
-          "Jest",
-          "React Testing Library",
-          "Cypress"
-        ],
-        "other": [
-          "PWA",
-          "Performance Optimization",
-          "SEO"
+        "skills": [
+          "Infrastructure as Code (Terraform, CloudFormation)",
+          "Message Queueing Systems (Kafka, RabbitMQ, SQS)",
+          "Observability Stacks (Prometheus, Grafana, ELK)",
+          "Domain-Driven Design (DDD)",
+          "Event-Driven Architecture",
+          "Security Best Practices (OWASP Top 10, SAST/DAST)",
+          "Mentorship & Technical Leadership",
+          "System Reliability Engineering (SRE) Principles",
+          "Specific Language Ecosystem Expertise (e.g., Spring Boot, .NET Core, Go microservices)",
+          "Serverless Computing (AWS Lambda, Azure Functions, Google Cloud Functions)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 7,
+      "max_years": 8,
+      "preferred_years": 5,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce"
+      ],
+      "specific_experience": [
+        "Full-stack development",
+        "API design & development",
+        "Database optimization",
+        "Team collaboration"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Electrical Engineering",
+        "Applied Mathematics"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Physics",
+        "Electronics"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Solutions Architect - Professional",
+        "Azure Solutions Architect Expert",
+        "Google Professional Cloud Architect",
+        "Certified Kubernetes Administrator (CKA)",
+        "Oracle Certified Professional, Java SE",
+        "Professional Scrum Master (PSM I/II)"
+      ],
+      "nice_to_have": [
+        "Scrum Master",
+        "TOGAF",
+        "ITIL"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Teamwork",
+        "Communication",
+        "Problem solving",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Leadership",
+        "Mentoring",
+        "Agile/Scrum experience",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 65,
+      "excellent_score": 80,
+      "auto_reject_below": 45,
+      "auto_interview_above": 85
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Software Engineer - Expert": {
+    "position_info": {
+      "title": "Software Engineer - Expert",
+      "department": "Engineering",
+      "level": "Expert",
+      "salary_range": "$180,000 - $250,000+"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Distributed Systems Architecture (Microservices, Event-Driven)",
+          "Cloud Platform Expertise (AWS/Azure/GCP - advanced services, cost optimization)",
+          "Scalability & Performance Engineering (High-throughput, Low-latency systems)",
+          "Advanced Data Modeling & Database Optimization (SQL/NoSQL, Sharding, Replication)",
+          "DevOps & SRE Principles (CI/CD, Infrastructure as Code, Observability)",
+          "Security Architecture & Secure Coding Practices (OWASP Top 10, Threat Modeling)",
+          "Technical Leadership & Mentorship"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Domain-Driven Design (DDD) & Bounded Contexts",
+          "Container Orchestration (Kubernetes, Istio/Service Mesh)",
+          "Big Data Technologies (Spark, Kafka Streams, Data Lakes)",
+          "Machine Learning Operations (MLOps) & Model Deployment",
+          "Chaos Engineering & Resilience Testing",
+          "API Gateway Management & GraphQL Design",
+          "Advanced Networking & Content Delivery Networks (CDNs)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 10,
+      "max_years": 15,
+      "preferred_years": 8,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce"
+      ],
+      "specific_experience": [
+        "Full-stack development",
+        "API design & development",
+        "Database optimization",
+        "Team collaboration"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Distributed Systems",
+        "Information Technology",
+        "Data Science"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Physics",
+        "Electronics"
+      ],
+      "bootcamp_acceptable": false,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Solutions Architect - Professional",
+        "Google Cloud Professional Cloud Architect",
+        "Azure Solutions Architect Expert",
+        "Certified Kubernetes Administrator (CKA)",
+        "TOGAF Certification"
+      ],
+      "nice_to_have": [
+        "Scrum Master",
+        "TOGAF",
+        "ITIL"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Teamwork",
+        "Communication",
+        "Problem solving",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Leadership",
+        "Mentoring",
+        "Agile/Scrum experience",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 75,
+      "excellent_score": 85,
+      "auto_reject_below": 55,
+      "auto_interview_above": 90
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Frontend Developer - Intern": {
+    "position_info": {
+      "title": "Frontend Developer - Intern",
+      "department": "Engineering",
+      "level": "Intern",
+      "salary_range": "Competitive Intern Stipend"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "HTML5 Semantics",
+          "CSS3 Layouts (Flexbox, Grid)",
+          "JavaScript ES6+ Fundamentals",
+          "DOM Manipulation",
+          "Git Version Control",
+          "Responsive Web Design Principles",
+          "Browser Developer Tools Usage"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "React.js Basics",
+          "CSS Preprocessors (Sass)",
+          "npm/yarn Package Management",
+          "RESTful API Consumption Basics",
+          "Command Line Interface Proficiency",
+          "Figma/Sketch Design Hand-off",
+          "Agile Development Methodology"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 1,
+      "preferred_years": 0,
+      "industries": [
+        "Web Development",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "Building responsive web applications",
+        "UI/UX implementation",
+        "API integration",
+        "Cross-browser compatibility"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Web Development Bootcamp",
+        "Information Technology",
+        "Related Technical Field"
+      ],
+      "alternative_majors": [
+        "Graphic Design",
+        "Digital Media"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [],
+      "nice_to_have": [
+        "Adobe Certified Expert",
+        "UI/UX Design Certificate"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Creativity",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "UI/UX mindset",
+        "Design thinking",
+        "Agile methodology"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 40,
+      "excellent_score": 60,
+      "auto_reject_below": 20,
+      "auto_interview_above": 65
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức nền tảng",
+      "Không có portfolio hoặc demo projects",
+      "Thiếu kiến thức và định hướng cơ bản"
+    ]
+  },
+  "Frontend Developer - Fresher": {
+    "position_info": {
+      "title": "Frontend Developer - Fresher",
+      "department": "Engineering",
+      "level": "Fresher",
+      "salary_range": "$45,000 - $65,000 annually"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "HTML5 semantics",
+          "CSS3 (Flexbox, Grid)",
+          "JavaScript (ES6+ syntax, async/await basics)",
+          "DOM manipulation",
+          "Responsive Web Design principles",
+          "Git version control (clone, commit, push, pull)",
+          "Browser Developer Tools usage",
+          "Basic Web Accessibility (WCAG principles)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "React.js (component-based architecture, props, state)",
+          "CSS Preprocessors (Sass/SCSS syntax)",
+          "Package Managers (npm/yarn basic commands)",
+          "RESTful API integration (GET requests)",
+          "Basic UI/UX principles (wireframing, mockups)",
+          "Webpack or Vite (basic configuration understanding)",
+          "Agile/Scrum methodology exposure",
+          "Testing fundamentals (Jest/React Testing Library basics)",
+          "TypeScript (basic types, interfaces)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 2,
+      "preferred_years": 1,
+      "industries": [
+        "Web Development",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "Building responsive web applications",
+        "UI/UX implementation",
+        "API integration",
+        "Cross-browser compatibility"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Bachelor of Science in Computer Science",
+        "Software Engineering Degree",
+        "Information Technology Degree",
+        "Web Development Bootcamp Graduate",
+        "Associate's Degree in Computer Programming"
+      ],
+      "alternative_majors": [
+        "Graphic Design",
+        "Digital Media"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "FreeCodeCamp Front End Development Libraries Certification",
+        "Coursera Web Development Specialization Certificate",
+        "Udemy React - The Complete Guide (Course Completion)",
+        "W3Schools HTML/CSS/JavaScript Certification"
+      ],
+      "nice_to_have": [
+        "Adobe Certified Expert",
+        "UI/UX Design Certificate"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Creativity",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "UI/UX mindset",
+        "Design thinking",
+        "Agile methodology"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 45,
+      "excellent_score": 65,
+      "auto_reject_below": 25,
+      "auto_interview_above": 70
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức nền tảng",
+      "Không có portfolio hoặc demo projects",
+      "Thiếu kiến thức và định hướng cơ bản"
+    ]
+  },
+  "Frontend Developer - Junior": {
+    "position_info": {
+      "title": "Frontend Developer - Junior",
+      "department": "Engineering",
+      "level": "Junior",
+      "salary_range": "$55,000 - $75,000 USD"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "HTML5 (Semantic HTML)",
+          "CSS3 (Flexbox, CSS Grid)",
+          "JavaScript (ES6+, Asynchronous JS)",
+          "React.js (Component-based architecture)",
+          "Git (Branching, Merging, Pull Requests)",
+          "Responsive Web Design (Media Queries)",
+          "RESTful API Integration"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "TypeScript (Type definitions)",
+          "State Management (Redux Toolkit or React Context API)",
+          "Webpack or Vite (Module Bundling)",
+          "Sass or Less (CSS Preprocessing)",
+          "Unit Testing (Jest, React Testing Library)",
+          "Browser Developer Tools (Debugging, Performance tab)",
+          "Agile/Scrum Methodology",
+          "Web Accessibility (WCAG 2.1)"
         ]
       },
       "weight": 50
     },
     "experience": {
       "min_years": 1,
-      "max_years": 5,
+      "max_years": 3,
       "preferred_years": 2,
       "industries": [
         "Web Development",
@@ -203,9 +912,10 @@
       "required_degree": "Bachelor",
       "preferred_majors": [
         "Computer Science",
+        "Software Engineering",
         "Web Development",
         "Information Technology",
-        "Design"
+        "Interactive Media Design"
       ],
       "alternative_majors": [
         "Graphic Design",
@@ -216,9 +926,112 @@
     },
     "certifications": {
       "preferred": [
-        "Google Mobile Web Specialist",
-        "React Developer Certification",
-        "Front-End Web Developer (FreeCodeCamp)"
+        "Certified Frontend Developer",
+        "React.js Developer Certification"
+      ],
+      "nice_to_have": [
+        "Adobe Certified Expert",
+        "UI/UX Design Certificate"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Creativity",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "UI/UX mindset",
+        "Design thinking",
+        "Agile methodology"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 50,
+      "excellent_score": 70,
+      "auto_reject_below": 30,
+      "auto_interview_above": 75
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức nền tảng",
+      "Không có portfolio hoặc demo projects",
+      "Thiếu kiến thức và định hướng cơ bản"
+    ]
+  },
+  "Frontend Developer - Middle": {
+    "position_info": {
+      "title": "Frontend Developer - Middle",
+      "department": "Engineering",
+      "level": "Middle",
+      "salary_range": "$80,000 - $120,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "HTML5",
+          "CSS3 (Flexbox, Grid)",
+          "JavaScript (ES6+, Asynchronous JS)",
+          "React.js (Hooks, Context API)",
+          "State Management (Redux Toolkit or Zustand)",
+          "RESTful API Integration",
+          "Git (Branching, Merging, Rebasing)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "TypeScript",
+          "Next.js or Gatsby.js",
+          "Unit Testing (Jest, React Testing Library)",
+          "CSS Preprocessors (SASS or LESS)",
+          "Web Performance Optimization (Lighthouse, Web Vitals)",
+          "Web Accessibility (WCAG 2.1)",
+          "Webpack or Vite Configuration",
+          "Agile/Scrum Methodologies"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 3,
+      "max_years": 5,
+      "preferred_years": 3,
+      "industries": [
+        "Web Development",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "Building responsive web applications",
+        "UI/UX implementation",
+        "API integration",
+        "Cross-browser compatibility"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Web Development",
+        "Information Technology",
+        "Bootcamp Graduate"
+      ],
+      "alternative_majors": [
+        "Graphic Design",
+        "Digital Media"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "freeCodeCamp Front End Development Libraries Certification",
+        "Microsoft Certified: Azure Developer Associate (Frontend focus)",
+        "AWS Certified Developer - Associate (Frontend deployment focus)"
       ],
       "nice_to_have": [
         "Adobe Certified Expert",
@@ -242,82 +1055,262 @@
     },
     "scoring": {
       "min_pass_score": 55,
-      "excellent_score": 80,
+      "excellent_score": 75,
       "auto_reject_below": 35,
-      "auto_interview_above": 85
+      "auto_interview_above": 80
     },
     "disqualifiers": [
-      "Không biết HTML/CSS/JavaScript",
+      "Thiếu kiến thức nền tảng",
       "Không có portfolio hoặc demo projects",
-      "Không có kinh nghiệm với framework nào"
+      "Thiếu kiến thức và định hướng cơ bản"
     ]
   },
-  "Backend Developer": {
+  "Frontend Developer - Senior": {
     "position_info": {
-      "title": "Backend Developer",
+      "title": "Frontend Developer - Senior",
       "department": "Engineering",
-      "level": "Mid-Senior",
-      "salary_range": "15-28 triệu VND"
+      "level": "Senior",
+      "salary_range": "$120,000 - $180,000 USD"
     },
     "technical_skills": {
       "required": {
-        "programming": [
-          "Python",
-          "Java",
-          "Node.js",
-          "Go"
-        ],
-        "databases": [
-          "PostgreSQL",
-          "MySQL",
-          "MongoDB",
-          "Redis"
-        ],
-        "frameworks": [
-          "Django",
-          "Flask",
-          "Spring Boot",
-          "Express.js"
-        ],
-        "api": [
-          "REST API",
-          "GraphQL",
-          "WebSocket"
-        ],
-        "tools": [
-          "Git",
-          "Docker",
-          "Linux"
+        "skills": [
+          "TypeScript (Advanced)",
+          "React.js (Expert, Hooks, Context API, State Management like Redux/Zustand)",
+          "Frontend Architecture (Micro-frontends, Component-Driven Design, Design Patterns)",
+          "Web Performance Optimization (Lighthouse, Web Vitals, Bundle Analysis, Caching)",
+          "Unit/Integration Testing (Jest, React Testing Library, Cypress/Playwright)",
+          "CI/CD for Frontend (GitHub Actions/GitLab CI pipeline setup, automated deployments)",
+          "Accessibility (WCAG 2.1+, ARIA attributes, semantic HTML)",
+          "Git (Advanced workflows: rebase, cherry-pick, git-flow/trunk-based development)"
         ]
       },
       "preferred": {
-        "cloud": [
-          "AWS",
-          "GCP",
-          "Azure"
-        ],
-        "messaging": [
-          "RabbitMQ",
-          "Kafka",
-          "Redis Pub/Sub"
-        ],
-        "architecture": [
-          "Microservices",
-          "Event-driven architecture",
-          "Domain-driven design"
-        ],
-        "other": [
-          "Elasticsearch",
-          "Nginx",
-          "Load Balancing"
+        "skills": [
+          "Next.js (SSR/SSG expertise, data fetching strategies)",
+          "GraphQL (Client-side integration, Apollo Client/Relay)",
+          "Cloud Deployment (AWS Amplify, Vercel, Netlify, Azure Static Web Apps)",
+          "Docker (Containerization for development environments and deployment)",
+          "UI/UX Prototyping Tools (Figma, Storybook for component documentation)",
+          "Frontend Monitoring & Logging (Sentry, Datadog, New Relic)",
+          "Technical Leadership (Mentorship, Code Review best practices, Technical Design Document creation)",
+          "WebAssembly/Web Workers (for performance-critical applications)"
         ]
       },
       "weight": 50
     },
     "experience": {
-      "min_years": 2,
+      "min_years": 7,
       "max_years": 8,
-      "preferred_years": 3,
+      "preferred_years": 5,
+      "industries": [
+        "Web Development",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "Building responsive web applications",
+        "UI/UX implementation",
+        "API integration",
+        "Cross-browser compatibility"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Web Development",
+        "Related Technical Field"
+      ],
+      "alternative_majors": [
+        "Graphic Design",
+        "Digital Media"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "Professional Scrum Developer (PSD)",
+        "AWS Certified Developer - Associate",
+        "Google Cloud Certified - Associate Cloud Engineer"
+      ],
+      "nice_to_have": [
+        "Adobe Certified Expert",
+        "UI/UX Design Certificate"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Creativity",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "UI/UX mindset",
+        "Design thinking",
+        "Agile methodology"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 65,
+      "excellent_score": 80,
+      "auto_reject_below": 45,
+      "auto_interview_above": 85
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức nền tảng",
+      "Không có portfolio hoặc demo projects",
+      "Thiếu kiến thức và định hướng cơ bản"
+    ]
+  },
+  "Frontend Developer - Expert": {
+    "position_info": {
+      "title": "Frontend Developer - Expert",
+      "department": "Engineering",
+      "level": "Expert",
+      "salary_range": "$150,000 - $220,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "React.js (Hooks, Context API, Concurrent Mode)",
+          "TypeScript (Advanced types, Generics, Decorators)",
+          "Frontend Architecture (Micro-frontends, Monorepo strategies, Component-driven development)",
+          "Web Performance Optimization (Core Web Vitals, Lighthouse audits, Bundle Splitting, Lazy Loading)",
+          "State Management (Redux Toolkit, Zustand, Recoil)",
+          "Testing Frameworks (Jest, React Testing Library, Cypress/Playwright)",
+          "CI/CD for Frontend (GitHub Actions, GitLab CI, Vercel/Netlify deployments)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Next.js (SSR, SSG, ISR)",
+          "GraphQL (Apollo Client, Relay)",
+          "Design Systems (Storybook, Figma integration, Token-based theming)",
+          "Cloud Deployment (AWS Amplify, Vercel, Azure Static Web Apps)",
+          "WebAssembly (Wasm) integration",
+          "Node.js (API integration, BFF patterns)",
+          "Accessibility Standards (WCAG 2.1 AA, ARIA roles)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 10,
+      "max_years": 15,
+      "preferred_years": 8,
+      "industries": [
+        "Web Development",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "Building responsive web applications",
+        "UI/UX implementation",
+        "API integration",
+        "Cross-browser compatibility"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Web Development",
+        "Information Technology",
+        "Human-Computer Interaction"
+      ],
+      "alternative_majors": [
+        "Graphic Design",
+        "Digital Media"
+      ],
+      "bootcamp_acceptable": false,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Developer - Associate",
+        "Microsoft Certified: Azure Developer Associate",
+        "Google Cloud Professional Cloud Developer",
+        "Certified Kubernetes Application Developer (CKAD)",
+        "Frontend Masters Advanced Certifications"
+      ],
+      "nice_to_have": [
+        "Adobe Certified Expert",
+        "UI/UX Design Certificate"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Creativity",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "UI/UX mindset",
+        "Design thinking",
+        "Agile methodology"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 75,
+      "excellent_score": 85,
+      "auto_reject_below": 55,
+      "auto_interview_above": 90
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức nền tảng",
+      "Không có portfolio hoặc demo projects",
+      "Thiếu kiến thức và định hướng cơ bản"
+    ]
+  },
+  "Backend Developer - Intern": {
+    "position_info": {
+      "title": "Backend Developer - Intern",
+      "department": "Engineering",
+      "level": "Intern",
+      "salary_range": "Monthly Stipend: $2000-$4000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Python programming fundamentals",
+          "Java programming fundamentals",
+          "SQL query basics",
+          "Git version control",
+          "REST API principles",
+          "Data Structures and Algorithms (basic)",
+          "HTTP protocol understanding"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Flask framework basics",
+          "Node.js with Express.js basics",
+          "PostgreSQL database interaction",
+          "Docker containerization concepts",
+          "Cloud computing fundamentals (AWS/Azure/GCP)",
+          "Unit testing principles",
+          "Linux command line interface"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 1,
+      "preferred_years": 0,
       "industries": [
         "Software",
         "Fintech",
@@ -338,7 +1331,113 @@
       "preferred_majors": [
         "Computer Science",
         "Software Engineering",
-        "Information Technology"
+        "Information Technology",
+        "Computer Engineering"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Computer Engineering"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [],
+      "nice_to_have": [
+        "Docker Certified Associate",
+        "Kubernetes Administrator",
+        "Redis Certified Developer"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "System design thinking",
+        "Documentation skills",
+        "Code review skills",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 40,
+      "excellent_score": 60,
+      "auto_reject_below": 20,
+      "auto_interview_above": 65
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức nền tảng",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Backend Developer - Fresher": {
+    "position_info": {
+      "title": "Backend Developer - Fresher",
+      "department": "Engineering",
+      "level": "Fresher",
+      "salary_range": "$45,000 - $65,000 USD"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Python Programming",
+          "Data Structures & Algorithms",
+          "Git Version Control",
+          "SQL Database Fundamentals",
+          "RESTful API Concepts",
+          "Object-Oriented Programming (OOP)",
+          "Linux Command Line Basics"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Web Framework Exposure (e.g., Flask, Spring Boot)",
+          "NoSQL Database Basics (e.g., MongoDB, Redis)",
+          "Docker Fundamentals",
+          "Cloud Computing Concepts (e.g., AWS EC2/S3 basics)",
+          "Unit Testing Principles",
+          "Asynchronous Programming",
+          "Basic understanding of CI/CD",
+          "API Documentation (e.g., Swagger/OpenAPI concepts)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 2,
+      "preferred_years": 1,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "API design & development",
+        "Database design & optimization",
+        "System architecture",
+        "Performance optimization",
+        "Security best practices"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Applied Mathematics",
+        "Data Science"
       ],
       "alternative_majors": [
         "Mathematics",
@@ -349,10 +1448,7 @@
     },
     "certifications": {
       "preferred": [
-        "AWS Certified Solutions Architect",
-        "Google Cloud Professional",
-        "MongoDB Certified Developer",
-        "Oracle Certified Professional"
+        "None specified"
       ],
       "nice_to_have": [
         "Docker Certified Associate",
@@ -377,80 +1473,611 @@
       "weight": 10
     },
     "scoring": {
-      "min_pass_score": 60,
-      "excellent_score": 82,
-      "auto_reject_below": 40,
-      "auto_interview_above": 85
+      "min_pass_score": 45,
+      "excellent_score": 65,
+      "auto_reject_below": 25,
+      "auto_interview_above": 70
     },
     "disqualifiers": [
-      "Không có kinh nghiệm backend development",
-      "Không biết về database design",
-      "Không có kinh nghiệm với API development",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức nền tảng",
+      "Thiếu kiến thức và định hướng cơ bản",
       "CV không đầy đủ thông tin"
     ]
   },
-  "QA Engineer": {
+  "Backend Developer - Junior": {
     "position_info": {
-      "title": "QA Engineer",
-      "department": "Quality Assurance",
-      "level": "Junior-Mid",
-      "salary_range": "10-20 triệu VND"
+      "title": "Backend Developer - Junior",
+      "department": "Engineering",
+      "level": "Junior",
+      "salary_range": "$65,000 - $95,000"
     },
     "technical_skills": {
       "required": {
-        "testing": [
-          "Manual Testing",
-          "Test Case Design",
-          "Bug Reporting",
-          "Regression Testing"
-        ],
-        "tools": [
-          "Jira",
-          "TestRail",
-          "Postman",
-          "Browser DevTools"
-        ],
-        "fundamentals": [
-          "Software Testing Principles",
-          "SDLC",
-          "Agile/Scrum"
+        "skills": [
+          "Python",
+          "Flask",
+          "SQL (PostgreSQL)",
+          "RESTful API design",
+          "Git",
+          "Unit Testing (Pytest)",
+          "Docker (basic commands)",
+          "Linux Command Line"
         ]
       },
       "preferred": {
-        "automation": [
-          "Selenium",
-          "Cypress",
-          "Playwright",
-          "JUnit/TestNG"
-        ],
-        "programming": [
-          "Python",
-          "JavaScript",
-          "Java"
-        ],
-        "api_testing": [
-          "Postman",
-          "REST Assured",
-          "SoapUI"
-        ],
-        "performance": [
-          "JMeter",
-          "LoadRunner",
-          "Gatling"
-        ],
-        "other": [
-          "CI/CD",
-          "Jenkins",
-          "Git",
-          "SQL"
+        "skills": [
+          "Node.js",
+          "Express.js",
+          "MongoDB",
+          "AWS (EC2, S3)",
+          "CI/CD (GitHub Actions)",
+          "Message Queues (RabbitMQ)",
+          "ORM (SQLAlchemy)",
+          "JWT Authentication",
+          "Agile Methodology"
         ]
       },
       "weight": 50
     },
     "experience": {
-      "min_years": 1,
-      "max_years": 5,
+      "min_years": 2,
+      "max_years": 3,
       "preferred_years": 2,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "API design & development",
+        "Database design & optimization",
+        "System architecture",
+        "Performance optimization",
+        "Security best practices"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Computer Engineering"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Computer Engineering"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Cloud Practitioner",
+        "Microsoft Certified: Azure Fundamentals"
+      ],
+      "nice_to_have": [
+        "Docker Certified Associate",
+        "Kubernetes Administrator",
+        "Redis Certified Developer"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "System design thinking",
+        "Documentation skills",
+        "Code review skills",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 50,
+      "excellent_score": 70,
+      "auto_reject_below": 30,
+      "auto_interview_above": 75
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức nền tảng",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Backend Developer - Middle": {
+    "position_info": {
+      "title": "Backend Developer - Middle",
+      "department": "Engineering",
+      "level": "Middle",
+      "salary_range": "$80,000 - $120,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Python",
+          "Django",
+          "PostgreSQL",
+          "RESTful API Design",
+          "Git",
+          "Unit Testing Frameworks",
+          "Docker",
+          "Cloud Computing Fundamentals"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Java",
+          "Spring Boot",
+          "MongoDB",
+          "Kafka",
+          "CI/CD Pipelines",
+          "Microservices Architecture",
+          "AWS EC2/S3/RDS",
+          "Redis",
+          "Prometheus/Grafana",
+          "Kubernetes Fundamentals"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 3,
+      "max_years": 5,
+      "preferred_years": 3,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "API design & development",
+        "Database design & optimization",
+        "System architecture",
+        "Performance optimization",
+        "Security best practices"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Computer Engineering"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Computer Engineering"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Developer - Associate",
+        "Microsoft Certified: Azure Developer Associate",
+        "Google Cloud Certified - Associate Cloud Engineer"
+      ],
+      "nice_to_have": [
+        "Docker Certified Associate",
+        "Kubernetes Administrator",
+        "Redis Certified Developer"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "System design thinking",
+        "Documentation skills",
+        "Code review skills",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 55,
+      "excellent_score": 75,
+      "auto_reject_below": 35,
+      "auto_interview_above": 80
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức nền tảng",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Backend Developer - Senior": {
+    "position_info": {
+      "title": "Backend Developer - Senior",
+      "department": "Engineering",
+      "level": "Senior",
+      "salary_range": "$130,000 - $190,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Microservices architecture",
+          "Distributed systems design",
+          "RESTful API development & design",
+          "SQL/NoSQL database optimization (e.g., PostgreSQL, MongoDB, Cassandra)",
+          "Cloud platform expertise (AWS/Azure/GCP - e.g., EC2, S3, Lambda, AKS, GKE)",
+          "Containerization (Docker, Kubernetes)",
+          "System scalability & performance tuning",
+          "Architectural patterns (e.g., DDD, Event Sourcing)",
+          "Git & advanced branching strategies"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Message queues/brokers (e.g., Kafka, RabbitMQ, SQS)",
+          "Caching mechanisms (e.g., Redis, Memcached)",
+          "Infrastructure as Code (e.g., Terraform, CloudFormation, Ansible)",
+          "Observability & monitoring tools (e.g., Prometheus, Grafana, ELK stack)",
+          "GraphQL API development",
+          "Serverless computing (e.g., AWS Lambda, Azure Functions)",
+          "Security best practices (e.g., OWASP Top 10, OAuth2, JWT)",
+          "CI/CD pipeline implementation (e.g., Jenkins, GitLab CI, GitHub Actions)",
+          "Mentorship & technical leadership",
+          "Performance testing tools (e.g., JMeter, K6)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 7,
+      "max_years": 8,
+      "preferred_years": 5,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "API design & development",
+        "Database design & optimization",
+        "System architecture",
+        "Performance optimization",
+        "Security best practices"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Computer Engineering",
+        "Applied Mathematics"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Computer Engineering"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Developer - Professional",
+        "Azure Developer Associate",
+        "Google Cloud Professional Cloud Developer",
+        "Certified Kubernetes Application Developer (CKAD)",
+        "Oracle Certified Professional, Java SE Programmer"
+      ],
+      "nice_to_have": [
+        "Docker Certified Associate",
+        "Kubernetes Administrator",
+        "Redis Certified Developer"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "System design thinking",
+        "Documentation skills",
+        "Code review skills",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 65,
+      "excellent_score": 80,
+      "auto_reject_below": 45,
+      "auto_interview_above": 85
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức nền tảng",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Backend Developer - Expert": {
+    "position_info": {
+      "title": "Backend Developer - Expert",
+      "department": "Engineering",
+      "level": "Expert",
+      "salary_range": "$180,000 - $250,000+"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Distributed Systems Architecture (Microservices, Event-Driven, Serverless)",
+          "Advanced Database Design & Optimization (SQL/NoSQL, Sharding, Replication, Indexing, Query Tuning)",
+          "API Design & Development (RESTful, GraphQL, gRPC, API Gateway patterns)",
+          "Cloud Native Development & Orchestration (Kubernetes, Docker, Serverless, Service Mesh)",
+          "Performance Tuning & Scalability (Caching strategies, Load Balancing, Concurrency, Asynchronous Programming)",
+          "System Design & Architecture Patterns (CAP Theorem, Saga, CQRS, DDD principles)",
+          "CI/CD Pipeline Automation & DevOps Practices"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Polyglot Persistence & Data Streaming (Kafka, Cassandra, MongoDB, Redis)",
+          "Infrastructure as Code (Terraform, CloudFormation, Pulumi)",
+          "Security Architecture & Threat Modeling (OWASP, IAM, Data Encryption)",
+          "Observability & Monitoring Stacks (Prometheus, Grafana, ELK, Jaeger)",
+          "Technical Leadership & Mentorship (leading design reviews, architectural decisions)",
+          "Advanced Message Queuing (RabbitMQ, SQS, Azure Service Bus)",
+          "Resilience Engineering & Chaos Testing"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 10,
+      "max_years": 15,
+      "preferred_years": 8,
+      "industries": [
+        "Software",
+        "Fintech",
+        "E-commerce",
+        "SaaS"
+      ],
+      "specific_experience": [
+        "API design & development",
+        "Database design & optimization",
+        "System architecture",
+        "Performance optimization",
+        "Security best practices"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Distributed Systems",
+        "Data Engineering",
+        "Information Systems"
+      ],
+      "alternative_majors": [
+        "Mathematics",
+        "Computer Engineering"
+      ],
+      "bootcamp_acceptable": false,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Solutions Architect - Professional",
+        "Google Cloud Professional Cloud Architect",
+        "Certified Kubernetes Administrator (CKA)",
+        "Microsoft Certified: Azure Solutions Architect Expert",
+        "TOGAF Certification"
+      ],
+      "nice_to_have": [
+        "Docker Certified Associate",
+        "Kubernetes Administrator",
+        "Redis Certified Developer"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "System design thinking",
+        "Documentation skills",
+        "Code review skills",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 75,
+      "excellent_score": 85,
+      "auto_reject_below": 55,
+      "auto_interview_above": 90
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kiến thức nền tảng",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "QA Engineer - Intern": {
+    "position_info": {
+      "title": "QA Engineer - Intern",
+      "department": "Quality Assurance",
+      "level": "Intern",
+      "salary_range": "Competitive Intern Stipend"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Test Case Design",
+          "Defect Tracking Tools (e.g., Jira, Bugzilla)",
+          "Functional Testing",
+          "Regression Testing",
+          "Basic SQL Queries",
+          "Web Browser Developer Tools",
+          "Agile/Scrum Methodology (basic understanding)",
+          "Basic Programming Logic (e.g., Python, Java, JavaScript)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Version Control Systems (e.g., Git)",
+          "API Testing Tools (e.g., Postman, Swagger)",
+          "Test Automation Concepts",
+          "Basic Shell Scripting",
+          "Mobile Application Testing Fundamentals",
+          "Performance Testing Concepts",
+          "Linux Command Line Basics",
+          "Cloud Computing Fundamentals (e.g., AWS, Azure, GCP awareness)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 1,
+      "preferred_years": 0,
+      "industries": [
+        "Software",
+        "E-commerce",
+        "Fintech",
+        "Healthcare"
+      ],
+      "specific_experience": [
+        "Web application testing",
+        "Mobile app testing",
+        "API testing",
+        "Test documentation",
+        "Bug tracking & reporting"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Computer Engineering",
+        "Data Science"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "ISTQB Certified Tester Foundation Level (CTFL)"
+      ],
+      "nice_to_have": [
+        "Agile Tester Certification",
+        "Mobile Testing Certification",
+        "Performance Testing Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Documentation skills",
+        "Problem solving",
+        "Curiosity"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 40,
+      "excellent_score": 60,
+      "auto_reject_below": 20,
+      "auto_interview_above": 65
+    },
+    "disqualifiers": [
+      "Không có kiến thức cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng phân tích và attention to detail",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "QA Engineer - Fresher": {
+    "position_info": {
+      "title": "QA Engineer - Fresher",
+      "department": "Quality Assurance",
+      "level": "Fresher",
+      "salary_range": "Competitive for Fresher"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Software Testing Life Cycle (STLC)",
+          "Test Case Design",
+          "Bug Life Cycle",
+          "Jira",
+          "Manual Testing",
+          "Basic SQL Queries",
+          "Web Application Testing",
+          "Agile Methodology"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Basic Python",
+          "Git",
+          "Postman",
+          "Browser Developer Tools",
+          "Mobile Application Testing",
+          "Performance Testing Concepts",
+          "Security Testing Concepts",
+          "Cross-browser Testing",
+          "Test Automation Concepts"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 2,
+      "preferred_years": 1,
       "industries": [
         "Software",
         "E-commerce",
@@ -471,7 +2098,9 @@
       "preferred_majors": [
         "Computer Science",
         "Information Technology",
-        "Software Engineering"
+        "Software Engineering",
+        "Computer Applications",
+        "Electronics and Communication"
       ],
       "alternative_majors": [
         "Engineering",
@@ -483,9 +2112,225 @@
     },
     "certifications": {
       "preferred": [
-        "ISTQB Foundation Level",
-        "ISTQB Advanced Level",
-        "Certified Selenium Professional"
+        "ISTQB Certified Tester Foundation Level"
+      ],
+      "nice_to_have": [
+        "Agile Tester Certification",
+        "Mobile Testing Certification",
+        "Performance Testing Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Documentation skills",
+        "Problem solving",
+        "Curiosity"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 45,
+      "excellent_score": 65,
+      "auto_reject_below": 25,
+      "auto_interview_above": 70
+    },
+    "disqualifiers": [
+      "Không có kiến thức cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng phân tích và attention to detail",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "QA Engineer - Junior": {
+    "position_info": {
+      "title": "QA Engineer - Junior",
+      "department": "Quality Assurance",
+      "level": "Junior",
+      "salary_range": "$45,000 - $65,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Manual Test Case Execution",
+          "Test Case Design",
+          "Bug Reporting and Lifecycle Management (Jira, Azure DevOps)",
+          "SQL Querying (SELECT, JOIN)",
+          "API Testing Tools (Postman, Swagger UI)",
+          "Web Application Testing (cross-browser, UI/UX validation)",
+          "Agile/Scrum Methodologies"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Test Automation Scripting (Python, Java, JavaScript)",
+          "Automation Frameworks (Selenium WebDriver, Playwright, Cypress basics)",
+          "Version Control Systems (Git, GitHub/GitLab)",
+          "Performance Testing Concepts (LoadRunner, JMeter basics)",
+          "Mobile Application Testing (Android, iOS)",
+          "Cloud Platform Fundamentals (AWS, Azure, GCP)",
+          "CI/CD Pipeline Understanding (Jenkins, GitLab CI)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 1,
+      "max_years": 3,
+      "preferred_years": 2,
+      "industries": [
+        "Software",
+        "E-commerce",
+        "Fintech",
+        "Healthcare"
+      ],
+      "specific_experience": [
+        "Web application testing",
+        "Mobile app testing",
+        "API testing",
+        "Test documentation",
+        "Bug tracking & reporting"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Computer Applications",
+        "Quality Assurance"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "ISTQB Certified Tester Foundation Level (CTFL)",
+        "Certified Associate in Software Testing (CAST)"
+      ],
+      "nice_to_have": [
+        "Agile Tester Certification",
+        "Mobile Testing Certification",
+        "Performance Testing Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Documentation skills",
+        "Problem solving",
+        "Curiosity"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 50,
+      "excellent_score": 70,
+      "auto_reject_below": 30,
+      "auto_interview_above": 75
+    },
+    "disqualifiers": [
+      "Không có kiến thức cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng phân tích và attention to detail",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "QA Engineer - Middle": {
+    "position_info": {
+      "title": "QA Engineer - Middle",
+      "department": "Quality Assurance",
+      "level": "Middle",
+      "salary_range": "$70,000 - $100,000 USD annually"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Selenium WebDriver",
+          "Java",
+          "API Automation (Rest Assured)",
+          "SQL (Intermediate)",
+          "Git",
+          "CI/CD Pipelines (Jenkins/GitLab CI)",
+          "Jira/TestRail",
+          "Agile/Scrum Methodologies"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Performance Testing (JMeter)",
+          "Mobile Automation (Appium)",
+          "BDD Frameworks (Cucumber/Gherkin)",
+          "Docker (Basic)",
+          "Cloud Testing (AWS/Azure/GCP environments)",
+          "Security Testing (OWASP Top 10 awareness)",
+          "Linux/Unix Command Line",
+          "Test Data Management"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 3,
+      "max_years": 5,
+      "preferred_years": 3,
+      "industries": [
+        "Software",
+        "E-commerce",
+        "Fintech",
+        "Healthcare"
+      ],
+      "specific_experience": [
+        "Web application testing",
+        "Mobile app testing",
+        "API testing",
+        "Test documentation",
+        "Bug tracking & reporting"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Quality Assurance",
+        "Related Technical Field"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "ISTQB Certified Tester (Foundation Level)",
+        "AWS Certified Cloud Practitioner"
       ],
       "nice_to_have": [
         "Agile Tester Certification",
@@ -511,75 +2356,281 @@
     },
     "scoring": {
       "min_pass_score": 55,
-      "excellent_score": 78,
+      "excellent_score": 75,
       "auto_reject_below": 35,
-      "auto_interview_above": 82
+      "auto_interview_above": 80
     },
     "disqualifiers": [
-      "Không có hiểu biết về software testing",
-      "Không có kinh nghiệm testing thực tế",
+      "Không có kiến thức cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
       "Thiếu kỹ năng phân tích và attention to detail",
       "CV không đầy đủ thông tin"
     ]
   },
-  "Project Manager": {
+  "QA Engineer - Senior": {
     "position_info": {
-      "title": "Project Manager",
-      "department": "Management",
-      "level": "Mid-Senior",
-      "salary_range": "20-40 triệu VND"
+      "title": "QA Engineer - Senior",
+      "department": "Quality Assurance",
+      "level": "Senior",
+      "salary_range": "120,000 - 180,000 USD/year"
     },
     "technical_skills": {
       "required": {
-        "methodologies": [
-          "Agile/Scrum",
-          "Waterfall",
-          "Kanban",
-          "Project Lifecycle Management"
-        ],
-        "tools": [
-          "Jira",
-          "Trello",
-          "MS Project",
-          "Confluence"
-        ],
-        "planning": [
-          "Requirement Analysis",
-          "Resource Planning",
-          "Risk Management",
-          "Budget Management"
-        ],
-        "technical_knowledge": [
-          "Software Development Process",
-          "Basic Technical Understanding",
-          "API/Integration Concepts"
+        "skills": [
+          "Selenium WebDriver (Java/Python/C#)",
+          "API Automation (Rest Assured/Postman/Karate)",
+          "Performance Testing (JMeter/LoadRunner/k6)",
+          "CI/CD Integration (Jenkins/GitLab CI/Azure DevOps)",
+          "SQL (Complex Queries/Database Validation)",
+          "Cloud Testing (AWS/Azure/GCP environments)",
+          "Test Strategy & Framework Design"
         ]
       },
       "preferred": {
-        "advanced_tools": [
-          "Monday.com",
-          "Asana",
-          "Azure DevOps",
-          "Smartsheet"
-        ],
-        "reporting": [
-          "MS Excel Advanced",
-          "Power BI",
-          "Google Analytics",
-          "Data Visualization"
-        ],
-        "technical": [
-          "Basic SQL",
-          "Git Understanding",
-          "Cloud Platforms Knowledge"
+        "skills": [
+          "Mobile Automation (Appium/Espresso/XCUITest)",
+          "Security Testing (OWASP ZAP/Burp Suite)",
+          "Microservices Testing",
+          "Containerization (Docker/Kubernetes)",
+          "BDD (Cucumber/Gherkin)",
+          "Observability Tools (Prometheus/Grafana/ELK)",
+          "Mentorship & Technical Leadership"
         ]
       },
-      "weight": 40
+      "weight": 50
     },
     "experience": {
-      "min_years": 3,
-      "max_years": 10,
+      "min_years": 7,
+      "max_years": 8,
       "preferred_years": 5,
+      "industries": [
+        "Software",
+        "E-commerce",
+        "Fintech",
+        "Healthcare"
+      ],
+      "specific_experience": [
+        "Web application testing",
+        "Mobile app testing",
+        "API testing",
+        "Test documentation",
+        "Bug tracking & reporting"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Electrical Engineering",
+        "Applied Mathematics",
+        "Data Science"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "ISTQB Advanced Level Test Automation Engineer",
+        "ISTQB Advanced Level Test Manager",
+        "Certified Software Quality Engineer (CSQE)",
+        "Certified ScrumMaster (CSM)"
+      ],
+      "nice_to_have": [
+        "Agile Tester Certification",
+        "Mobile Testing Certification",
+        "Performance Testing Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Documentation skills",
+        "Problem solving",
+        "Curiosity"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 65,
+      "excellent_score": 80,
+      "auto_reject_below": 45,
+      "auto_interview_above": 85
+    },
+    "disqualifiers": [
+      "Không có kiến thức cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng phân tích và attention to detail",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "QA Engineer - Expert": {
+    "position_info": {
+      "title": "QA Engineer - Expert",
+      "department": "Quality Assurance",
+      "level": "Expert",
+      "salary_range": "$120,000 - $180,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Test Automation Framework Design (e.g., Selenium Grid, Playwright, Cypress architecture)",
+          "Advanced Programming for Test Automation (Python, Java, C#, JavaScript)",
+          "CI/CD Pipeline Integration & Optimization (Jenkins, GitLab CI, Azure DevOps)",
+          "Performance & Load Testing (JMeter, LoadRunner, k6 script development and analysis)",
+          "API Automation & Contract Testing (RestAssured, Postman Collections, Pact)",
+          "Cloud-Native Application Testing (AWS, Azure, GCP services, serverless testing)",
+          "Containerization & Orchestration Testing (Docker, Kubernetes, Helm)",
+          "Test Strategy & Architecture Leadership",
+          "Distributed Systems Testing"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Security Testing Methodologies (OWASP Top 10, SAST/DAST integration)",
+          "Mobile Test Automation (Appium, Espresso, XCUITest)",
+          "Data Pipeline & ETL Testing (SQL, Spark, Kafka)",
+          "Chaos Engineering Principles & Implementation",
+          "Observability & Monitoring for QA (Prometheus, Grafana, ELK Stack)",
+          "Accessibility Testing Standards (WCAG, Section 508)",
+          "Machine Learning Model Validation & Testing",
+          "BDD/TDD Framework Implementation (Cucumber, SpecFlow)",
+          "Infrastructure as Code Testing (Terraform, CloudFormation)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 8,
+      "max_years": 15,
+      "preferred_years": 8,
+      "industries": [
+        "Software",
+        "E-commerce",
+        "Fintech",
+        "Healthcare"
+      ],
+      "specific_experience": [
+        "Web application testing",
+        "Mobile app testing",
+        "API testing",
+        "Test documentation",
+        "Bug tracking & reporting"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Electrical Engineering",
+        "Applied Mathematics"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": false,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "ISTQB Expert Level Test Manager",
+        "Certified Software Quality Engineer (CSQE)",
+        "AWS Certified Solutions Architect - Associate",
+        "Certified Kubernetes Administrator (CKA)"
+      ],
+      "nice_to_have": [
+        "Agile Tester Certification",
+        "Mobile Testing Certification",
+        "Performance Testing Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Attention to detail",
+        "Analytical thinking",
+        "Communication",
+        "Teamwork"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Documentation skills",
+        "Problem solving",
+        "Curiosity"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 75,
+      "excellent_score": 85,
+      "auto_reject_below": 55,
+      "auto_interview_above": 90
+    },
+    "disqualifiers": [
+      "Không có kiến thức cơ bản",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng phân tích và attention to detail",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "Project Manager - Intern": {
+    "position_info": {
+      "title": "Project Manager - Intern",
+      "department": "Management",
+      "level": "Intern",
+      "salary_range": "Competitive Intern Stipend"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Agile Scrum Methodology (basic understanding)",
+          "Jira (basic task management)",
+          "Microsoft Excel (project tracking, data entry)",
+          "Microsoft PowerPoint (status reporting)",
+          "Project Lifecycle Understanding (initiation, planning, execution, monitoring, closure)",
+          "Task Prioritization Techniques",
+          "Meeting Facilitation (basic)",
+          "Documentation Creation (meeting minutes, basic project briefs)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Confluence (wiki documentation)",
+          "Git (version control concepts)",
+          "SQL (basic query understanding)",
+          "Business Process Mapping (flowcharts)",
+          "User Story Writing (basic)",
+          "Risk Register Maintenance (basic)",
+          "Stakeholder Analysis (basic)",
+          "Kanban Methodologies (personal or team level)",
+          "Data Visualization Tools (e.g., Tableau/Power BI exposure)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 1,
+      "preferred_years": 0,
       "industries": [
         "IT/Software",
         "E-commerce",
@@ -601,24 +2652,495 @@
       "preferred_majors": [
         "Project Management",
         "Business Administration",
-        "Computer Science",
         "Information Technology",
-        "Engineering"
+        "Computer Science",
+        "Management Information Systems",
+        "Industrial Engineering"
       ],
       "alternative_majors": [
         "Management",
         "Economics",
         "Any technical degree"
       ],
-      "bootcamp_acceptable": false,
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "Google Project Management Certificate",
+        "Scrum Fundamentals Certified (SFC)",
+        "Agile Project Management Course Completion",
+        "Microsoft Project Fundamentals Course"
+      ],
+      "nice_to_have": [
+        "SAFe Agilist",
+        "Lean Six Sigma",
+        "ITIL Foundation"
+      ],
+      "weight": 10
+    },
+    "soft_skills": {
+      "required": [
+        "Leadership",
+        "Communication",
+        "Problem solving",
+        "Decision making",
+        "Stakeholder management",
+        "Conflict resolution"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Strategic thinking",
+        "Coaching & mentoring",
+        "Change management",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 40,
+      "excellent_score": 60,
+      "auto_reject_below": 20,
+      "auto_interview_above": 65
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng leadership và communication",
+      "Không hiểu biết về quy trình phát triển phần mềm",
+      "CV không thể hiện thành tích cụ thể"
+    ]
+  },
+  "Project Manager - Fresher": {
+    "position_info": {
+      "title": "Project Manager - Fresher",
+      "department": "Management",
+      "level": "Fresher",
+      "salary_range": "Entry-Level"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Agile Scrum Framework",
+          "Jira Software (basic usage)",
+          "Microsoft Excel (data tracking, pivot tables)",
+          "Project Planning (WBS creation)",
+          "Risk Identification (entry-level)",
+          "Requirements Elicitation (basic techniques)",
+          "Technical Documentation (Confluence/Wiki usage)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Kanban Methodology",
+          "Gantt Chart Software (e.g., MS Project, Smartsheet)",
+          "SQL (basic querying)",
+          "Version Control Systems (Git basics)",
+          "Business Process Modeling (BPMN basics)",
+          "Cloud Computing Concepts (AWS/Azure/GCP awareness)",
+          "Data Visualization Tools (Tableau/Power BI basic understanding)",
+          "API Concepts (REST/SOAP basic understanding)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 2,
+      "preferred_years": 1,
+      "industries": [
+        "IT/Software",
+        "E-commerce",
+        "Fintech",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Managing software projects",
+        "Leading cross-functional teams",
+        "Stakeholder management",
+        "Budget & timeline management",
+        "Risk mitigation",
+        "Client communication"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Information Technology",
+        "Software Engineering",
+        "Business Information Systems",
+        "Project Management (degree/diploma)"
+      ],
+      "alternative_majors": [
+        "Management",
+        "Economics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "Google Project Management Certificate",
+        "Scrum Master Certification (CSM/PSM I - entry level)",
+        "CAPM (Certified Associate in Project Management)",
+        "ITIL Foundation"
+      ],
+      "nice_to_have": [
+        "SAFe Agilist",
+        "Lean Six Sigma",
+        "ITIL Foundation"
+      ],
+      "weight": 10
+    },
+    "soft_skills": {
+      "required": [
+        "Leadership",
+        "Communication",
+        "Problem solving",
+        "Decision making",
+        "Stakeholder management",
+        "Conflict resolution"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Strategic thinking",
+        "Coaching & mentoring",
+        "Change management",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 45,
+      "excellent_score": 65,
+      "auto_reject_below": 25,
+      "auto_interview_above": 70
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng leadership và communication",
+      "Không hiểu biết về quy trình phát triển phần mềm",
+      "CV không thể hiện thành tích cụ thể"
+    ]
+  },
+  "Project Manager - Junior": {
+    "position_info": {
+      "title": "Project Manager - Junior",
+      "department": "Management",
+      "level": "Junior",
+      "salary_range": "$60,000 - $80,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Agile Scrum Framework",
+          "Jira Software",
+          "Project Planning & Scheduling",
+          "Risk Identification & Tracking",
+          "SDLC Understanding",
+          "Confluence",
+          "Budget Management (project level)",
+          "Stakeholder Mapping"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Kanban Methodology",
+          "Microsoft Project",
+          "Asana/Trello",
+          "Change Request Management",
+          "Data Analysis (project metrics)",
+          "Cloud Platform Awareness (e.g., AWS/Azure fundamentals)",
+          "Technical Requirement Gathering",
+          "Power BI/Tableau (for reporting)",
+          "Version Control Systems (basic understanding, e.g., Git workflow)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 1,
+      "max_years": 3,
+      "preferred_years": 2,
+      "industries": [
+        "IT/Software",
+        "E-commerce",
+        "Fintech",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Managing software projects",
+        "Leading cross-functional teams",
+        "Stakeholder management",
+        "Budget & timeline management",
+        "Risk mitigation",
+        "Client communication"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Information Technology",
+        "Software Engineering",
+        "Project Management",
+        "Business Information Systems"
+      ],
+      "alternative_majors": [
+        "Management",
+        "Economics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "CAPM (Certified Associate in Project Management)",
+        "CSM (Certified ScrumMaster)",
+        "PSM I (Professional Scrum Master I)",
+        "PRINCE2 Foundation"
+      ],
+      "nice_to_have": [
+        "SAFe Agilist",
+        "Lean Six Sigma",
+        "ITIL Foundation"
+      ],
+      "weight": 10
+    },
+    "soft_skills": {
+      "required": [
+        "Leadership",
+        "Communication",
+        "Problem solving",
+        "Decision making",
+        "Stakeholder management",
+        "Conflict resolution"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Strategic thinking",
+        "Coaching & mentoring",
+        "Change management",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 50,
+      "excellent_score": 70,
+      "auto_reject_below": 30,
+      "auto_interview_above": 75
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng leadership và communication",
+      "Không hiểu biết về quy trình phát triển phần mềm",
+      "CV không thể hiện thành tích cụ thể"
+    ]
+  },
+  "Project Manager - Middle": {
+    "position_info": {
+      "title": "Project Manager - Middle",
+      "department": "Management",
+      "level": "Middle",
+      "salary_range": "$80,000 - $120,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Agile Scrum Methodology",
+          "Jira Software",
+          "Risk Identification & Mitigation Planning",
+          "Scope Definition & Change Control",
+          "Budget Tracking & Variance Analysis",
+          "SDLC Management (e.g., Waterfall, Iterative, Agile)",
+          "Technical Requirements Gathering (e.g., User Stories, Use Cases)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Kanban Methodologies",
+          "Cloud Project Management (AWS/Azure/GCP specific project considerations)",
+          "SQL Querying (for data analysis related to project metrics)",
+          "Git Version Control Understanding (developer workflow integration)",
+          "API Integration Project Oversight",
+          "DevOps Pipeline Awareness",
+          "Data Visualization Tools (e.g., Power BI, Tableau for dashboards)",
+          "Business Process Re-engineering (BPR)",
+          "Containerization Concepts (Docker, Kubernetes for project planning)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 4,
+      "max_years": 5,
+      "preferred_years": 3,
+      "industries": [
+        "IT/Software",
+        "E-commerce",
+        "Fintech",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Managing software projects",
+        "Leading cross-functional teams",
+        "Stakeholder management",
+        "Budget & timeline management",
+        "Risk mitigation",
+        "Client communication"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Information Technology",
+        "Software Engineering",
+        "Project Management",
+        "Business Information Systems"
+      ],
+      "alternative_majors": [
+        "Management",
+        "Economics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "PMP Certification",
+        "Certified ScrumMaster (CSM)",
+        "SAFe Agilist Certification",
+        "PRINCE2 Practitioner"
+      ],
+      "nice_to_have": [
+        "SAFe Agilist",
+        "Lean Six Sigma",
+        "ITIL Foundation"
+      ],
+      "weight": 10
+    },
+    "soft_skills": {
+      "required": [
+        "Leadership",
+        "Communication",
+        "Problem solving",
+        "Decision making",
+        "Stakeholder management",
+        "Conflict resolution"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Strategic thinking",
+        "Coaching & mentoring",
+        "Change management",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 55,
+      "excellent_score": 75,
+      "auto_reject_below": 35,
+      "auto_interview_above": 80
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng leadership và communication",
+      "Không hiểu biết về quy trình phát triển phần mềm",
+      "CV không thể hiện thành tích cụ thể"
+    ]
+  },
+  "Project Manager - Senior": {
+    "position_info": {
+      "title": "Project Manager - Senior",
+      "department": "Management",
+      "level": "Senior",
+      "salary_range": "$120,000 - $180,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Agile Methodologies (Scrum, Kanban, SAFe)",
+          "Project Management Software (Jira, MS Project, Azure DevOps)",
+          "Risk Management & Mitigation Strategies (Technical Project Context)",
+          "Budget & Resource Allocation (Technical Project Focus)",
+          "SDLC Management & Process Optimization",
+          "Technical Stakeholder Management & Communication (e.g., with Architects, Engineers)",
+          "Change Management Frameworks (ITIL, COBIT)",
+          "Performance Metrics & Reporting (KPIs, OKRs for technical projects)",
+          "Vendor & Contract Management (Technical Services, Software Licenses)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Program Management & Portfolio Oversight",
+          "Cloud Platform Project Management (AWS, Azure, GCP)",
+          "DevOps & CI/CD Pipeline Understanding",
+          "Data Analytics & Business Intelligence Tools (Power BI, Tableau)",
+          "Enterprise Architecture Principles",
+          "Cybersecurity Project Management",
+          "API Integration Project Management",
+          "Containerization Technologies (Docker, Kubernetes) Project Oversight",
+          "Lean & Six Sigma Methodologies (for process improvement)",
+          "AI/ML Project Lifecycle Management"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 8,
+      "max_years": 8,
+      "preferred_years": 5,
+      "industries": [
+        "IT/Software",
+        "E-commerce",
+        "Fintech",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Managing software projects",
+        "Leading cross-functional teams",
+        "Stakeholder management",
+        "Budget & timeline management",
+        "Risk mitigation",
+        "Client communication"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Information Technology",
+        "Software Engineering",
+        "Project Management",
+        "Business Administration (Technical Focus)",
+        "Engineering Management"
+      ],
+      "alternative_majors": [
+        "Management",
+        "Economics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
       "weight": 10
     },
     "certifications": {
       "preferred": [
         "PMP (Project Management Professional)",
-        "Certified Scrum Master (CSM)",
-        "PMI-ACP (Agile Certified Practitioner)",
-        "PRINCE2"
+        "CSM (Certified ScrumMaster)",
+        "SAFe (Scaled Agile Framework) Certification",
+        "PRINCE2 Practitioner",
+        "PgMP (Program Management Professional)",
+        "PMI-ACP (Agile Certified Practitioner)"
       ],
       "nice_to_have": [
         "SAFe Agilist",
@@ -647,75 +3169,169 @@
     },
     "scoring": {
       "min_pass_score": 65,
-      "excellent_score": 85,
+      "excellent_score": 80,
       "auto_reject_below": 45,
-      "auto_interview_above": 88
+      "auto_interview_above": 85
     },
     "disqualifiers": [
-      "Không có kinh nghiệm quản lý dự án",
+      "Thiếu kiến thức và định hướng cơ bản",
       "Thiếu kỹ năng leadership và communication",
       "Không hiểu biết về quy trình phát triển phần mềm",
       "CV không thể hiện thành tích cụ thể"
     ]
   },
-  "Business Analyst": {
+  "Project Manager - Expert": {
     "position_info": {
-      "title": "Business Analyst",
-      "department": "Business",
-      "level": "Mid",
-      "salary_range": "15-25 triệu VND"
+      "title": "Project Manager - Expert",
+      "department": "Management",
+      "level": "Expert",
+      "salary_range": "$150,000 - $200,000+"
     },
     "technical_skills": {
       "required": {
-        "analysis": [
-          "Requirement Gathering",
-          "Business Process Modeling",
-          "Gap Analysis",
-          "Use Case Development"
-        ],
-        "documentation": [
-          "BRD (Business Requirements Document)",
-          "FRD (Functional Requirements Document)",
-          "User Stories",
-          "Process Flows"
-        ],
-        "tools": [
-          "MS Excel Advanced",
-          "MS Visio",
-          "Jira",
-          "Confluence"
-        ],
-        "data": [
-          "SQL",
-          "Data Analysis",
-          "Reporting"
+        "skills": [
+          "SAFe (Scaled Agile Framework)",
+          "Earned Value Management (EVM)",
+          "Jira Portfolio/Advanced Roadmaps",
+          "Quantitative Risk Analysis",
+          "DevOps Pipeline Integration (CI/CD)",
+          "Cloud Architecture Governance (AWS/Azure/GCP)",
+          "ITIL v4 (Service Strategy/Transition)",
+          "Lean Six Sigma (Green Belt)"
         ]
       },
       "preferred": {
-        "modeling": [
-          "UML",
-          "BPMN",
-          "ERD",
-          "Wireframing"
-        ],
-        "tools_advanced": [
-          "Power BI",
-          "Tableau",
-          "Google Analytics",
-          "Figma/Balsamiq"
-        ],
-        "technical": [
-          "API Understanding",
-          "Database Concepts",
-          "Basic Programming Knowledge"
+        "skills": [
+          "Program Management Office (PMO) Setup",
+          "Contract Lifecycle Management (CLM)",
+          "Power BI/Tableau (Advanced Dashboards)",
+          "ISO 27001 Implementation",
+          "Business Process Modeling Notation (BPMN 2.0)",
+          "AI/ML Project Lifecycle Management",
+          "Kubernetes/Docker Project Oversight",
+          "API Integration Project Management"
         ]
       },
-      "weight": 45
+      "weight": 50
     },
     "experience": {
-      "min_years": 2,
-      "max_years": 7,
-      "preferred_years": 3,
+      "min_years": 12,
+      "max_years": 15,
+      "preferred_years": 8,
+      "industries": [
+        "IT/Software",
+        "E-commerce",
+        "Fintech",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Managing software projects",
+        "Leading cross-functional teams",
+        "Stakeholder management",
+        "Budget & timeline management",
+        "Risk mitigation",
+        "Client communication"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Information Technology Management",
+        "Software Engineering",
+        "Systems Engineering"
+      ],
+      "alternative_majors": [
+        "Management",
+        "Economics",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": false,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "PMP (Project Management Professional)",
+        "SAFe Program Consultant (SPC)",
+        "PgMP (Program Management Professional)",
+        "ITIL Expert",
+        "Lean Six Sigma Black Belt"
+      ],
+      "nice_to_have": [
+        "SAFe Agilist",
+        "Lean Six Sigma",
+        "ITIL Foundation"
+      ],
+      "weight": 10
+    },
+    "soft_skills": {
+      "required": [
+        "Leadership",
+        "Communication",
+        "Problem solving",
+        "Decision making",
+        "Stakeholder management",
+        "Conflict resolution"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Strategic thinking",
+        "Coaching & mentoring",
+        "Change management",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 75,
+      "excellent_score": 85,
+      "auto_reject_below": 55,
+      "auto_interview_above": 90
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng leadership và communication",
+      "Không hiểu biết về quy trình phát triển phần mềm",
+      "CV không thể hiện thành tích cụ thể"
+    ]
+  },
+  "Business Analyst - Intern": {
+    "position_info": {
+      "title": "Business Analyst - Intern",
+      "department": "Business",
+      "level": "Intern",
+      "salary_range": "Competitive Stipend"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "SQL (basic querying, DDL/DML)",
+          "Microsoft Excel (pivot tables, VLOOKUP, data validation)",
+          "Requirements Elicitation (interviews, surveys, workshops)",
+          "Use Case Documentation",
+          "Process Flow Diagramming (BPMN)",
+          "Agile Scrum Methodology (basic principles)",
+          "Data Analysis (descriptive statistics)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Jira/Confluence (basic usage)",
+          "Power BI/Tableau (dashboard consumption, basic report generation)",
+          "Python (Pandas for data manipulation)",
+          "User Story Writing (Gherkin syntax)",
+          "UML (Activity Diagrams, Use Case Diagrams)",
+          "Database Design (basic relational concepts)",
+          "Stakeholder Mapping"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 1,
+      "preferred_years": 0,
       "industries": [
         "IT/Software",
         "Banking/Finance",
@@ -735,11 +3351,12 @@
     "education": {
       "required_degree": "Bachelor",
       "preferred_majors": [
-        "Business Administration",
-        "Information Systems",
-        "Computer Science",
-        "Economics",
-        "Management Information Systems"
+        "Business Analytics",
+        "Information Technology",
+        "Computer Information Systems",
+        "Management Information Systems",
+        "Data Science",
+        "Economics"
       ],
       "alternative_majors": [
         "Engineering",
@@ -751,10 +3368,7 @@
     },
     "certifications": {
       "preferred": [
-        "CBAP (Certified Business Analysis Professional)",
-        "PMI-PBA (Professional in Business Analysis)",
-        "IIBA Certification",
-        "Agile Analysis Certification"
+        "None"
       ],
       "nice_to_have": [
         "Six Sigma",
@@ -782,69 +3396,863 @@
       "weight": 10
     },
     "scoring": {
-      "min_pass_score": 60,
-      "excellent_score": 82,
-      "auto_reject_below": 40,
-      "auto_interview_above": 85
+      "min_pass_score": 40,
+      "excellent_score": 60,
+      "auto_reject_below": 20,
+      "auto_interview_above": 65
     },
     "disqualifiers": [
-      "Không có kỹ năng phân tích và documentation",
+      "Thiếu kỹ năng chuyên môn tối thiểu",
       "Thiếu hiểu biết về business process",
-      "Không có kinh nghiệm làm việc với stakeholder",
+      "Thiếu kiến thức và định hướng cơ bản",
       "CV không thể hiện khả năng phân tích"
     ]
   },
-  "HR Specialist": {
+  "Business Analyst - Fresher": {
     "position_info": {
-      "title": "HR Specialist",
-      "department": "Human Resources",
-      "level": "Junior-Mid",
-      "salary_range": "10-18 triệu VND"
+      "title": "Business Analyst - Fresher",
+      "department": "Business",
+      "level": "Fresher",
+      "salary_range": "30,000 - 45,000 USD per year"
     },
     "technical_skills": {
       "required": {
-        "hr_functions": [
-          "Recruitment & Selection",
-          "Onboarding & Offboarding",
-          "Employee Records Management",
-          "HR Policies & Procedures"
-        ],
-        "tools": [
-          "MS Excel",
-          "MS Word",
-          "MS PowerPoint",
-          "HRIS Systems"
-        ],
-        "compliance": [
-          "Labor Law Knowledge",
-          "Social Insurance",
-          "Employment Contracts"
+        "skills": [
+          "Requirements Elicitation Techniques",
+          "Business Requirements Document (BRD) creation",
+          "Functional Specification Document (FSD) basics",
+          "Process Flow Diagramming (BPMN 2.0 basics)",
+          "SQL Fundamentals (SELECT, WHERE, JOIN)",
+          "Microsoft Excel (Data manipulation, pivot tables)",
+          "SDLC Methodologies (Agile Scrum, Waterfall understanding)",
+          "Use Case Analysis"
         ]
       },
       "preferred": {
-        "advanced_hr": [
-          "Performance Management",
-          "Compensation & Benefits",
-          "Training & Development",
-          "Employee Relations"
-        ],
-        "tools_advanced": [
-          "ATS (Applicant Tracking System)",
-          "LinkedIn Recruiter",
-          "HR Analytics Tools",
-          "Payroll Software"
-        ],
-        "other": [
-          "Employer Branding",
-          "Talent Management",
-          "HR Metrics & KPIs"
+        "skills": [
+          "JIRA/Confluence (Basic usage)",
+          "Wireframing Tools (Figma, Balsamiq exposure)",
+          "Data Visualization Tools (Tableau, Power BI exposure)",
+          "User Story Writing",
+          "API Concepts (REST, SOAP basics)",
+          "Database Concepts (Relational databases)",
+          "Presentation Tools (PowerPoint, Google Slides)",
+          "Root Cause Analysis"
         ]
       },
-      "weight": 40
+      "weight": 50
     },
     "experience": {
-      "min_years": 1,
+      "min_years": 0,
+      "max_years": 2,
+      "preferred_years": 1,
+      "industries": [
+        "IT/Software",
+        "Banking/Finance",
+        "E-commerce",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Requirements analysis & documentation",
+        "Stakeholder interviews",
+        "Process improvement",
+        "UAT coordination",
+        "Data analysis & reporting",
+        "Bridge between business & tech teams"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Business Administration",
+        "Information Systems",
+        "Computer Science",
+        "Data Analytics",
+        "Economics",
+        "Project Management"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Finance"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "ECBA (Entry Certificate in Business Analysis)",
+        "Microsoft Office Specialist (Excel)",
+        "SQL Fundamentals Certification"
+      ],
+      "nice_to_have": [
+        "Six Sigma",
+        "SQL Certification",
+        "Scrum Master",
+        "Data Analytics Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Analytical thinking",
+        "Communication",
+        "Problem solving",
+        "Attention to detail",
+        "Stakeholder management"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Presentation skills",
+        "Negotiation",
+        "Business acumen",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 45,
+      "excellent_score": 65,
+      "auto_reject_below": 25,
+      "auto_interview_above": 70
+    },
+    "disqualifiers": [
+      "Thiếu kỹ năng chuyên môn tối thiểu",
+      "Thiếu hiểu biết về business process",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không thể hiện khả năng phân tích"
+    ]
+  },
+  "Business Analyst - Junior": {
+    "position_info": {
+      "title": "Business Analyst - Junior",
+      "department": "Business",
+      "level": "Junior",
+      "salary_range": "60,000 - 80,000 USD"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Requirements Elicitation",
+          "User Stories",
+          "Use Cases",
+          "BRD/FRD Documentation",
+          "UML Modeling (Use Case, Activity Diagrams)",
+          "SQL Basic Queries",
+          "Microsoft Excel Advanced",
+          "Agile Scrum Methodology",
+          "Jira/Confluence"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Data Visualization Tools (Tableau/Power BI)",
+          "UAT Coordination",
+          "Process Improvement Methodologies (Lean/Six Sigma Basics)",
+          "Wireframing/Prototyping Tools (Figma/Axure)",
+          "API Fundamentals (REST)",
+          "Cloud Computing Concepts (AWS/Azure/GCP)",
+          "Data Modeling Concepts",
+          "Basic Python for Data Analysis"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 2,
+      "max_years": 3,
+      "preferred_years": 2,
+      "industries": [
+        "IT/Software",
+        "Banking/Finance",
+        "E-commerce",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Requirements analysis & documentation",
+        "Stakeholder interviews",
+        "Process improvement",
+        "UAT coordination",
+        "Data analysis & reporting",
+        "Bridge between business & tech teams"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Business Administration",
+        "Information Systems",
+        "Computer Science",
+        "Management Information Systems",
+        "Data Analytics"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Finance"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "ECBA (Entry Certificate in Business Analysis)",
+        "CSM (Certified ScrumMaster)",
+        "PSM I (Professional Scrum Master I)",
+        "ITIL Foundation"
+      ],
+      "nice_to_have": [
+        "Six Sigma",
+        "SQL Certification",
+        "Scrum Master",
+        "Data Analytics Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Analytical thinking",
+        "Communication",
+        "Problem solving",
+        "Attention to detail",
+        "Stakeholder management"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Presentation skills",
+        "Negotiation",
+        "Business acumen",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 50,
+      "excellent_score": 70,
+      "auto_reject_below": 30,
+      "auto_interview_above": 75
+    },
+    "disqualifiers": [
+      "Thiếu kỹ năng chuyên môn tối thiểu",
+      "Thiếu hiểu biết về business process",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không thể hiện khả năng phân tích"
+    ]
+  },
+  "Business Analyst - Middle": {
+    "position_info": {
+      "title": "Business Analyst - Middle",
+      "department": "Business",
+      "level": "Middle",
+      "salary_range": "$70,000 - $100,000 USD annually"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Agile Scrum methodology",
+          "Business Process Modeling Notation (BPMN)",
+          "User Story mapping and Use Case development",
+          "SQL for data querying and analysis",
+          "JIRA and Confluence for requirements management",
+          "Data Flow Diagrams (DFD)",
+          "User Acceptance Testing (UAT) coordination",
+          "Requirements Traceability Matrix (RTM)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Power BI or Tableau for data visualization",
+          "RESTful API concepts for system integration",
+          "Cloud platform fundamentals (AWS/Azure/GCP)",
+          "CRM/ERP system configuration knowledge (e.g., Salesforce, SAP)",
+          "Python for data analysis (Pandas, NumPy)",
+          "Lean Six Sigma principles",
+          "Process mining tools (e.g., Celonis, UiPath Process Mining)",
+          "Data warehousing concepts"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 3,
       "max_years": 5,
+      "preferred_years": 3,
+      "industries": [
+        "IT/Software",
+        "Banking/Finance",
+        "E-commerce",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Requirements analysis & documentation",
+        "Stakeholder interviews",
+        "Process improvement",
+        "UAT coordination",
+        "Data analysis & reporting",
+        "Bridge between business & tech teams"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Business Administration",
+        "Information Systems",
+        "Computer Science",
+        "Data Analytics",
+        "Project Management",
+        "Economics"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Finance"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "CBAP (Certified Business Analysis Professional)",
+        "CCBA (Certification of Capability in Business Analysis)",
+        "CSPO (Certified Scrum Product Owner)",
+        "PMI-PBA (PMI Professional in Business Analysis)"
+      ],
+      "nice_to_have": [
+        "Six Sigma",
+        "SQL Certification",
+        "Scrum Master",
+        "Data Analytics Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Analytical thinking",
+        "Communication",
+        "Problem solving",
+        "Attention to detail",
+        "Stakeholder management"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Presentation skills",
+        "Negotiation",
+        "Business acumen",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 55,
+      "excellent_score": 75,
+      "auto_reject_below": 35,
+      "auto_interview_above": 80
+    },
+    "disqualifiers": [
+      "Thiếu kỹ năng chuyên môn tối thiểu",
+      "Thiếu hiểu biết về business process",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không thể hiện khả năng phân tích"
+    ]
+  },
+  "Business Analyst - Senior": {
+    "position_info": {
+      "title": "Business Analyst - Senior",
+      "department": "Business",
+      "level": "Senior",
+      "salary_range": "110,000 - 150,000 USD"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Agile Scrum",
+          "SAFe (Scaled Agile Framework)",
+          "Use Case Modeling",
+          "User Stories with Gherkin Acceptance Criteria",
+          "BPMN (Business Process Model and Notation)",
+          "UML (Activity, Sequence Diagrams)",
+          "Advanced SQL for data analysis and mapping",
+          "API specifications (REST/SOAP)",
+          "Microservices architecture understanding",
+          "JIRA, Confluence, Azure DevOps"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Data Warehousing concepts",
+          "ETL processes",
+          "Business Intelligence (BI) tools (e.g., Tableau, Power BI)",
+          "Cloud platform understanding (AWS, Azure, GCP services)",
+          "RPA (Robotic Process Automation) analysis",
+          "UAT (User Acceptance Testing) coordination",
+          "Test Case definition",
+          "Basic Python/R for data analysis scripting",
+          "Enterprise Architecture principles (e.g., TOGAF)",
+          "CI/CD pipelines and DevOps practices"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 7,
+      "max_years": 8,
+      "preferred_years": 5,
+      "industries": [
+        "IT/Software",
+        "Banking/Finance",
+        "E-commerce",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Requirements analysis & documentation",
+        "Stakeholder interviews",
+        "Process improvement",
+        "UAT coordination",
+        "Data analysis & reporting",
+        "Bridge between business & tech teams"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Business Information Systems",
+        "Computer Science",
+        "Information Technology",
+        "Management Information Systems",
+        "Software Engineering"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Finance"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "CBAP (Certified Business Analysis Professional)",
+        "CSPO (Certified Scrum Product Owner)",
+        "SAFe Product Owner/Product Manager",
+        "PMI-ACP (Agile Certified Practitioner)"
+      ],
+      "nice_to_have": [
+        "Six Sigma",
+        "SQL Certification",
+        "Scrum Master",
+        "Data Analytics Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Analytical thinking",
+        "Communication",
+        "Problem solving",
+        "Attention to detail",
+        "Stakeholder management"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Presentation skills",
+        "Negotiation",
+        "Business acumen",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 65,
+      "excellent_score": 80,
+      "auto_reject_below": 45,
+      "auto_interview_above": 85
+    },
+    "disqualifiers": [
+      "Thiếu kỹ năng chuyên môn tối thiểu",
+      "Thiếu hiểu biết về business process",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không thể hiện khả năng phân tích"
+    ]
+  },
+  "Business Analyst - Expert": {
+    "position_info": {
+      "title": "Business Analyst - Expert",
+      "department": "Business",
+      "level": "Expert",
+      "salary_range": "$120,000 - $180,000+"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Enterprise Business Architecture",
+          "Advanced BPMN 2.0 Modeling",
+          "Strategic Requirements Management (Traceability, Prioritization Frameworks)",
+          "SQL (Complex Queries, Data Analysis for Requirements Validation)",
+          "Agile Methodologies (SAFe, LeSS, Scrum@Scale)",
+          "Solution Design & API Integration Concepts",
+          "JIRA/Confluence (Advanced Configuration, Workflow Optimization)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Business Process Re-engineering (Lean Six Sigma principles)",
+          "Data Warehousing & BI Tool Expertise (e.g., Tableau, Power BI)",
+          "Cloud Platform (AWS/Azure/GCP) Functional Understanding",
+          "Product Management (Roadmapping, MVP Definition, Product Lifecycle)",
+          "Cybersecurity & Data Privacy Requirements Definition (GDPR, CCPA)",
+          "Enterprise Architecture Frameworks (e.g., TOGAF principles)",
+          "Mentorship & Leading BA Communities of Practice"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 10,
+      "max_years": 15,
+      "preferred_years": 8,
+      "industries": [
+        "IT/Software",
+        "Banking/Finance",
+        "E-commerce",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Requirements analysis & documentation",
+        "Stakeholder interviews",
+        "Process improvement",
+        "UAT coordination",
+        "Data analysis & reporting",
+        "Bridge between business & tech teams"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Master of Business Administration (MBA)",
+        "Master of Science in Information Systems",
+        "Computer Science",
+        "Data Analytics",
+        "Systems Engineering"
+      ],
+      "alternative_majors": [
+        "Engineering",
+        "Mathematics",
+        "Finance"
+      ],
+      "bootcamp_acceptable": false,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "CBAP (Certified Business Analysis Professional)",
+        "CSPO (Certified Scrum Product Owner) or SAFe Product Owner/Product Manager",
+        "Lean Six Sigma Black Belt",
+        "TOGAF 9 Certification (Foundation/Certified)",
+        "PMP (Project Management Professional)"
+      ],
+      "nice_to_have": [
+        "Six Sigma",
+        "SQL Certification",
+        "Scrum Master",
+        "Data Analytics Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Analytical thinking",
+        "Communication",
+        "Problem solving",
+        "Attention to detail",
+        "Stakeholder management"
+      ],
+      "preferred": [
+        "Critical thinking",
+        "Presentation skills",
+        "Negotiation",
+        "Business acumen",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 75,
+      "excellent_score": 85,
+      "auto_reject_below": 55,
+      "auto_interview_above": 90
+    },
+    "disqualifiers": [
+      "Thiếu kỹ năng chuyên môn tối thiểu",
+      "Thiếu hiểu biết về business process",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không thể hiện khả năng phân tích"
+    ]
+  },
+  "HR Specialist - Intern": {
+    "position_info": {
+      "title": "HR Specialist - Intern",
+      "department": "Human Resources",
+      "level": "Intern",
+      "salary_range": "Competitive Internship Stipend"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "HRIS Data Entry & Retrieval",
+          "Microsoft Excel (Intermediate: Pivot Tables, VLOOKUP)",
+          "Applicant Tracking System (ATS) Navigation",
+          "Document Management Systems (e.g., SharePoint, Google Drive)",
+          "Data Privacy & Security Protocols (e.g., GDPR/CCPA awareness)",
+          "Email & Calendar Management (e.g., Outlook, Gmail)",
+          "Presentation Software (e.g., PowerPoint, Google Slides)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Specific HRIS Exposure (e.g., Workday, SAP SuccessFactors)",
+          "Basic HR Analytics Tools (e.g., Power BI, Tableau Public)",
+          "Collaboration & Communication Platforms (e.g., Microsoft Teams, Slack)",
+          "Survey & Feedback Tools (e.g., SurveyMonkey, Qualtrics)",
+          "E-learning Platform Administration (e.g., Cornerstone OnDemand, Moodle)",
+          "SQL Fundamentals (basic query writing)",
+          "Agile HR Principles",
+          "Cloud Storage Solutions (e.g., AWS S3, Azure Blob Storage)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 1,
+      "preferred_years": 0,
+      "industries": [
+        "IT/Software",
+        "Manufacturing",
+        "Services",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Full-cycle recruitment",
+        "Interview coordination",
+        "HR administration",
+        "Employee engagement activities",
+        "HR reporting"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Human Resources Information Systems (HRIS)",
+        "Data Management",
+        "Business Analytics",
+        "Information Systems",
+        "Organizational Technology"
+      ],
+      "alternative_majors": [
+        "Sociology",
+        "Communications",
+        "Management"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 15
+    },
+    "certifications": {
+      "preferred": [
+        "Microsoft Office Specialist (MOS) - Excel",
+        "HRIS Fundamentals (e.g., Workday HCM Fundamentals)",
+        "Data Privacy Awareness (e.g., IAPP CIPP/E conceptual understanding)"
+      ],
+      "nice_to_have": [
+        "Talent Acquisition Specialist",
+        "HR Analytics Certification",
+        "Compensation & Benefits Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Communication",
+        "Interpersonal skills",
+        "Confidentiality",
+        "Organization",
+        "Empathy"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Conflict resolution",
+        "Cultural sensitivity",
+        "Adaptability",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 40,
+      "excellent_score": 60,
+      "auto_reject_below": 20,
+      "auto_interview_above": 65
+    },
+    "disqualifiers": [
+      "Không có kiến thức về luật lao động",
+      "Thiếu kỹ năng communication và interpersonal",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không chuyên nghiệp"
+    ]
+  },
+  "HR Specialist - Fresher": {
+    "position_info": {
+      "title": "HR Specialist - Fresher",
+      "department": "Human Resources",
+      "level": "Fresher",
+      "salary_range": "USD 40,000 - 55,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "HRIS Data Entry & Retrieval (e.g., Workday, SAP SuccessFactors)",
+          "Microsoft Excel for Data Analysis (pivot tables, VLOOKUP, basic formulas)",
+          "Applicant Tracking System (ATS) Workflow Management",
+          "Google Workspace Administration (Docs, Sheets, Drive, Calendar)",
+          "Data Integrity & Validation Techniques",
+          "Data Privacy Compliance Fundamentals (e.g., GDPR, CCPA principles)",
+          "Digital Document Management Systems (e.g., SharePoint, Confluence)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Basic SQL Querying (SELECT, FROM, WHERE clauses)",
+          "HR Analytics Dashboard Interpretation (e.g., Power BI, Tableau viewer)",
+          "IT Service Management (ITSM) Ticketing Systems (e.g., ServiceNow, Jira Service Desk)",
+          "Automated Workflow Configuration (e.g., Microsoft Power Automate, Zapier basics)",
+          "Survey Platform Design & Reporting (e.g., Qualtrics, SurveyMonkey)",
+          "Cloud Storage Access Management (e.g., Google Drive, OneDrive permissions)",
+          "Intranet Content Management Systems (e.g., SharePoint, Confluence for internal comms)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 2,
+      "preferred_years": 1,
+      "industries": [
+        "IT/Software",
+        "Manufacturing",
+        "Services",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Full-cycle recruitment",
+        "Interview coordination",
+        "HR administration",
+        "Employee engagement activities",
+        "HR reporting"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Human Resources Information Systems",
+        "Business Analytics",
+        "Data Management",
+        "Information Technology Fundamentals",
+        "Digital Transformation in HR"
+      ],
+      "alternative_majors": [
+        "Sociology",
+        "Communications",
+        "Management"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 15
+    },
+    "certifications": {
+      "preferred": [
+        "Microsoft Office Specialist (MOS) Expert",
+        "HRIS Fundamentals Certification (vendor-agnostic)",
+        "Google Workspace Administrator Fundamentals",
+        "Data Privacy Fundamentals (e.g., IAPP CIPP/E Foundations)"
+      ],
+      "nice_to_have": [
+        "Talent Acquisition Specialist",
+        "HR Analytics Certification",
+        "Compensation & Benefits Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Communication",
+        "Interpersonal skills",
+        "Confidentiality",
+        "Organization",
+        "Empathy"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Conflict resolution",
+        "Cultural sensitivity",
+        "Adaptability",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 45,
+      "excellent_score": 65,
+      "auto_reject_below": 25,
+      "auto_interview_above": 70
+    },
+    "disqualifiers": [
+      "Không có kiến thức về luật lao động",
+      "Thiếu kỹ năng communication và interpersonal",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không chuyên nghiệp"
+    ]
+  },
+  "HR Specialist - Junior": {
+    "position_info": {
+      "title": "HR Specialist - Junior",
+      "department": "Human Resources",
+      "level": "Junior",
+      "salary_range": "$55,000 - $75,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "HRIS (e.g., Workday, SAP SuccessFactors, ADP Workforce Now) data entry and reporting",
+          "Microsoft Excel (VLOOKUP, PivotTables, data manipulation)",
+          "Applicant Tracking System (ATS) administration (e.g., Greenhouse, Taleo)",
+          "Payroll system data management (e.g., ADP, Paychex)",
+          "HR data privacy compliance (e.g., GDPR, CCPA principles)",
+          "SharePoint or Confluence for HR document management",
+          "Basic HR analytics dashboard interpretation (e.g., Power BI, Tableau user-level)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "HRIS basic configuration (e.g., user roles, basic workflows)",
+          "E-learning platform administration (e.g., Cornerstone, Docebo)",
+          "Employee survey platform management (e.g., Qualtrics, SurveyMonkey)",
+          "HR reporting tool customization (within HRIS)",
+          "Project management software for HR (e.g., Asana, Trello)",
+          "Collaboration tools (e.g., Microsoft Teams, Slack for HR workflows)",
+          "Basic understanding of Robotic Process Automation (RPA) in HR",
+          "Vendor management for HR tech solutions"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 2,
+      "max_years": 3,
       "preferred_years": 2,
       "industries": [
         "IT/Software",
@@ -864,24 +4272,143 @@
     "education": {
       "required_degree": "Bachelor",
       "preferred_majors": [
-        "Human Resources Management",
-        "Business Administration",
-        "Psychology",
-        "Labor Relations"
+        "Human Resources Information Systems (HRIS)",
+        "HR Analytics",
+        "Data Management Principles",
+        "Business Information Systems",
+        "Organizational Technology",
+        "Workforce Data Analysis"
       ],
       "alternative_majors": [
         "Sociology",
         "Communications",
         "Management"
       ],
-      "bootcamp_acceptable": false,
+      "bootcamp_acceptable": true,
       "weight": 15
     },
     "certifications": {
       "preferred": [
-        "SHRM-CP (Society for HR Management)",
-        "PHR (Professional in Human Resources)",
-        "CIPD (Chartered Institute of Personnel and Development)"
+        "aPHR (Associate Professional in Human Resources)",
+        "HRIS Fundamentals Certification (e.g., Workday HCM Fundamentals)",
+        "Microsoft Excel Specialist (Data Analysis)",
+        "Payroll Fundamentals Certificate"
+      ],
+      "nice_to_have": [
+        "Talent Acquisition Specialist",
+        "HR Analytics Certification",
+        "Compensation & Benefits Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Communication",
+        "Interpersonal skills",
+        "Confidentiality",
+        "Organization",
+        "Empathy"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Conflict resolution",
+        "Cultural sensitivity",
+        "Adaptability",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 50,
+      "excellent_score": 70,
+      "auto_reject_below": 30,
+      "auto_interview_above": 75
+    },
+    "disqualifiers": [
+      "Không có kiến thức về luật lao động",
+      "Thiếu kỹ năng communication và interpersonal",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không chuyên nghiệp"
+    ]
+  },
+  "HR Specialist - Middle": {
+    "position_info": {
+      "title": "HR Specialist - Middle",
+      "department": "Human Resources",
+      "level": "Middle",
+      "salary_range": "70,000 - 95,000 USD"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Workday HCM Administration",
+          "SAP SuccessFactors Employee Central Configuration",
+          "HR Data Reporting (Power BI, Tableau for HR)",
+          "SQL for HR Data Extraction",
+          "Applicant Tracking System (ATS) Management (e.g., Greenhouse, Lever)",
+          "Payroll System Integration (e.g., ADP Workforce Now, Paychex Flex)",
+          "Data Privacy Compliance (GDPR, CCPA for HR systems)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Agile HR Methodologies (Scrum, Kanban for HR projects)",
+          "HRIS API Integration Concepts",
+          "HR Workflow Automation (e.g., ServiceNow HRSD, Microsoft Power Automate)",
+          "Advanced Excel for HR Data Modeling (VBA scripting)",
+          "HR Analytics Platforms (e.g., Visier, Crunchr)",
+          "HR Data Governance Frameworks",
+          "Cloud HR Platform Security Management",
+          "HR Chatbot Implementation"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 3,
+      "max_years": 5,
+      "preferred_years": 3,
+      "industries": [
+        "IT/Software",
+        "Manufacturing",
+        "Services",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Full-cycle recruitment",
+        "Interview coordination",
+        "HR administration",
+        "Employee engagement activities",
+        "HR reporting"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Human Resources Information Systems (HRIS)",
+        "Data Science for HR",
+        "Business Analytics",
+        "Information Systems Management",
+        "Organizational Informatics",
+        "Project Management (with IT focus)"
+      ],
+      "alternative_majors": [
+        "Sociology",
+        "Communications",
+        "Management"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 15
+    },
+    "certifications": {
+      "preferred": [
+        "Workday HCM Certified Professional",
+        "SAP SuccessFactors Certified Associate",
+        "Google Data Analytics Professional Certificate",
+        "PMP (Project Management Professional) - HR Tech Focus",
+        "Certified Information Privacy Professional (CIPP) - HR Data",
+        "Agile HR Certified Practitioner"
       ],
       "nice_to_have": [
         "Talent Acquisition Specialist",
@@ -909,91 +4436,623 @@
     },
     "scoring": {
       "min_pass_score": 55,
-      "excellent_score": 78,
+      "excellent_score": 75,
       "auto_reject_below": 35,
-      "auto_interview_above": 82
+      "auto_interview_above": 80
     },
     "disqualifiers": [
       "Không có kiến thức về luật lao động",
       "Thiếu kỹ năng communication và interpersonal",
-      "Không có kinh nghiệm recruitment",
+      "Thiếu kiến thức và định hướng cơ bản",
       "CV không chuyên nghiệp"
     ]
   },
-  "AI Engineer": {
+  "HR Specialist - Senior": {
     "position_info": {
-      "title": "AI Engineer",
-      "department": "Engineering",
-      "level": "Mid-Senior",
-      "salary_range": "20-40 triệu VND"
+      "title": "HR Specialist - Senior",
+      "department": "Human Resources",
+      "level": "Senior",
+      "salary_range": "$90,000 - $130,000"
     },
     "technical_skills": {
       "required": {
-        "programming": [
-          "Python",
-          "C++",
-          "NumPy",
-          "Pandas"
-        ],
-        "ml_frameworks": [
-          "PyTorch",
-          "TensorFlow",
-          "Scikit-learn"
-        ],
-        "nlp": [
-          "NLP fundamentals",
-          "LLMs (GPT, BERT, Claude)",
-          "RAG (Retrieval Augmented Generation)",
-          "Text preprocessing"
-        ],
-        "ai_concepts": [
-          "Machine Learning",
-          "Deep Learning",
-          "Neural Networks",
-          "Model Training & Evaluation"
-        ],
-        "data": [
-          "Data Analytics & EDA",
-          "Data Preprocessing",
-          "Feature Engineering",
-          "Data Visualization (Matplotlib, Seaborn)"
-        ],
-        "tools": [
-          "Git",
-          "Jupyter Notebook",
-          "API Development (Node.js/FastAPI)"
+        "skills": [
+          "Workday HCM Configuration and Administration",
+          "Advanced SQL for HR Data Extraction and Analysis",
+          "HRIS Data Integrity Management and Auditing",
+          "API-based HR System Integration Principles",
+          "HRIS Security Role Design and Management",
+          "Data Visualization Dashboard Development (e.g., Tableau, Power BI)",
+          "Advanced Excel (Power Query, Power Pivot, VBA for HR reporting automation)",
+          "Agile Project Management (for HR tech implementations)"
         ]
       },
       "preferred": {
-        "advanced_ai": [
-          "AI Agents",
-          "LLM Fine-tuning (LoRA, PEFT)",
-          "Prompt Engineering",
-          "Model Optimization"
-        ],
-        "databases": [
-          "Vector Databases (ChromaDB, Pinecone, Qdrant)",
-          "SQL",
-          "NoSQL"
-        ],
-        "deployment": [
-          "Docker",
-          "Kubernetes",
-          "Cloud Platforms (AWS, GCP, Azure)",
-          "MLOps"
-        ],
-        "other": [
-          "Computer Vision",
-          "Reinforcement Learning",
-          "Transformers",
-          "Hugging Face"
+        "skills": [
+          "Python Scripting for HR Data Automation/Analytics",
+          "Robotic Process Automation (RPA) for HR Workflow Optimization",
+          "Cloud HR Platform Architecture Understanding (e.g., AWS/Azure services for HR)",
+          "HR Analytics Platform Administration (e.g., Visier, OrgVue)",
+          "Machine Learning Concepts for Predictive HR Analytics",
+          "HRIS Release Management and Upgrade Planning",
+          "Data Warehousing Principles for HR Data Marts",
+          "ITIL Framework (for HR tech service management)"
         ]
       },
-      "weight": 55
+      "weight": 50
     },
     "experience": {
-      "min_years": 2,
+      "min_years": 7,
       "max_years": 8,
+      "preferred_years": 5,
+      "industries": [
+        "IT/Software",
+        "Manufacturing",
+        "Services",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Full-cycle recruitment",
+        "Interview coordination",
+        "HR administration",
+        "Employee engagement activities",
+        "HR reporting"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Human Resources Information Systems (HRIS)",
+        "Data Science",
+        "Business Analytics",
+        "Information Technology Management",
+        "Computer Information Systems"
+      ],
+      "alternative_majors": [
+        "Sociology",
+        "Communications",
+        "Management"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 15
+    },
+    "certifications": {
+      "preferred": [
+        "Workday Pro (HCM, Integrations, Reporting)",
+        "SAP SuccessFactors Certified Professional (e.g., Employee Central, Analytics)",
+        "Tableau Certified Data Analyst",
+        "Microsoft Certified: Power BI Data Analyst Associate",
+        "Project Management Professional (PMP)",
+        "SHRM-SCP (with HR Technology focus)"
+      ],
+      "nice_to_have": [
+        "Talent Acquisition Specialist",
+        "HR Analytics Certification",
+        "Compensation & Benefits Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Communication",
+        "Interpersonal skills",
+        "Confidentiality",
+        "Organization",
+        "Empathy"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Conflict resolution",
+        "Cultural sensitivity",
+        "Adaptability",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 65,
+      "excellent_score": 80,
+      "auto_reject_below": 45,
+      "auto_interview_above": 85
+    },
+    "disqualifiers": [
+      "Không có kiến thức về luật lao động",
+      "Thiếu kỹ năng communication và interpersonal",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không chuyên nghiệp"
+    ]
+  },
+  "HR Specialist - Expert": {
+    "position_info": {
+      "title": "HR Specialist - Expert",
+      "department": "Human Resources",
+      "level": "Expert",
+      "salary_range": "$120,000 - $180,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "HRIS Architecture Design & Implementation (e.g., Workday, SAP SuccessFactors, Oracle HCM Cloud)",
+          "Advanced HR Data Modeling & Analytics (SQL, Python/R for statistical analysis)",
+          "HR Process Automation & Workflow Orchestration (RPA, BPMN)",
+          "API Integration & Middleware Management (RESTful APIs, SOAP, iPaaS platforms like MuleSoft/Boomi)",
+          "HR Data Governance & Compliance Frameworks (GDPR, CCPA, SOX for HR systems)",
+          "Cloud HR Platform Administration & Security Configuration",
+          "ETL Development for HR Data Warehousing",
+          "Agile/Scrum Methodologies for HR Tech Project Leadership"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Machine Learning Applications in HR (e.g., predictive analytics for talent management)",
+          "Business Intelligence Dashboard Development (Tableau, Power BI, Qlik Sense for HR metrics)",
+          "Scripting for System Automation (Python, PowerShell, JavaScript for HR portals)",
+          "HR Tech Stack Strategy & Vendor Technical Evaluation",
+          "Data Lake/Data Warehouse Management for HR (Snowflake, Azure Data Lake, AWS Redshift)",
+          "Cybersecurity Principles & Threat Modeling for HR Systems",
+          "Performance Tuning of HRIS Queries and Reports",
+          "DevOps Practices for HR Application Deployment"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 10,
+      "max_years": 15,
+      "preferred_years": 8,
+      "industries": [
+        "IT/Software",
+        "Manufacturing",
+        "Services",
+        "Consulting"
+      ],
+      "specific_experience": [
+        "Full-cycle recruitment",
+        "Interview coordination",
+        "HR administration",
+        "Employee engagement activities",
+        "HR reporting"
+      ],
+      "weight": 30
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Information Systems Management",
+        "Computer Science",
+        "Data Science & Analytics",
+        "Human Resources Information Systems (HRIS)",
+        "Software Engineering"
+      ],
+      "alternative_majors": [
+        "Sociology",
+        "Communications",
+        "Management"
+      ],
+      "bootcamp_acceptable": false,
+      "weight": 15
+    },
+    "certifications": {
+      "preferred": [
+        "Workday Pro (Integrations/Reporting/HCM)",
+        "SAP SuccessFactors Certified Professional",
+        "Oracle HCM Cloud Certified Implementation Specialist",
+        "Certified Analytics Professional (CAP)",
+        "HRIP (HR Information Professional)",
+        "PMP (Project Management Professional)",
+        "AWS/Azure/GCP Cloud Certification (Solutions Architect Associate/Professional)"
+      ],
+      "nice_to_have": [
+        "Talent Acquisition Specialist",
+        "HR Analytics Certification",
+        "Compensation & Benefits Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Communication",
+        "Interpersonal skills",
+        "Confidentiality",
+        "Organization",
+        "Empathy"
+      ],
+      "preferred": [
+        "Negotiation",
+        "Conflict resolution",
+        "Cultural sensitivity",
+        "Adaptability",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 75,
+      "excellent_score": 85,
+      "auto_reject_below": 55,
+      "auto_interview_above": 90
+    },
+    "disqualifiers": [
+      "Không có kiến thức về luật lao động",
+      "Thiếu kỹ năng communication và interpersonal",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "CV không chuyên nghiệp"
+    ]
+  },
+  "AI Engineer - Intern": {
+    "position_info": {
+      "title": "AI Engineer - Intern",
+      "department": "Engineering",
+      "level": "Intern",
+      "salary_range": "Competitive Internship Stipend"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Python Programming",
+          "NumPy",
+          "Pandas",
+          "Scikit-learn",
+          "TensorFlow",
+          "Git Version Control",
+          "Data Structures and Algorithms",
+          "Basic Machine Learning Concepts"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "SQL (basic queries)",
+          "Matplotlib",
+          "Seaborn",
+          "Jupyter Notebooks",
+          "Linux Command Line",
+          "Basic Cloud Computing Concepts (e.g., AWS S3, EC2)",
+          "Docker (basic understanding)",
+          "Natural Language Processing (basic concepts)",
+          "Computer Vision (basic concepts)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 1,
+      "preferred_years": 0,
+      "industries": [
+        "AI/ML",
+        "Tech",
+        "Research",
+        "Fintech"
+      ],
+      "specific_experience": [
+        "Building & deploying AI models",
+        "NLP/LLM projects",
+        "Data pipeline development",
+        "Model optimization",
+        "Research & experimentation"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Data Science",
+        "Applied Mathematics",
+        "Statistics",
+        "Electrical Engineering"
+      ],
+      "alternative_majors": [
+        "Physics",
+        "Engineering",
+        "Computational Science"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "DeepLearning.AI Specialization",
+        "Google AI/ML Crash Course",
+        "AWS Certified Cloud Practitioner",
+        "Microsoft Certified: Azure AI Fundamentals"
+      ],
+      "nice_to_have": [
+        "NVIDIA Deep Learning Institute",
+        "Azure AI Engineer",
+        "Fast.ai Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Research mindset",
+        "Analytical thinking",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Innovation",
+        "Collaboration",
+        "Communication of technical concepts",
+        "English proficiency"
+      ],
+      "weight": 5
+    },
+    "scoring": {
+      "min_pass_score": 40,
+      "excellent_score": 60,
+      "auto_reject_below": 20,
+      "auto_interview_above": 65
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về NLP hoặc LLMs",
+      "Thiếu kỹ năng Python và data analysis",
+      "CV không có projects hoặc portfolio"
+    ]
+  },
+  "AI Engineer - Fresher": {
+    "position_info": {
+      "title": "AI Engineer - Fresher",
+      "department": "Engineering",
+      "level": "Fresher",
+      "salary_range": "$60,000 - $80,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Python programming (OOP, data types, control flow)",
+          "Data Structures and Algorithms (basic)",
+          "NumPy for numerical computing",
+          "Pandas for data manipulation",
+          "Scikit-learn for classical ML models",
+          "Git for version control",
+          "Fundamentals of Linear Algebra and Calculus"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "TensorFlow or PyTorch (basic usage)",
+          "SQL (basic queries)",
+          "Matplotlib/Seaborn for data visualization",
+          "Linux command line basics",
+          "Cloud platform exposure (AWS S3, GCP Storage)",
+          "Understanding of Neural Network architectures (basic CNN/RNN)",
+          "Agile/Scrum methodology exposure"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 0,
+      "max_years": 2,
+      "preferred_years": 1,
+      "industries": [
+        "AI/ML",
+        "Tech",
+        "Research",
+        "Fintech"
+      ],
+      "specific_experience": [
+        "Building & deploying AI models",
+        "NLP/LLM projects",
+        "Data pipeline development",
+        "Model optimization",
+        "Research & experimentation"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Data Science",
+        "Applied Mathematics",
+        "Statistics"
+      ],
+      "alternative_majors": [
+        "Physics",
+        "Engineering",
+        "Computational Science"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "Coursera Machine Learning Specialization",
+        "Google AI/ML Crash Course Certificate"
+      ],
+      "nice_to_have": [
+        "NVIDIA Deep Learning Institute",
+        "Azure AI Engineer",
+        "Fast.ai Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Research mindset",
+        "Analytical thinking",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Innovation",
+        "Collaboration",
+        "Communication of technical concepts",
+        "English proficiency"
+      ],
+      "weight": 5
+    },
+    "scoring": {
+      "min_pass_score": 45,
+      "excellent_score": 65,
+      "auto_reject_below": 25,
+      "auto_interview_above": 70
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về NLP hoặc LLMs",
+      "Thiếu kỹ năng Python và data analysis",
+      "CV không có projects hoặc portfolio"
+    ]
+  },
+  "AI Engineer - Junior": {
+    "position_info": {
+      "title": "AI Engineer - Junior",
+      "department": "Engineering",
+      "level": "Junior",
+      "salary_range": "$70,000 - $95,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Python programming",
+          "Scikit-learn",
+          "TensorFlow",
+          "SQL querying",
+          "Git version control",
+          "Machine Learning fundamentals (regression, classification, clustering)",
+          "Jupyter Notebooks",
+          "Data preprocessing techniques"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "PyTorch",
+          "Docker containerization",
+          "AWS S3",
+          "RESTful API development (Flask/FastAPI)",
+          "Data visualization (Matplotlib, Seaborn)",
+          "Basic MLOps concepts",
+          "Natural Language Processing (NLTK, SpaCy)",
+          "Agile/Scrum methodologies"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 1,
+      "max_years": 3,
+      "preferred_years": 2,
+      "industries": [
+        "AI/ML",
+        "Tech",
+        "Research",
+        "Fintech"
+      ],
+      "specific_experience": [
+        "Building & deploying AI models",
+        "NLP/LLM projects",
+        "Data pipeline development",
+        "Model optimization",
+        "Research & experimentation"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Data Science",
+        "Software Engineering",
+        "Statistics"
+      ],
+      "alternative_majors": [
+        "Physics",
+        "Engineering",
+        "Computational Science"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "TensorFlow Developer Certificate",
+        "Microsoft Certified: Azure AI Engineer Associate",
+        "AWS Certified Machine Learning - Specialty (Foundational knowledge)"
+      ],
+      "nice_to_have": [
+        "NVIDIA Deep Learning Institute",
+        "Azure AI Engineer",
+        "Fast.ai Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Research mindset",
+        "Analytical thinking",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Innovation",
+        "Collaboration",
+        "Communication of technical concepts",
+        "English proficiency"
+      ],
+      "weight": 5
+    },
+    "scoring": {
+      "min_pass_score": 50,
+      "excellent_score": 70,
+      "auto_reject_below": 30,
+      "auto_interview_above": 75
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về NLP hoặc LLMs",
+      "Thiếu kỹ năng Python và data analysis",
+      "CV không có projects hoặc portfolio"
+    ]
+  },
+  "AI Engineer - Middle": {
+    "position_info": {
+      "title": "AI Engineer - Middle",
+      "department": "Engineering",
+      "level": "Middle",
+      "salary_range": "$100,000 - $150,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Python (advanced)",
+          "TensorFlow/PyTorch",
+          "Deep Learning Architectures (CNN, RNN, Transformer)",
+          "Data Preprocessing (Pandas, NumPy, Scikit-learn)",
+          "MLOps (Docker, CI/CD for ML)",
+          "Cloud ML Services (AWS Sagemaker or Azure ML)",
+          "RESTful API development (for model serving)",
+          "SQL (for data retrieval and manipulation)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "NLP/CV Libraries (SpaCy, OpenCV)",
+          "Big Data Processing (Apache Spark)",
+          "Kubernetes",
+          "Experiment Tracking (MLflow)",
+          "Model Explainability (LIME, SHAP)",
+          "Time Series Analysis",
+          "Generative AI models (GANs, VAEs)",
+          "Cloud-specific MLOps tools (e.g., Kubeflow)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 3,
+      "max_years": 5,
       "preferred_years": 3,
       "industries": [
         "AI/ML",
@@ -1015,8 +5074,10 @@
       "preferred_majors": [
         "Computer Science",
         "Artificial Intelligence",
+        "Machine Learning",
         "Data Science",
-        "Mathematics",
+        "Electrical Engineering",
+        "Applied Mathematics",
         "Statistics"
       ],
       "alternative_majors": [
@@ -1029,10 +5090,125 @@
     },
     "certifications": {
       "preferred": [
-        "TensorFlow Developer Certificate",
-        "AWS Machine Learning Specialty",
-        "Google Cloud Professional ML Engineer",
-        "Deep Learning Specialization (Coursera)"
+        "AWS Certified Machine Learning - Specialty",
+        "Google Cloud Professional Machine Learning Engineer",
+        "Microsoft Certified: Azure AI Engineer Associate",
+        "DeepLearning.AI Specializations"
+      ],
+      "nice_to_have": [
+        "NVIDIA Deep Learning Institute",
+        "Azure AI Engineer",
+        "Fast.ai Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Research mindset",
+        "Analytical thinking",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Innovation",
+        "Collaboration",
+        "Communication of technical concepts",
+        "English proficiency"
+      ],
+      "weight": 5
+    },
+    "scoring": {
+      "min_pass_score": 55,
+      "excellent_score": 75,
+      "auto_reject_below": 35,
+      "auto_interview_above": 80
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về NLP hoặc LLMs",
+      "Thiếu kỹ năng Python và data analysis",
+      "CV không có projects hoặc portfolio"
+    ]
+  },
+  "AI Engineer - Senior": {
+    "position_info": {
+      "title": "AI Engineer - Senior",
+      "department": "Engineering",
+      "level": "Senior",
+      "salary_range": "$150,000 - $250,000+"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Deep Learning Frameworks (PyTorch/TensorFlow advanced, distributed training)",
+          "MLOps (CI/CD for ML, model versioning, deployment strategies, monitoring)",
+          "Cloud AI/ML Platforms (AWS SageMaker, GCP AI Platform, Azure ML - architecture, optimization)",
+          "Model Architecture Design (Transformers, GANs, Diffusion Models, custom architectures)",
+          "Performance Optimization (GPU acceleration, CUDA, model compression, quantization)",
+          "Scalable AI System Design (Microservices, distributed inference, high-throughput APIs)",
+          "Advanced Python (async, profiling, C/C++ integration for ML)",
+          "Data Engineering for ML (Feature Stores, ETL for ML, large-scale data processing with Spark/Dask)"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Generative AI (LLMs, Diffusion Models, RAG architectures, fine-tuning)",
+          "Reinforcement Learning (Deep RL algorithms, simulation environments)",
+          "Advanced NLP/Computer Vision (specific techniques beyond basic application)",
+          "ML Security & Explainability (XAI, adversarial robustness, privacy-preserving ML)",
+          "Distributed ML Frameworks (Ray, Horovod, PyTorch Distributed)",
+          "Experimentation & A/B Testing Platforms for ML",
+          "Technical Leadership & Mentorship (leading projects, design reviews)",
+          "Container Orchestration (Kubernetes, Docker Swarm for ML deployments)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 7,
+      "max_years": 8,
+      "preferred_years": 5,
+      "industries": [
+        "AI/ML",
+        "Tech",
+        "Research",
+        "Fintech"
+      ],
+      "specific_experience": [
+        "Building & deploying AI models",
+        "NLP/LLM projects",
+        "Data pipeline development",
+        "Model optimization",
+        "Research & experimentation"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Data Science",
+        "Deep Learning",
+        "Applied Mathematics",
+        "Electrical Engineering",
+        "Robotics"
+      ],
+      "alternative_majors": [
+        "Physics",
+        "Engineering",
+        "Computational Science"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Machine Learning - Specialty",
+        "Google Cloud Professional Machine Learning Engineer",
+        "Microsoft Certified: Azure AI Engineer Associate",
+        "NVIDIA Deep Learning Institute (DLI) Certifications"
       ],
       "nice_to_have": [
         "NVIDIA Deep Learning Institute",
@@ -1058,64 +5234,158 @@
     },
     "scoring": {
       "min_pass_score": 65,
-      "excellent_score": 85,
+      "excellent_score": 80,
       "auto_reject_below": 45,
-      "auto_interview_above": 88
+      "auto_interview_above": 85
     },
     "disqualifiers": [
-      "Không có kinh nghiệm với ML/AI frameworks",
+      "Thiếu kiến thức và định hướng cơ bản",
       "Không có kiến thức về NLP hoặc LLMs",
       "Thiếu kỹ năng Python và data analysis",
       "CV không có projects hoặc portfolio"
     ]
   },
-  "AI Intern": {
+  "AI Engineer - Expert": {
     "position_info": {
-      "title": "AI Intern",
+      "title": "AI Engineer - Expert",
       "department": "Engineering",
-      "level": "Intern",
-      "salary_range": "< 5 triệu VND"
+      "level": "Expert",
+      "salary_range": "$180,000 - $250,000+"
     },
     "technical_skills": {
       "required": {
-        "programming": [
-          "Python",
-          "C++"
-        ],
-        "data": [
-          "Data Analytics & EDA",
-          "Pandas",
-          "Matplotlib",
-          "NumPy"
-        ],
-        "ai_fundamentals": [
-          "Basic Machine Learning",
-          "NLP basics",
-          "LLMs understanding",
-          "RAG concepts"
-        ],
-        "tools": [
-          "Git",
-          "Jupyter Notebook",
-          "API Development basics (Node.js)"
+        "skills": [
+          "Deep Learning Frameworks (PyTorch, TensorFlow 2.x, JAX)",
+          "MLOps Platforms (Kubeflow, MLflow, Sagemaker, Azure ML)",
+          "Distributed Training & Optimization (Horovod, DeepSpeed, FSDP, CUDA)",
+          "Advanced Model Architectures (Transformers, Diffusion Models, GANs, RAG)",
+          "Scalable AI System Design & Deployment (Kubernetes, Docker, FastAPI, Triton Inference Server)",
+          "Cloud AI/ML Services (AWS Sagemaker, Azure ML, GCP AI Platform)",
+          "Python (Advanced, performance-critical programming)"
         ]
       },
       "preferred": {
-        "frameworks": [
-          "PyTorch",
-          "TensorFlow",
-          "Scikit-learn"
-        ],
-        "advanced": [
-          "Vector Databases (ChromaDB, Pinecone, Qdrant)",
-          "LLM Fine-tuning (LoRA, PEFT)",
-          "AI Agents",
-          "Hugging Face"
-        ],
-        "other": [
-          "Docker basics",
-          "Cloud platforms (AWS, GCP)",
-          "FastAPI"
+        "skills": [
+          "Reinforcement Learning (RLlib, Stable Baselines)",
+          "Explainable AI (LIME, SHAP, InterpretML)",
+          "Federated Learning or Privacy-Preserving ML",
+          "GPU Programming (CUDA, OpenCL, Triton Kernels)",
+          "Research Publication/Patent Experience in AI/ML",
+          "Graph Neural Networks (PyG, DGL)",
+          "ML Security & Robustness (Adversarial Attacks, Data Poisoning)"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 10,
+      "max_years": 15,
+      "preferred_years": 8,
+      "industries": [
+        "AI/ML",
+        "Tech",
+        "Research",
+        "Fintech"
+      ],
+      "specific_experience": [
+        "Building & deploying AI models",
+        "NLP/LLM projects",
+        "Data pipeline development",
+        "Model optimization",
+        "Research & experimentation"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Ph.D. Artificial Intelligence",
+        "Ph.D. Machine Learning",
+        "Ph.D. Computer Science (AI/ML specialization)",
+        "M.S. Artificial Intelligence",
+        "M.S. Machine Learning",
+        "M.S. Computer Science (AI/ML specialization)"
+      ],
+      "alternative_majors": [
+        "Physics",
+        "Engineering",
+        "Computational Science"
+      ],
+      "bootcamp_acceptable": false,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Machine Learning - Specialty",
+        "Google Cloud Professional Machine Learning Engineer",
+        "Microsoft Certified: Azure AI Engineer Associate",
+        "DeepLearning.AI Specializations (e.g., Generative AI with Transformers)",
+        "NVIDIA DLI Certifications"
+      ],
+      "nice_to_have": [
+        "NVIDIA Deep Learning Institute",
+        "Azure AI Engineer",
+        "Fast.ai Certification"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Research mindset",
+        "Analytical thinking",
+        "Self-learning"
+      ],
+      "preferred": [
+        "Innovation",
+        "Collaboration",
+        "Communication of technical concepts",
+        "English proficiency"
+      ],
+      "weight": 5
+    },
+    "scoring": {
+      "min_pass_score": 75,
+      "excellent_score": 85,
+      "auto_reject_below": 55,
+      "auto_interview_above": 90
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về NLP hoặc LLMs",
+      "Thiếu kỹ năng Python và data analysis",
+      "CV không có projects hoặc portfolio"
+    ]
+  },
+  "DevOps Engineer - Intern": {
+    "position_info": {
+      "title": "DevOps Engineer - Intern",
+      "department": "Engineering",
+      "level": "Intern",
+      "salary_range": "Competitive Intern Stipend"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Linux CLI",
+          "Bash Scripting",
+          "Git Version Control",
+          "Python Scripting",
+          "Docker Fundamentals",
+          "Networking Basics (TCP/IP, HTTP)",
+          "CI/CD Principles"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "AWS/Azure/GCP Basic Services (EC2, S3, Virtual Machines, Storage Accounts)",
+          "Terraform/CloudFormation Concepts",
+          "Prometheus/Grafana Concepts",
+          "Nginx/Apache Basic Configuration",
+          "SQL Basic Queries",
+          "Ansible/Puppet/Chef Concepts",
+          "Jenkins/GitLab CI/GitHub Actions Exposure",
+          "Agile/Scrum Methodology"
         ]
       },
       "weight": 50
@@ -1125,158 +5395,120 @@
       "max_years": 1,
       "preferred_years": 0,
       "industries": [
-        "Any"
+        "Software",
+        "Cloud Services",
+        "Fintech",
+        "E-commerce"
       ],
       "specific_experience": [
-        "Academic AI/ML projects",
-        "Personal projects or portfolio",
-        "Kaggle competitions",
-        "Research papers (optional)"
+        "Building & maintaining CI/CD pipelines",
+        "Infrastructure automation",
+        "Container orchestration",
+        "Cloud infrastructure management",
+        "System monitoring & optimization",
+        "Incident response & troubleshooting"
       ],
-      "weight": 20
+      "weight": 25
     },
     "education": {
-      "required_degree": "Pursuing Bachelor",
+      "required_degree": "Bachelor",
       "preferred_majors": [
         "Computer Science",
-        "Artificial Intelligence",
-        "Data Science",
-        "Software Engineering"
+        "Software Engineering",
+        "Information Technology",
+        "Systems Engineering",
+        "Cloud Computing"
       ],
       "alternative_majors": [
-        "Mathematics",
-        "Statistics",
-        "Physics",
-        "Engineering"
+        "Network Engineering",
+        "Systems Engineering",
+        "Any technical degree"
       ],
       "bootcamp_acceptable": true,
-      "weight": 15
+      "weight": 10
     },
     "certifications": {
       "preferred": [
-        "Machine Learning Coursera",
-        "Deep Learning Specialization",
-        "Any online AI/ML courses"
+        "AWS Certified Cloud Practitioner",
+        "Microsoft Certified Azure Fundamentals",
+        "Google Cloud Digital Leader",
+        "Linux Professional Institute LPIC-1"
       ],
       "nice_to_have": [
-        "Kaggle badges",
-        "Hugging Face certificates",
-        "Fast.ai courses"
+        "Google Cloud Professional DevOps Engineer",
+        "Azure DevOps Engineer Expert",
+        "Jenkins Engineer",
+        "Red Hat Certified Engineer"
       ],
       "weight": 5
     },
     "soft_skills": {
       "required": [
-        "Eagerness to learn",
-        "Self-motivation",
-        "Basic communication",
-        "Teamwork"
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Collaboration"
       ],
       "preferred": [
-        "Research interest",
-        "Problem solving",
-        "Curiosity",
-        "English reading/writing"
+        "Automation mindset",
+        "Continuous improvement",
+        "Documentation skills",
+        "Incident management",
+        "English proficiency"
       ],
       "weight": 10
     },
     "scoring": {
-      "min_pass_score": 60,
-      "excellent_score": 85,
-      "auto_reject_below": 40,
-      "auto_interview_above": 90
+      "min_pass_score": 40,
+      "excellent_score": 60,
+      "auto_reject_below": 20,
+      "auto_interview_above": 65
     },
     "disqualifiers": [
-      "Không có kiến thức Python cơ bản",
-      "Không có hiểu biết về AI/ML fundamentals",
-      "Không có projects hoặc bằng chứng học tập",
-      "CV không rõ ràng hoặc thiếu thông tin"
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về CI/CD",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng scripting và automation",
+      "CV không đầy đủ thông tin"
     ]
   },
-  "DevOps Engineer": {
+  "DevOps Engineer - Fresher": {
     "position_info": {
-      "title": "DevOps Engineer",
+      "title": "DevOps Engineer - Fresher",
       "department": "Engineering",
-      "level": "Mid-Senior",
-      "salary_range": "18-35 triệu VND"
+      "level": "Fresher",
+      "salary_range": "Entry-level, competitive based on skills and potential"
     },
     "technical_skills": {
       "required": {
-        "containerization": [
-          "Docker",
-          "Kubernetes",
-          "Container orchestration"
-        ],
-        "cicd": [
-          "Jenkins",
-          "GitLab CI/CD",
-          "GitHub Actions",
-          "CI/CD pipelines"
-        ],
-        "cloud": [
-          "AWS",
-          "Azure",
-          "GCP"
-        ],
-        "scripting": [
-          "Bash",
-          "Python",
-          "Shell scripting"
-        ],
-        "iac": [
-          "Terraform",
-          "Ansible",
-          "CloudFormation"
-        ],
-        "version_control": [
-          "Git",
-          "GitHub",
-          "GitLab"
-        ],
-        "linux": [
-          "Linux Administration",
-          "System Configuration",
-          "Troubleshooting"
+        "skills": [
+          "Linux OS fundamentals (command line, shell scripting basics)",
+          "Git (version control, branching, merging)",
+          "Python scripting (basic automation, data structures)",
+          "Docker (containerization fundamentals, image building, running containers)",
+          "Networking fundamentals (TCP/IP, HTTP, DNS)",
+          "Basic understanding of CI/CD principles",
+          "Cloud computing concepts (IaaS, PaaS, SaaS)"
         ]
       },
       "preferred": {
-        "monitoring": [
-          "Prometheus",
-          "Grafana",
-          "ELK Stack",
-          "Datadog"
-        ],
-        "networking": [
-          "Load Balancers",
-          "VPN",
-          "DNS",
-          "Nginx/Apache"
-        ],
-        "databases": [
-          "PostgreSQL",
-          "MySQL",
-          "MongoDB",
-          "Redis"
-        ],
-        "security": [
-          "SSL/TLS",
-          "Security best practices",
-          "Vulnerability scanning",
-          "IAM"
-        ],
-        "other": [
-          "Microservices",
-          "Service Mesh (Istio)",
-          "Helm Charts",
-          "ArgoCD"
+        "skills": [
+          "Exposure to AWS/Azure/GCP services (EC2, S3, Virtual Machines, Storage Accounts)",
+          "Infrastructure as Code (IaC) concepts (Terraform/CloudFormation basics)",
+          "Monitoring tools concepts (Prometheus, Grafana)",
+          "Web server configuration (Nginx/Apache basics)",
+          "SQL database fundamentals (basic queries, schema understanding)",
+          "Configuration management concepts (Ansible/Chef/Puppet)",
+          "Kubernetes concepts (pods, deployments, services)",
+          "Agile/Scrum methodology understanding"
         ]
       },
       "weight": 50
     },
     "experience": {
-      "min_years": 2,
-      "max_years": 8,
-      "preferred_years": 3,
+      "min_years": 0,
+      "max_years": 2,
+      "preferred_years": 1,
       "industries": [
         "Software",
         "Cloud Services",
@@ -1298,8 +5530,10 @@
       "preferred_majors": [
         "Computer Science",
         "Information Technology",
-        "Computer Engineering",
-        "Software Engineering"
+        "Software Engineering",
+        "Cloud Computing",
+        "Networking",
+        "Cybersecurity"
       ],
       "alternative_majors": [
         "Network Engineering",
@@ -1311,9 +5545,239 @@
     },
     "certifications": {
       "preferred": [
-        "AWS Certified Solutions Architect",
+        "AWS Certified Cloud Practitioner",
+        "Microsoft Certified: Azure Fundamentals (AZ-900)",
+        "Google Cloud Digital Leader",
+        "Linux Essentials (LPI)"
+      ],
+      "nice_to_have": [
+        "Google Cloud Professional DevOps Engineer",
+        "Azure DevOps Engineer Expert",
+        "Jenkins Engineer",
+        "Red Hat Certified Engineer"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Collaboration"
+      ],
+      "preferred": [
+        "Automation mindset",
+        "Continuous improvement",
+        "Documentation skills",
+        "Incident management",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 45,
+      "excellent_score": 65,
+      "auto_reject_below": 25,
+      "auto_interview_above": 70
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về CI/CD",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng scripting và automation",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "DevOps Engineer - Junior": {
+    "position_info": {
+      "title": "DevOps Engineer - Junior",
+      "department": "Engineering",
+      "level": "Junior",
+      "salary_range": "$60,000 - $90,000"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Linux CLI",
+          "Bash Scripting",
+          "Git Version Control",
+          "Docker Containerization",
+          "CI/CD Pipelines (Jenkins/GitLab CI)",
+          "AWS/Azure/GCP Fundamentals",
+          "Terraform/CloudFormation Basics"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Kubernetes Basics",
+          "Ansible Configuration Management",
+          "Prometheus/Grafana Monitoring",
+          "Python Scripting",
+          "SQL Database Concepts",
+          "Nginx/Apache Web Servers",
+          "Agile/Scrum Methodologies"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 2,
+      "max_years": 3,
+      "preferred_years": 2,
+      "industries": [
+        "Software",
+        "Cloud Services",
+        "Fintech",
+        "E-commerce"
+      ],
+      "specific_experience": [
+        "Building & maintaining CI/CD pipelines",
+        "Infrastructure automation",
+        "Container orchestration",
+        "Cloud infrastructure management",
+        "System monitoring & optimization",
+        "Incident response & troubleshooting"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Systems Administration",
+        "Cloud Computing"
+      ],
+      "alternative_majors": [
+        "Network Engineering",
+        "Systems Engineering",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified Cloud Practitioner",
+        "Azure Fundamentals (AZ-900)",
+        "Linux Foundation Certified System Administrator (LFCS)"
+      ],
+      "nice_to_have": [
+        "Google Cloud Professional DevOps Engineer",
+        "Azure DevOps Engineer Expert",
+        "Jenkins Engineer",
+        "Red Hat Certified Engineer"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Collaboration"
+      ],
+      "preferred": [
+        "Automation mindset",
+        "Continuous improvement",
+        "Documentation skills",
+        "Incident management",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 50,
+      "excellent_score": 70,
+      "auto_reject_below": 30,
+      "auto_interview_above": 75
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về CI/CD",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng scripting và automation",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "DevOps Engineer - Middle": {
+    "position_info": {
+      "title": "DevOps Engineer - Middle",
+      "department": "Engineering",
+      "level": "Middle",
+      "salary_range": "80,000 - 120,000 USD"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Kubernetes",
+          "Docker",
+          "Terraform",
+          "AWS EC2",
+          "GitLab CI/CD",
+          "Python scripting",
+          "Linux administration",
+          "Prometheus",
+          "Grafana"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Helm",
+          "Ansible",
+          "Azure DevOps",
+          "GCP Cloud Platform",
+          "ELK Stack",
+          "Istio",
+          "PostgreSQL administration",
+          "Network security principles"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 3,
+      "max_years": 5,
+      "preferred_years": 3,
+      "industries": [
+        "Software",
+        "Cloud Services",
+        "Fintech",
+        "E-commerce"
+      ],
+      "specific_experience": [
+        "Building & maintaining CI/CD pipelines",
+        "Infrastructure automation",
+        "Container orchestration",
+        "Cloud infrastructure management",
+        "System monitoring & optimization",
+        "Incident response & troubleshooting"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Information Technology",
+        "Cloud Computing",
+        "Network Engineering"
+      ],
+      "alternative_majors": [
+        "Network Engineering",
+        "Systems Engineering",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": true,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified DevOps Engineer - Associate",
         "Certified Kubernetes Administrator (CKA)",
-        "Docker Certified Associate",
+        "Microsoft Certified: Azure DevOps Engineer Expert",
         "HashiCorp Certified: Terraform Associate"
       ],
       "nice_to_have": [
@@ -1341,142 +5805,257 @@
       "weight": 10
     },
     "scoring": {
-      "min_pass_score": 62,
-      "excellent_score": 82,
-      "auto_reject_below": 42,
-      "auto_interview_above": 85
+      "min_pass_score": 55,
+      "excellent_score": 75,
+      "auto_reject_below": 35,
+      "auto_interview_above": 80
     },
     "disqualifiers": [
-      "Không có kinh nghiệm với Docker/Kubernetes",
+      "Thiếu kiến thức và định hướng cơ bản",
       "Không có kiến thức về CI/CD",
-      "Không có kinh nghiệm với cloud platforms",
+      "Thiếu kiến thức và định hướng cơ bản",
       "Thiếu kỹ năng scripting và automation",
       "CV không đầy đủ thông tin"
     ]
   },
-  "DevOps Intern": {
+  "DevOps Engineer - Senior": {
     "position_info": {
-      "title": "DevOps Intern",
+      "title": "DevOps Engineer - Senior",
       "department": "Engineering",
-      "level": "Intern",
-      "salary_range": "< 5 triệu VND"
+      "level": "Senior",
+      "salary_range": "$120,000 - $180,000"
     },
     "technical_skills": {
       "required": {
-        "fundamentals": [
-          "Linux basics",
-          "Command line",
-          "Basic networking concepts"
-        ],
-        "programming": [
-          "Bash scripting",
-          "Python basics"
-        ],
-        "tools": [
-          "Git",
-          "GitHub/GitLab"
-        ],
-        "concepts": [
-          "Understanding of DevOps principles",
-          "Basic CI/CD concepts",
-          "Version control understanding"
+        "skills": [
+          "Kubernetes (EKS, AKS, GKE)",
+          "Terraform",
+          "AWS Cloud Architecture",
+          "CI/CD Pipeline Automation (GitLab CI, ArgoCD, Jenkins)",
+          "Python/Go Scripting",
+          "Prometheus & Grafana",
+          "Linux System Administration",
+          "DevSecOps Practices",
+          "Distributed Systems Design",
+          "GitOps Methodologies"
         ]
       },
       "preferred": {
-        "containerization": [
-          "Docker basics",
-          "Container concepts"
-        ],
-        "cloud": [
-          "AWS/GCP/Azure basics",
-          "Cloud fundamentals"
-        ],
-        "automation": [
-          "Basic automation scripts",
-          "Configuration management concepts"
-        ],
-        "other": [
-          "Kubernetes basics",
-          "Jenkins basics",
-          "Infrastructure as Code concepts",
-          "Monitoring concepts"
+        "skills": [
+          "Service Mesh (Istio, Linkerd)",
+          "Cloud Cost Optimization (FinOps)",
+          "Chaos Engineering",
+          "Ansible/Puppet",
+          "HashiCorp Vault",
+          "Kafka/RabbitMQ",
+          "Database Performance Tuning (PostgreSQL, MySQL)",
+          "Serverless Architectures (AWS Lambda, Azure Functions)",
+          "Site Reliability Engineering (SRE) Principles",
+          "Disaster Recovery Planning"
         ]
       },
       "weight": 50
     },
     "experience": {
-      "min_years": 0,
-      "max_years": 1,
-      "preferred_years": 0,
+      "min_years": 7,
+      "max_years": 8,
+      "preferred_years": 5,
       "industries": [
-        "Any"
+        "Software",
+        "Cloud Services",
+        "Fintech",
+        "E-commerce"
       ],
       "specific_experience": [
-        "Academic projects with Linux/scripting",
-        "Personal lab setups",
-        "GitHub contributions",
-        "Any automation projects"
+        "Building & maintaining CI/CD pipelines",
+        "Infrastructure automation",
+        "Container orchestration",
+        "Cloud infrastructure management",
+        "System monitoring & optimization",
+        "Incident response & troubleshooting"
       ],
-      "weight": 20
+      "weight": 25
     },
     "education": {
-      "required_degree": "Pursuing Bachelor",
+      "required_degree": "Bachelor",
       "preferred_majors": [
         "Computer Science",
-        "Information Technology",
         "Software Engineering",
-        "Network Engineering"
+        "Information Technology",
+        "Cloud Computing",
+        "DevOps",
+        "Systems Engineering"
       ],
       "alternative_majors": [
-        "Computer Engineering",
+        "Network Engineering",
         "Systems Engineering",
         "Any technical degree"
       ],
       "bootcamp_acceptable": true,
-      "weight": 15
+      "weight": 10
     },
     "certifications": {
       "preferred": [
-        "Linux Essentials",
-        "AWS Cloud Practitioner",
-        "Docker Essentials",
-        "Any DevOps online courses"
+        "AWS Certified DevOps Engineer - Professional",
+        "Certified Kubernetes Administrator (CKA)",
+        "Microsoft Certified: Azure DevOps Engineer Expert",
+        "Google Cloud Professional Cloud DevOps Engineer",
+        "HashiCorp Certified: Terraform Associate"
       ],
       "nice_to_have": [
-        "Kubernetes basics",
-        "Python certification",
-        "Git certification",
-        "Cloud fundamentals"
+        "Google Cloud Professional DevOps Engineer",
+        "Azure DevOps Engineer Expert",
+        "Jenkins Engineer",
+        "Red Hat Certified Engineer"
       ],
       "weight": 5
     },
     "soft_skills": {
       "required": [
-        "Eagerness to learn",
-        "Problem solving mindset",
-        "Self-motivation",
-        "Basic communication"
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Collaboration"
       ],
       "preferred": [
-        "Curiosity about automation",
-        "Attention to detail",
-        "Teamwork",
-        "English reading ability"
+        "Automation mindset",
+        "Continuous improvement",
+        "Documentation skills",
+        "Incident management",
+        "English proficiency"
       ],
       "weight": 10
     },
     "scoring": {
-      "min_pass_score": 55,
+      "min_pass_score": 65,
       "excellent_score": 80,
-      "auto_reject_below": 35,
+      "auto_reject_below": 45,
       "auto_interview_above": 85
     },
     "disqualifiers": [
-      "Không có kiến thức Linux cơ bản",
-      "Không biết về Git/version control",
-      "Không có kỹ năng scripting cơ bản",
-      "Không có sự hiểu biết về DevOps concepts",
-      "CV không rõ ràng hoặc thiếu thông tin"
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về CI/CD",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng scripting và automation",
+      "CV không đầy đủ thông tin"
+    ]
+  },
+  "DevOps Engineer - Expert": {
+    "position_info": {
+      "title": "DevOps Engineer - Expert",
+      "department": "Engineering",
+      "level": "Expert",
+      "salary_range": "$160,000 - $250,000+"
+    },
+    "technical_skills": {
+      "required": {
+        "skills": [
+          "Multi-Cloud Architecture (AWS, Azure, GCP)",
+          "Kubernetes Orchestration (Operators, CRDs, Helm)",
+          "Advanced Infrastructure as Code (Terraform, Pulumi, Crossplane)",
+          "CI/CD Pipeline Architecture (ArgoCD, Spinnaker, JenkinsX)",
+          "Distributed Systems Observability (Prometheus, Grafana, Jaeger, OpenTelemetry)",
+          "DevOps Security (Secrets Management, SAST/DAST integration, Supply Chain Security)",
+          "Performance Tuning & Optimization (Container, OS, Network)",
+          "GitOps Workflow Implementation"
+        ]
+      },
+      "preferred": {
+        "skills": [
+          "Service Mesh (Istio, Linkerd)",
+          "Chaos Engineering & Resilience Testing",
+          "FinOps & Cloud Cost Optimization",
+          "MLOps Infrastructure & Pipelines",
+          "eBPF for Advanced Observability",
+          "SRE Principles & Incident Management",
+          "Compliance Automation & Auditing",
+          "Technical Leadership & Mentoring"
+        ]
+      },
+      "weight": 50
+    },
+    "experience": {
+      "min_years": 10,
+      "max_years": 15,
+      "preferred_years": 8,
+      "industries": [
+        "Software",
+        "Cloud Services",
+        "Fintech",
+        "E-commerce"
+      ],
+      "specific_experience": [
+        "Building & maintaining CI/CD pipelines",
+        "Infrastructure automation",
+        "Container orchestration",
+        "Cloud infrastructure management",
+        "System monitoring & optimization",
+        "Incident response & troubleshooting"
+      ],
+      "weight": 25
+    },
+    "education": {
+      "required_degree": "Bachelor",
+      "preferred_majors": [
+        "Computer Science",
+        "Software Engineering",
+        "Cloud Computing",
+        "Systems Engineering",
+        "Information Technology"
+      ],
+      "alternative_majors": [
+        "Network Engineering",
+        "Systems Engineering",
+        "Any technical degree"
+      ],
+      "bootcamp_acceptable": false,
+      "weight": 10
+    },
+    "certifications": {
+      "preferred": [
+        "AWS Certified DevOps Engineer - Professional",
+        "Certified Kubernetes Administrator (CKA)",
+        "Azure DevOps Engineer Expert",
+        "Google Cloud Professional DevOps Engineer",
+        "HashiCorp Certified: Terraform Associate",
+        "Certified Kubernetes Security Specialist (CKS)"
+      ],
+      "nice_to_have": [
+        "Google Cloud Professional DevOps Engineer",
+        "Azure DevOps Engineer Expert",
+        "Jenkins Engineer",
+        "Red Hat Certified Engineer"
+      ],
+      "weight": 5
+    },
+    "soft_skills": {
+      "required": [
+        "Problem solving",
+        "Analytical thinking",
+        "Communication",
+        "Collaboration"
+      ],
+      "preferred": [
+        "Automation mindset",
+        "Continuous improvement",
+        "Documentation skills",
+        "Incident management",
+        "English proficiency"
+      ],
+      "weight": 10
+    },
+    "scoring": {
+      "min_pass_score": 75,
+      "excellent_score": 85,
+      "auto_reject_below": 55,
+      "auto_interview_above": 90
+    },
+    "disqualifiers": [
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Không có kiến thức về CI/CD",
+      "Thiếu kiến thức và định hướng cơ bản",
+      "Thiếu kỹ năng scripting và automation",
+      "CV không đầy đủ thông tin"
     ]
   }
 }

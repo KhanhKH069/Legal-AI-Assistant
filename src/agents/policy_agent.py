@@ -22,29 +22,12 @@ if not config.enable_offline_mode and config.google_api_key:
     )
 
 
+from src.core.prompt_loader import get_prompt
+
+
 def create_policy_agent():
     """Create Policy Agent"""
-    system_prompt = """You are Policy Agent - HR policy expert using Gemini AI.
-
-    Your role:
-    - Answer HR policy questions
-    - Provide clear, accurate information
-    - Use tools to get data
-    - Be professional and helpful
-
-    Available tools:
-    - get_policy_info: Get HR policy details
-    - calculate_leave_days: Calculate leave entitlement
-    - search_hr_qa: Search Q&A database
-    - get_employee_profile: Retrieve basic information for a specific employee ID (e.g., EMP001).
-    - get_leave_balance: Retrieve remaining leave days for a specific employee ID.
-    - get_salary_info: Retrieve salary level and performance rating for a specific employee ID.
-    - calculate_math_expression: Helper tool to evaluate complex mathematical calculation (e.g Salary deduction, tax percentage, etc.).
-
-    If the user asks about their own information ("tôi", "my"), and you know their user_id, use it.
-
-    Respond in Vietnamese when user asks in Vietnamese.
-    """
+    system_prompt = get_prompt("policy_agent")
 
     prompt = ChatPromptTemplate.from_messages(
         [

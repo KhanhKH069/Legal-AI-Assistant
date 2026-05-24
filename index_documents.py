@@ -18,8 +18,23 @@ try:
 except Exception as e:
     print(f" Import error: {e}")
     print("\nTry:")
-    print("  uv pip install chromadb sentence-transformers")
+    print("  pip install chromadb sentence-transformers")
     sys.exit(1)
+
+# Vietnamese tokenizer (optional)
+try:
+    from underthesea import word_tokenize as _vn_tokenize
+
+    def _tokenize(text: str):
+        return _vn_tokenize(text.lower(), format="text").split()
+
+    print(" Vietnamese tokenizer (underthesea) loaded")
+except ImportError:
+
+    def _tokenize(text: str):  # type: ignore[misc]
+        return text.lower().split()
+
+    print(" underthesea not found - using whitespace tokenizer")
 
 
 def parse_qa_markdown(file_path):
@@ -43,12 +58,14 @@ def parse_qa_markdown(file_path):
         for line in lines:
             line = line.strip()
 
-            if line.startswith("**Câu hỏi:**"):
+            if line.startswith("**Cau hoi:**") or line.startswith("**Câu hỏi:**"):
                 current_field = "question"
-                qa["question"] = line.replace("**Câu hỏi:**", "").strip()
-            elif line.startswith("**Biến thể:**"):
+                qa["question"] = re.sub(
+                    r"\*\*Câu hỏi:\*\*|\*\*Cau hoi:\*\*", "", line
+                ).strip()
+            elif line.startswith("**Bien the:**") or line.startswith("**Biến thể:**"):
                 current_field = "variations"
-            elif line.startswith("**Trả lời:**"):
+            elif line.startswith("**Tra loi:**") or line.startswith("**Trả lời:**"):
                 current_field = "answer"
             elif line.startswith("---"):
                 break
@@ -136,7 +153,7 @@ def index_documents():
 
         # Add to ChromaDB
         try:
-            vdb.add(
+            vdb.add_documents(
                 collection_name="hr_policies",
                 documents=documents,
                 metadatas=metadatas,
@@ -154,6 +171,17 @@ def index_documents():
     print(f" Total: {total_questions} questions")
     print(f" Total: {total_variations} variations")
     print(" Collection: hr_policies")
+    print("=" * 50)
+
+    print("\n Building BM25 Index for Hybrid Search (Vietnamese tokenizer)...")
+    try:
+        from services.hybrid_retriever import get_hybrid_retriever
+
+        hr = get_hybrid_retriever()
+        hr.build_bm25()
+        print(" BM25 Index built successfully with Vietnamese tokenizer!")
+    except Exception as e:
+        print(f" Failed to build BM25 Index: {e}")
     print("=" * 50)
 
 

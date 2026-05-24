@@ -1,5 +1,10 @@
-"""Orchestrator Agent - Gemini Version"""
+"""Orchestrator Agent - Gemini Version
 
+Routes incoming user messages to the correct specialized agent using
+a Gemini LLM classifier.  Includes retry logic for ambiguous responses.
+"""
+
+import logging
 import operator
 from typing import Annotated, Sequence, TypedDict
 
@@ -9,6 +14,21 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import ToolNode
+from langgraph.checkpoint.sqlite import SqliteSaver
+
+logger = logging.getLogger(__name__)
+
+_VALID_AGENTS = {
+    "POLICY": "policy_agent",
+    "ONBOARD": "onboard_agent",
+    "CV": "cv_agent",
+    "ANALYTICS": "analytics_agent",
+    "ATTENDANCE": "attendance_agent",
+    "HELPDESK": "helpdesk_agent",
+    "BENEFITS": "benefits_agent",
+    "APPRAISAL": "appraisal_agent",
+}
+_MAX_ROUTING_RETRIES = 2
 
 from src.agents.cv_agent import cv_agent_node
 from src.agents.onboard_agent import onboard_agent_node
@@ -25,6 +45,7 @@ from src.tools.document_tools import (
     list_employee_documents,
     sign_document,
     get_document_template,
+    check_expiring_contracts,
 )
 from src.tools.policy_tools import calculate_leave_days, get_policy_info, search_hr_qa
 from src.tools.employee_data_tools import (
@@ -52,6 +73,7 @@ from src.tools.recruitment_tools import (
     get_recruitment_pipeline,
     create_interview_schedule,
     get_hiring_stats,
+    convert_applicant_to_employee,
 )
 from src.tools.notification_tools import (
     get_employee_notifications,
@@ -59,7 +81,11 @@ from src.tools.notification_tools import (
 from src.tools.payroll_tools import (
     get_payroll_record,
     get_payroll_history,
+    calculate_vn_income_tax,
+    calculate_leave_accrual,
 )
+from src.tools.appraisal_tools import appraisal_tools
+from src.tools.skills_tools import skills_tools
 
 
 class AgentState(TypedDict):
@@ -81,39 +107,12 @@ if not config.enable_offline_mode and config.google_api_key:
     )
 
 
+from src.core.prompt_loader import get_prompt
+
+
 def create_orchestrator():
     """Create orchestrator agent"""
-    system_prompt = """You are HR Orchestrator Agent. Analyze user intent and route to the appropriate agent.
-
-Available agents:
-- POLICY_AGENT: For HR policy questions (leave balance, salary, working hours, general HR policies)
-- ONBOARD_AGENT: For onboarding (new employee checklist, CCCD/document verification, e-signature, signing contracts, document status)
-- CV_AGENT: For CV screening, candidate scoring, recruitment pipeline stages, interview scheduling, hiring statistics
-- ANALYTICS_AGENT: For HR data analysis, charts, department statistics, headcount, turnover rates from CSV data
-- ATTENDANCE_AGENT: For attendance records, check-in/out times, OT hours, submitting/viewing leave requests (nghỉ phép)
-- HELPDESK_AGENT: For creating/tracking HR support tickets (equipment, payroll issues, benefit changes, complaints)
-- BENEFITS_AGENT: For employee benefits, insurance packages, meal/transport allowances, training budget, benefit changes
-
-Respond with ONLY ONE WORD from: POLICY_AGENT, ONBOARD_AGENT, CV_AGENT, ANALYTICS_AGENT, ATTENDANCE_AGENT, HELPDESK_AGENT, BENEFITS_AGENT, or END
-
-Examples:
-- "How many leave days do I have?" → POLICY_AGENT
-- "Onboarding checklist?" → ONBOARD_AGENT
-- "Ký hợp đồng lao động" → ONBOARD_AGENT
-- "Tài liệu nào chưa ký?" → ONBOARD_AGENT
-- "Đánh giá CV này cho vị trí Backend Developer" → CV_AGENT
-- "Pipeline tuyển ReactJS đến stage nào rồi?" → CV_AGENT
-- "Đặt lịch phỏng vấn cho ứng viên" → CV_AGENT
-- "Tỉ lệ nghỉ việc tháng này là bao nhiêu?" → ANALYTICS_AGENT
-- "Tuần này tôi đã làm mấy tiếng?" → ATTENDANCE_AGENT
-- "Tôi muốn nộp đơn xin nghỉ phép" → ATTENDANCE_AGENT
-- "Check-in hôm nay của tôi" → ATTENDANCE_AGENT
-- "Tôi muốn tạo ticket xin đổi laptop" → HELPDESK_AGENT
-- "Ticket của tôi đang ở trạng thái nào?" → HELPDESK_AGENT
-- "Gói bảo hiểm của tôi gồm những gì?" → BENEFITS_AGENT
-- "Công ty có những phúc lợi gì?" → BENEFITS_AGENT
-- "Tôi muốn đổi gói bảo hiểm" → BENEFITS_AGENT
-"""
+    system_prompt = get_prompt("orchestrator")
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -125,28 +124,52 @@ Examples:
     return prompt | llm | StrOutputParser()
 
 
-def orchestrator_node(state: AgentState):
-    """Orchestrator node"""
-    orchestrator = create_orchestrator()
-    response = orchestrator.invoke({"messages": state["messages"]})
+def _classify_intent(response_text: str) -> str:
+    """Map the raw LLM classifier output to an internal agent key."""
+    upper = response_text.strip().upper()
 
-    response_clean = response.strip().upper()
-    if "POLICY" in response_clean:
-        next_agent = "policy_agent"
-    elif "ONBOARD" in response_clean:
-        next_agent = "onboard_agent"
-    elif "CV" in response_clean:
-        next_agent = "cv_agent"
-    elif "ANALYTICS" in response_clean:
-        next_agent = "analytics_agent"
-    elif "ATTENDANCE" in response_clean:
-        next_agent = "attendance_agent"
-    elif "HELPDESK" in response_clean:
-        next_agent = "helpdesk_agent"
-    elif "BENEFITS" in response_clean:
-        next_agent = "benefits_agent"
-    else:
-        next_agent = "end"
+    # Check exact match first
+    for keyword, agent_key in _VALID_AGENTS.items():
+        if keyword == upper:
+            return agent_key
+
+    # Fallback to substring
+    for keyword, agent_key in _VALID_AGENTS.items():
+        if keyword in upper:
+            return agent_key
+
+    return "end"
+
+
+def orchestrator_node(state: AgentState):
+    """Orchestrator node — routes the user's message to the correct agent.
+
+    Retries up to *_MAX_ROUTING_RETRIES* times when the LLM returns an
+    unrecognised intent so that transient model quirks don't silently
+    drop the request.
+    """
+    orchestrator = create_orchestrator()
+    next_agent = "end"
+    response_clean = ""
+
+    for attempt in range(1, _MAX_ROUTING_RETRIES + 1):
+        response = orchestrator.invoke({"messages": state["messages"]})
+        response_clean = response.strip().upper()
+        next_agent = _classify_intent(response_clean)
+        if next_agent != "end":
+            break
+        logger.warning(
+            "Orchestrator attempt %d/%d: unrecognised intent '%s'",
+            attempt,
+            _MAX_ROUTING_RETRIES,
+            response_clean,
+        )
+
+    if next_agent == "end":
+        logger.error(
+            "Orchestrator could not classify intent after %d attempts — routing to END.",
+            _MAX_ROUTING_RETRIES,
+        )
 
     return {
         "messages": state["messages"],
@@ -157,24 +180,16 @@ def orchestrator_node(state: AgentState):
     }
 
 
-def router(state: AgentState):
-    """Route to next agent"""
+def router(state: AgentState) -> str:
+    """Conditional edge function — returns the name of the next node.
+
+    Used by LangGraph's ``add_conditional_edges`` to dispatch the state
+    to the correct agent node after orchestration.
+    """
     next_step = state.get("next", "end")
-    if next_step == "policy_agent":
-        return "policy_agent"
-    elif next_step == "onboard_agent":
-        return "onboard_agent"
-    elif next_step == "cv_agent":
-        return "cv_agent"
-    elif next_step == "analytics_agent":
-        return "analytics_agent"
-    elif next_step == "attendance_agent":
-        return "attendance_agent"
-    elif next_step == "helpdesk_agent":
-        return "helpdesk_agent"
-    elif next_step == "benefits_agent":
-        return "benefits_agent"
-    return "end"
+    # All valid agent keys are in _VALID_AGENTS values; pass through directly.
+    valid_nodes = set(_VALID_AGENTS.values()) | {"end"}
+    return next_step if next_step in valid_nodes else "end"
 
 
 def create_hr_agent_graph():
@@ -208,6 +223,28 @@ def create_hr_agent_graph():
     workflow.add_node("helpdesk_agent", helpdesk_agent_node)
     workflow.add_node("benefits_agent", benefits_agent_node)
 
+    # Appraisal + Skills agent (Phase 2)
+    if llm is not None:
+        from src.agents.appraisal_agent import appraisal_agent_node
+
+        workflow.add_node("appraisal_agent", appraisal_agent_node)
+    else:
+
+        def _appraisal_fallback(state):
+            from langchain_core.messages import AIMessage
+
+            return {
+                "messages": [
+                    AIMessage(content="Appraisal Agent not available in offline mode.")
+                ],
+                "next": "end",
+                "user_intent": state.get("user_intent", ""),
+                "user_id": state.get("user_id", ""),
+                "user_info": state.get("user_info", {}),
+            }
+
+        workflow.add_node("appraisal_agent", _appraisal_fallback)
+
     # Tool nodes — original
     policy_tools = [
         get_policy_info,
@@ -219,38 +256,47 @@ def create_hr_agent_graph():
         calculate_math_expression,
         get_payroll_record,
         get_payroll_history,
+        calculate_vn_income_tax,
+        calculate_leave_accrual,
     ]
-    onboard_tools = [
+
+    # Tool nodes — new Odoo modules
+    attendance_safe_tools = [get_attendance_record, get_leave_requests]
+    attendance_sensitive_tools = [submit_leave_request]
+    helpdesk_tools = [create_hr_ticket, get_ticket_status, list_employee_tickets]
+    benefits_tools_list = [
+        get_employee_benefits,
+        get_benefits_catalog,
+        request_benefit_change,
+    ]
+    cv_tools_extended = [
+        screen_cv_for_position,
+        get_recruitment_pipeline,
+        create_interview_schedule,
+        get_hiring_stats,
+        convert_applicant_to_employee,
+        get_employee_notifications,
+    ]
+    onboard_tools_extended = [
         get_onboarding_checklist,
         search_hr_qa,
         verify_onboarding_document,
         list_employee_documents,
         sign_document,
         get_document_template,
-    ]
-    cv_tools = [
-        screen_cv_for_position,
-        get_recruitment_pipeline,
-        create_interview_schedule,
-        get_hiring_stats,
-        get_employee_notifications,
-    ]
-
-    # Tool nodes — new Odoo modules
-    attendance_tools = [get_attendance_record, submit_leave_request, get_leave_requests]
-    helpdesk_tools = [create_hr_ticket, get_ticket_status, list_employee_tickets]
-    benefits_tools = [
-        get_employee_benefits,
-        get_benefits_catalog,
-        request_benefit_change,
+        check_expiring_contracts,
     ]
 
     workflow.add_node("policy_tools", ToolNode(policy_tools))
-    workflow.add_node("onboard_tools", ToolNode(onboard_tools))
-    workflow.add_node("cv_tools", ToolNode(cv_tools))
-    workflow.add_node("attendance_tools", ToolNode(attendance_tools))
+    workflow.add_node("onboard_tools", ToolNode(onboard_tools_extended))
+    workflow.add_node("cv_tools", ToolNode(cv_tools_extended))
+    workflow.add_node("attendance_safe_tools", ToolNode(attendance_safe_tools))
+    workflow.add_node(
+        "attendance_sensitive_tools", ToolNode(attendance_sensitive_tools)
+    )
     workflow.add_node("helpdesk_tools", ToolNode(helpdesk_tools))
-    workflow.add_node("benefits_tools", ToolNode(benefits_tools))
+    workflow.add_node("benefits_tools", ToolNode(benefits_tools_list))
+    workflow.add_node("appraisal_tools", ToolNode(appraisal_tools + skills_tools))
 
     # Set entry point
     workflow.set_entry_point("orchestrator")
@@ -267,23 +313,272 @@ def create_hr_agent_graph():
             "attendance_agent": "attendance_agent",
             "helpdesk_agent": "helpdesk_agent",
             "benefits_agent": "benefits_agent",
+            "appraisal_agent": "appraisal_agent",
             "end": END,
         },
     )
 
-    # Agent → tool → END edges
-    workflow.add_edge("policy_agent", "policy_tools")
-    workflow.add_edge("policy_tools", END)
-    workflow.add_edge("onboard_agent", "onboard_tools")
-    workflow.add_edge("onboard_tools", END)
-    workflow.add_edge("cv_agent", "cv_tools")
-    workflow.add_edge("cv_tools", END)
-    workflow.add_edge("analytics_agent", END)
-    workflow.add_edge("attendance_agent", "attendance_tools")
-    workflow.add_edge("attendance_tools", END)
-    workflow.add_edge("helpdesk_agent", "helpdesk_tools")
-    workflow.add_edge("helpdesk_tools", END)
-    workflow.add_edge("benefits_agent", "benefits_tools")
-    workflow.add_edge("benefits_tools", END)
+    from src.agents.reviewer_agent import reviewer_node
 
+    workflow.add_node("reviewer_node", reviewer_node)
+
+    # Debate routing for policy_agent
+    def route_policy(state: AgentState) -> str:
+        messages = state.get("messages", [])
+        if not messages:
+            return "end"
+        last_msg = messages[-1]
+        if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
+            return "policy_tools"
+        return "reviewer_node"
+
+    def route_reviewer(state: AgentState) -> str:
+        if state.get("next") == "fail":
+            return "policy_agent"
+        return "end"
+
+    workflow.add_conditional_edges(
+        "policy_agent",
+        route_policy,
+        {"policy_tools": "policy_tools", "reviewer_node": "reviewer_node", "end": END},
+    )
+    workflow.add_edge("policy_tools", "policy_agent")
+
+    workflow.add_conditional_edges(
+        "reviewer_node", route_reviewer, {"policy_agent": "policy_agent", "end": END}
+    )
+
+    def route_onboard(state: AgentState) -> str:
+        messages = state.get("messages", [])
+        if not messages:
+            return "end"
+        if hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
+            return "onboard_tools"
+        return "end"
+
+    workflow.add_conditional_edges(
+        "onboard_agent", route_onboard, {"onboard_tools": "onboard_tools", "end": END}
+    )
+    workflow.add_edge("onboard_tools", "onboard_agent")
+
+    def route_cv(state: AgentState) -> str:
+        messages = state.get("messages", [])
+        if not messages:
+            return "end"
+        last_msg = messages[-1]
+        if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
+            return "cv_tools"
+        return "end"
+
+    workflow.add_conditional_edges(
+        "cv_agent", route_cv, {"cv_tools": "cv_tools", "end": END}
+    )
+    workflow.add_edge("cv_tools", "cv_agent")
+    workflow.add_edge("analytics_agent", END)
+
+    # Conditional routing for attendance agent
+    def route_attendance_tools(state: AgentState) -> str:
+        messages = state.get("messages", [])
+        if not messages:
+            return "end"
+        last_message = messages[-1]
+        if hasattr(last_message, "tool_calls") and last_message.tool_calls:
+            for call in last_message.tool_calls:
+                if call["name"] == "submit_leave_request":
+                    return "attendance_sensitive_tools"
+            return "attendance_safe_tools"
+        return "end"
+
+    workflow.add_conditional_edges(
+        "attendance_agent",
+        route_attendance_tools,
+        {
+            "attendance_safe_tools": "attendance_safe_tools",
+            "attendance_sensitive_tools": "attendance_sensitive_tools",
+            "end": END,
+        },
+    )
+    workflow.add_edge("attendance_safe_tools", END)
+    workflow.add_edge("attendance_sensitive_tools", END)
+
+    def route_helpdesk(state: AgentState) -> str:
+        messages = state.get("messages", [])
+        if not messages:
+            return "end"
+        if hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
+            return "helpdesk_tools"
+        return "end"
+
+    workflow.add_conditional_edges(
+        "helpdesk_agent",
+        route_helpdesk,
+        {"helpdesk_tools": "helpdesk_tools", "end": END},
+    )
+    workflow.add_edge("helpdesk_tools", "helpdesk_agent")
+
+    def route_benefits(state: AgentState) -> str:
+        messages = state.get("messages", [])
+        if not messages:
+            return "end"
+        if hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
+            return "benefits_tools"
+        return "end"
+
+    workflow.add_conditional_edges(
+        "benefits_agent",
+        route_benefits,
+        {"benefits_tools": "benefits_tools", "end": END},
+    )
+    workflow.add_edge("benefits_tools", "benefits_agent")
+
+    def route_appraisal(state: AgentState) -> str:
+        messages = state.get("messages", [])
+        if not messages:
+            return "end"
+        if hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
+            return "appraisal_tools"
+        return "end"
+
+    workflow.add_conditional_edges(
+        "appraisal_agent",
+        route_appraisal,
+        {"appraisal_tools": "appraisal_tools", "end": END},
+    )
+    workflow.add_edge("appraisal_tools", "appraisal_agent")
+
+    # Setup Checkpointer for LangGraph State Memory
+    import sqlite3
+    import os
+
+    os.makedirs("data", exist_ok=True)
+    conn = sqlite3.connect("data/checkpoints.db", check_same_thread=False)
+    memory = SqliteSaver(conn)
+
+    return workflow.compile(
+        checkpointer=memory, interrupt_before=["attendance_sensitive_tools"]
+    )
+
+
+# ---------------------------------------------------------------------------
+# Guest Agent Graph — limited access for applicants / visitors
+# ---------------------------------------------------------------------------
+
+
+class GuestState(TypedDict):
+    messages: Annotated[Sequence[BaseMessage], operator.add]
+    next: str
+    user_intent: str
+    session_id: str
+
+
+def create_guest_orchestrator():
+    """Orchestrator for guest/applicant users (recruitment queries only)."""
+    system_prompt = get_prompt("guest_orchestrator")
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            MessagesPlaceholder(variable_name="messages"),
+        ]
+    )
+    return prompt | llm | StrOutputParser()
+
+
+def guest_orchestrator_node(state: GuestState):
+    """Route guest queries — only to RECRUITMENT or END."""
+    orchestrator = create_guest_orchestrator()
+    response = orchestrator.invoke({"messages": state["messages"]})
+    upper = response.strip().upper()
+    next_agent = "recruitment_agent" if "RECRUITMENT" in upper else "end"
+    return {
+        "messages": state["messages"],
+        "next": next_agent,
+        "user_intent": upper,
+        "session_id": state.get("session_id", "guest"),
+    }
+
+
+def guest_router(state: GuestState) -> str:
+    return state.get("next", "end")
+
+
+def create_guest_agent_graph():
+    """Create a limited LangGraph for guest/applicant users.
+
+    Only the Recruitment / CV agent is available.  No personal employee
+    data tools (salary, leave balance, attendance…) are included.
+    """
+    if llm is None:
+        # Offline mode — return None; api/main.py will handle with offline_agent
+        return None
+
+    from src.agents.cv_agent import cv_agent_node
+
+    workflow = StateGraph(GuestState)
+
+    # --- Nodes ---
+    workflow.add_node("guest_orchestrator", guest_orchestrator_node)
+
+    # Wrap cv_agent_node to use GuestState keys
+    def recruitment_agent_node(state: GuestState):
+        """Wrap cv_agent_node to adapt GuestState → AgentState signature."""
+        adapted_state: AgentState = {
+            "messages": state["messages"],
+            "next": "",
+            "user_intent": state.get("user_intent", ""),
+            "user_id": state.get("session_id", "guest"),
+            "user_info": {"role": "guest"},
+        }
+        result = cv_agent_node(adapted_state)
+        return {
+            "messages": result.get("messages", []),
+            "next": "end",
+            "user_intent": state.get("user_intent", ""),
+            "session_id": state.get("session_id", "guest"),
+        }
+
+    workflow.add_node("recruitment_agent", recruitment_agent_node)
+
+    # Guest can only use public recruitment tools — NO employee data tools
+    from src.tools.cv_tools import get_job_requirements
+
+    guest_recruitment_tools = [
+        screen_cv_for_position,
+        get_recruitment_pipeline,
+        get_hiring_stats,
+        get_job_requirements,
+    ]
+    workflow.add_node("guest_recruitment_tools", ToolNode(guest_recruitment_tools))
+
+    # --- Edges ---
+    workflow.set_entry_point("guest_orchestrator")
+
+    workflow.add_conditional_edges(
+        "guest_orchestrator",
+        guest_router,
+        {
+            "recruitment_agent": "recruitment_agent",
+            "end": END,
+        },
+    )
+
+    def route_recruitment(state: GuestState) -> str:
+        messages = state.get("messages", [])
+        if not messages:
+            return "end"
+        last_msg = messages[-1]
+        if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
+            return "guest_recruitment_tools"
+        return "end"
+
+    workflow.add_conditional_edges(
+        "recruitment_agent",
+        route_recruitment,
+        {
+            "guest_recruitment_tools": "guest_recruitment_tools",
+            "end": END,
+        },
+    )
+    workflow.add_edge("guest_recruitment_tools", "recruitment_agent")
+
+    # No checkpointer needed for stateless guest sessions
     return workflow.compile()

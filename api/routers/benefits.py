@@ -3,8 +3,10 @@
 import json
 import os
 from datetime import datetime
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
+from api.models import User
+from api.auth import get_current_user
 
 router = APIRouter(prefix="/benefits", tags=["Benefits"])
 
@@ -18,7 +20,7 @@ def _load_data() -> dict:
         with open(_DATA_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
-        raise HTTPException(status_code=503, detail="Benefits data not available")
+        return {}
 
 
 class BenefitChangePayload(BaseModel):
@@ -35,10 +37,15 @@ def get_catalog():
 
 
 @router.get("/{employee_id}")
-def get_employee_benefits(employee_id: str):
+def get_employee_benefits(
+    employee_id: str, current_user: User = Depends(get_current_user)
+):
     """Get current benefits for a specific employee."""
-    data = _load_data()
     eid = employee_id.strip().upper()
+    if current_user.role == "employee" and current_user.employee_id != eid:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    data = _load_data()
     emp_benefits = data.get("employee_benefits", {}).get(eid)
     if not emp_benefits:
         raise HTTPException(
@@ -48,15 +55,20 @@ def get_employee_benefits(employee_id: str):
 
 
 @router.post("/change-request")
-def request_benefit_change(payload: BenefitChangePayload):
+def request_benefit_change(
+    payload: BenefitChangePayload, current_user: User = Depends(get_current_user)
+):
     """Submit a request to change an employee's benefit package."""
+    eid = payload.employee_id.strip().upper()
+    if current_user.role == "employee" and current_user.employee_id != eid:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
     try:
         with open(_DATA_PATH, "r", encoding="utf-8") as f:
             data = json.load(f)
     except FileNotFoundError:
         raise HTTPException(status_code=503, detail="Benefits data not available")
 
-    eid = payload.employee_id.strip().upper()
     emp_benefits = data.get("employee_benefits", {})
 
     if eid not in emp_benefits:

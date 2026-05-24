@@ -1,5 +1,5 @@
 from langchain_core.tools import tool
-from langchain.chains import LLMMathChain
+from langchain_classic.chains import LLMMathChain
 from langchain_google_genai import ChatGoogleGenerativeAI
 from src.core.config import config
 

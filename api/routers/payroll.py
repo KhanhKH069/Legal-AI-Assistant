@@ -1,59 +1,101 @@
-"""Payroll API Router"""
+"""Payroll API Router — with pagination on summary endpoint."""
 
-import json
-import os
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, Query
+from sqlmodel import Session, select
+from api.database import get_session
+from api.models import PayrollRecord, Employee, User, AuditLog
+from api.auth import get_current_user
+from datetime import datetime
 
 router = APIRouter(prefix="/payroll", tags=["Payroll"])
 
-_DATA_PATH = os.path.join(
-    os.path.dirname(__file__), "..", "..", "data", "payroll_data.json"
-)
 
-
-def _load_data() -> dict:
-    try:
-        with open(_DATA_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        raise HTTPException(status_code=503, detail="Payroll data not available")
-
-
-def _fmt_vnd(amount: int) -> str:
-    return f"{amount:,.0f} ₫"
+def _log(session: Session, actor_id: str, action: str, target: str, detail: str = ""):
+    session.add(
+        AuditLog(
+            actor_id=actor_id,
+            action=action,
+            target=target,
+            detail=detail,
+            timestamp=datetime.utcnow().isoformat(),
+        )
+    )
 
 
 @router.get("/{employee_id}")
-def get_payroll_history(employee_id: str):
+def get_payroll_history(
+    employee_id: str,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
     """Get full payroll history for an employee (all months)."""
-    data = _load_data()
     eid = employee_id.strip().upper()
-    record = data.get("payroll_records", {}).get(eid)
-    if not record:
+
+    # RBAC check
+    if current_user.role == "employee" and current_user.employee_id != eid:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to view this record"
+        )
+
+    emp = session.exec(select(Employee).where(Employee.employee_id == eid)).first()
+    if not emp:
+        raise HTTPException(status_code=404, detail=f"Employee {eid} not found")
+
+    records = session.exec(
+        select(PayrollRecord)
+        .where(PayrollRecord.employee_id == eid)
+        .order_by(PayrollRecord.month)
+    ).all()
+
+    if not records:
         raise HTTPException(status_code=404, detail=f"No payroll record for {eid}")
+
+    # Audit log for managers/admins viewing others' payroll
+    if current_user.role in ("admin", "manager") and current_user.employee_id != eid:
+        _log(
+            session,
+            current_user.employee_id or current_user.username,
+            "VIEW_PAYROLL_HISTORY",
+            eid,
+            f"viewer_role={current_user.role}",
+        )
+        session.commit()
+
     return {
         "employee_id": eid,
-        "name": record["name"],
-        "department": record["department"],
-        "position": record["position"],
-        "salary_history": record["salary_history"],
+        "name": emp.name,
+        "department": emp.department,
+        "position": emp.position,
+        "salary_history": [r.dict() for r in records],
     }
 
 
 @router.get("/{employee_id}/month/{month}")
-def get_payroll_month(employee_id: str, month: str):
-    """
-    Get payroll for a specific month.
-    month format: YYYY-MM
-    """
-    data = _load_data()
+def get_payroll_month(
+    employee_id: str,
+    month: str,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """Get payroll for a specific month. month format: YYYY-MM"""
     eid = employee_id.strip().upper()
-    record = data.get("payroll_records", {}).get(eid)
-    if not record:
-        raise HTTPException(status_code=404, detail=f"No payroll record for {eid}")
 
-    entry = next((s for s in record["salary_history"] if s["month"] == month), None)
-    if not entry:
+    # RBAC check
+    if current_user.role == "employee" and current_user.employee_id != eid:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    emp = session.exec(select(Employee).where(Employee.employee_id == eid)).first()
+    if not emp:
+        raise HTTPException(status_code=404, detail=f"Employee {eid} not found")
+
+    record = session.exec(
+        select(PayrollRecord).where(
+            PayrollRecord.employee_id == eid,
+            PayrollRecord.month == month,
+        )
+    ).first()
+
+    if not record:
         raise HTTPException(
             status_code=404,
             detail=f"No payroll data for {eid} in month {month}",
@@ -61,44 +103,87 @@ def get_payroll_month(employee_id: str, month: str):
 
     return {
         "employee_id": eid,
-        "name": record["name"],
-        "department": record["department"],
-        "position": record["position"],
-        "payroll": entry,
+        "name": emp.name,
+        "department": emp.department,
+        "position": emp.position,
+        "payroll": record.dict(),
     }
 
 
 @router.get("/summary/all")
-def get_payroll_summary():
-    """Get payroll summary for all employees (latest month). For HR Dashboard."""
-    data = _load_data()
-    records = data.get("payroll_records", {})
+def get_payroll_summary(
+    page: int = Query(default=1, ge=1),
+    size: int = Query(default=50, ge=1, le=200),
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """Get payroll summary for all employees (latest month). Admin/Manager only. Supports pagination."""
+    if current_user.role not in ["admin", "manager"]:
+        raise HTTPException(
+            status_code=403, detail="Only admins or managers can view payroll summaries"
+        )
+
+    latest_month_record = session.exec(
+        select(PayrollRecord).order_by(PayrollRecord.month.desc())
+    ).first()
+    if not latest_month_record:
+        return {
+            "month": "",
+            "total_employees": 0,
+            "total_payroll": 0,
+            "page": page,
+            "size": size,
+            "employees": [],
+        }
+
+    latest_month = latest_month_record.month
+    records = session.exec(
+        select(PayrollRecord).where(PayrollRecord.month == latest_month)
+    ).all()
+
     summary = []
-    for eid, rec in records.items():
-        history = rec.get("salary_history", [])
-        if not history:
+    total_payroll = 0.0
+    for r in records:
+        emp = session.exec(
+            select(Employee).where(Employee.employee_id == r.employee_id)
+        ).first()
+        if not emp:
             continue
-        latest = history[-1]
         summary.append(
             {
-                "employee_id": eid,
-                "name": rec["name"],
-                "department": rec["department"],
-                "position": rec["position"],
-                "month": latest["month"],
-                "month_label": latest["month_label"],
-                "base_salary": latest["base_salary"],
-                "ot_pay": latest["ot_pay"],
-                "kpi_bonus": latest["kpi_bonus"],
-                "total_deductions": latest["total_deductions"],
-                "net_salary": latest["net_salary"],
-                "status": latest["status"],
+                "employee_id": r.employee_id,
+                "name": emp.name,
+                "department": emp.department,
+                "position": emp.position,
+                "month": r.month,
+                "month_label": r.month_label,
+                "base_salary": r.base_salary,
+                "ot_pay": r.ot_pay,
+                "kpi_bonus": r.kpi_bonus,
+                "total_deductions": r.total_deductions,
+                "net_salary": r.net_salary,
+                "status": r.status,
             }
         )
-    total_payroll = sum(s["net_salary"] for s in summary)
+        total_payroll += r.net_salary
+
+    total = len(summary)
+    start = (page - 1) * size
+
+    _log(
+        session,
+        current_user.employee_id or current_user.username,
+        "VIEW_PAYROLL_SUMMARY_ALL",
+        "ALL",
+        f"month={latest_month}, count={total}, role={current_user.role}",
+    )
+    session.commit()
+
     return {
-        "month": summary[0]["month"] if summary else "",
-        "total_employees": len(summary),
+        "month": latest_month,
+        "total_employees": total,
         "total_payroll": total_payroll,
-        "employees": summary,
+        "page": page,
+        "size": size,
+        "employees": summary[start : start + size],
     }

@@ -1,203 +1,290 @@
-"""Screening API Router — JSON-backed, no SQLite dependency"""
+"""Screening API Router — SQLite backed"""
 
-import json
-import os
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException
+import asyncio
+from fastapi import (
+    APIRouter,
+    HTTPException,
+    BackgroundTasks,
+    Depends,
+    WebSocket,
+    WebSocketDisconnect,
+)
+from sqlmodel import select
+from api.models import User
+from api.auth import get_current_user
+from src.db import get_session
+from src.db_models import ScreeningResult, Applicant
+import json
 
 router = APIRouter(prefix="/screening", tags=["screening"])
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
-RESULTS_FILE = os.path.join(DATA_DIR, "screening_results.json")
-RECRUITMENT_FILE = os.path.join(DATA_DIR, "recruitment_data.json")
+
+# --- WebSocket Connection Manager ---
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: List[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        if websocket in self.active_connections:
+            self.active_connections.remove(websocket)
+
+    async def broadcast(self, message: dict):
+        for connection in self.active_connections:
+            try:
+                await connection.send_text(json.dumps(message))
+            except Exception:
+                pass
 
 
-def _load_results() -> List[Dict]:
-    if not os.path.exists(RESULTS_FILE):
-        return []
-    with open(RESULTS_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+manager = ConnectionManager()
 
 
-def _save_results(results: List[Dict]) -> None:
-    os.makedirs(DATA_DIR, exist_ok=True)
-    with open(RESULTS_FILE, "w", encoding="utf-8") as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
+@router.websocket("/ws/progress")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            # We just keep connection open.
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
 
 
-def _load_recruitment() -> Dict:
-    if not os.path.exists(RECRUITMENT_FILE):
-        return {}
-    with open(RECRUITMENT_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+# ------------------------------------
 
 
-def _next_id(results: List[Dict]) -> int:
-    return max((r.get("id", 0) for r in results), default=0) + 1
+def _run_screening_background(applicant_id: Optional[int] = None) -> None:
+    """
+    Run real CV screening using cv_screening.py and save to SQLite.
+    Broadcasts progress via WebSocket.
+    """
+    try:
+        from cv_screening import screen_all_applicants
+
+        # We need the event loop to send broadcast messages from this synchronous thread
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+
+        def progress_callback(msg: str, pct: float):
+            payload = {"message": msg, "progress": pct}
+            if loop:
+                asyncio.run_coroutine_threadsafe(manager.broadcast(payload), loop)
+            else:
+                # Fallback if no loop (e.g. tests)
+                asyncio.run(manager.broadcast(payload))
+
+        # This will query SQLite DB, score CVs using RAG/EasyOCR/Gemini
+        # and return a list of dicts.
+        results = screen_all_applicants(progress_callback=progress_callback)
+
+        if results:
+            session = get_session()
+
+            # Clear old results to prevent duplicates if screening all
+            if applicant_id is None:
+                old_results = session.exec(select(ScreeningResult)).all()
+                for r in old_results:
+                    session.delete(r)
+            else:
+                old_results = session.exec(
+                    select(ScreeningResult).where(
+                        ScreeningResult.applicant_id == applicant_id
+                    )
+                ).all()
+                for r in old_results:
+                    session.delete(r)
+
+            session.commit()
+
+            for r in results:
+                app_id = r.get("id")
+                if applicant_id is not None and app_id != applicant_id:
+                    continue
+
+                if not app_id:
+                    continue
+
+                db_result = ScreeningResult(
+                    applicant_id=app_id,
+                    position=r.get("position", ""),
+                    total_score=r.get("total_score", 0),
+                    max_score=r.get("max_score", 100),
+                    percentage=r.get("percentage", 0),
+                    recommendation=r.get("recommendation", ""),
+                    status=r.get("status", ""),
+                    action=r.get("action", ""),
+                    breakdown=r.get("breakdown", {}),
+                    interview_questions=r.get("interview_questions", []),
+                    min_score=r.get("min_score", 60),
+                )
+                session.add(db_result)
+
+                # Update applicant status based on recommendation
+                app = session.get(Applicant, app_id)
+                if app:
+                    app.status = "SCREENED"
+                    session.add(app)
+
+            session.commit()
+            print(
+                f"Successfully screened {len(results)} applicants and saved to SQLite."
+            )
+
+            # Send completion signal
+            def completion_signal():
+                payload = {
+                    "message": "Đã hoàn tất đánh giá toàn bộ CV!",
+                    "progress": 100,
+                    "done": True,
+                }
+                if loop:
+                    asyncio.run_coroutine_threadsafe(manager.broadcast(payload), loop)
+                else:
+                    asyncio.run(manager.broadcast(payload))
+
+            completion_signal()
+        else:
+            print("No applicants found or no results generated.")
+
+            def empty_signal():
+                payload = {
+                    "message": "Không có ứng viên nào để đánh giá.",
+                    "progress": 100,
+                    "done": True,
+                }
+                if loop:
+                    asyncio.run_coroutine_threadsafe(manager.broadcast(payload), loop)
+                else:
+                    asyncio.run(manager.broadcast(payload))
+
+            empty_signal()
+    except Exception as e:
+        print(f"Error running background screening: {e}")
+        # Send error signal
+        try:
+            loop = asyncio.get_running_loop()
+            asyncio.run_coroutine_threadsafe(
+                manager.broadcast(
+                    {"message": f"Lỗi: {e}", "progress": 0, "error": True}
+                ),
+                loop,
+            )
+        except Exception:
+            pass
 
 
 @router.post("/run")
-def run_screening(applicant_id: Optional[int] = None) -> Dict[str, Any]:
-    """
-    Simulate running CV screening based on recruitment pipeline data.
-    Generates screening results from candidates in 'CV Screening' stage.
-    """
-    recruitment = _load_recruitment()
-    existing = _load_results()
-    existing_ids = {r.get("applicant_id") for r in existing}
-
-    new_results: List[Dict] = []
-    counter = _next_id(existing)
-
-    import random
-    from datetime import datetime
-
-    pipelines = recruitment.get("pipelines", {})
-    for position, pipeline in pipelines.items():
-        stages = pipeline.get("pipeline_stages", {})
-        # Combine all candidates to screen (those with a score)
-        for stage_name, candidates in stages.items():
-            for candidate in candidates:
-                cid = hash(candidate.get("candidate_id", "")) % 100000
-                if applicant_id is not None and cid != applicant_id:
-                    continue
-                if cid in existing_ids:
-                    continue
-                score = candidate.get("score")
-                if score is None:
-                    score = random.randint(40, 95)
-
-                min_score = 60
-                percentage = score
-                if percentage >= min_score + 20:
-                    recommendation = "STRONG_PASS"
-                    action = "Schedule interview ASAP"
-                elif percentage >= min_score:
-                    recommendation = "PASS"
-                    action = "Schedule interview"
-                elif percentage >= min_score - 10:
-                    recommendation = "MAYBE"
-                    action = "Review manually"
-                else:
-                    recommendation = "REJECT"
-                    action = "Send rejection email"
-
-                # Generate Mock Technical Assessment Questions
-                interview_questions = []
-                if recommendation in ["STRONG_PASS", "PASS", "MAYBE"]:
-                    p_lower = position.lower()
-                    if "react" in p_lower or "frontend" in p_lower:
-                        interview_questions = [
-                            "Bạn có thể giải thích cơ chế hoạt động của Virtual DOM trong React?",
-                            "Kinh nghiệm tối ưu hóa hiệu suất ứng dụng web (performance optimization)?",
-                            "Sự khác biệt giữa SSR và SSG trong Next.js là gì?",
-                        ]
-                    elif (
-                        "python" in p_lower or "backend" in p_lower or "data" in p_lower
-                    ):
-                        interview_questions = [
-                            "Sự khác biệt lớn nhất giữa asyncio và multi-threading trong Python là gì?",
-                            "Làm thế nào để bạn scale một hệ thống API chịu tải lớn?",
-                            "Kinh nghiệm xử lý transaction an toàn trong SQL Database?",
-                        ]
-                    else:
-                        interview_questions = [
-                            "Dự án nào khiến bạn tự hào nhất và vì sao?",
-                            "Kinh nghiệm giải quyết xung đột ý kiến với các thành viên trong team?",
-                            "Bạn áp dụng mô hình thiết kế (Design Pattern) nào nhiều nhất?",
-                        ]
-
-                # Generate AI Draft Email for Feedback/Follow-up
-                c_name = candidate.get("name", "Bạn")
-                if recommendation in ["STRONG_PASS", "PASS"]:
-                    draft_email = (
-                        f"Kính gửi {c_name},\n\n"
-                        f"Chúng tôi rất ấn tượng với CV của bạn cho vị trí {position} tại Paraline. "
-                        "HR team muốn mời bạn tham gia buổi phỏng vấn chuyên môn (Technical Interview) "
-                        "trong tuần này. Vui lòng cho biết thời gian khả thi của bạn.\n\n"
-                        "Trân trọng,\nParaline AI Recruitment Team"
-                    )
-                elif recommendation == "MAYBE":
-                    draft_email = (
-                        f"Kính gửi {c_name},\n\n"
-                        f"Cảm ơn bạn đã ứng tuyển vị trí {position}. "
-                        "Để bộ phận tuyển dụng hiểu rõ hơn về kỹ năng của bạn, chúng tôi muốn mời bạn hoàn thành "
-                        "một bài đánh giá năng lực ngắn trước khi xếp lịch phỏng vấn. Vui lòng kiểm tra link bài test bên dưới.\n\n"
-                        "Trân trọng,\nParaline AI Recruitment Team"
-                    )
-                else:
-                    draft_email = (
-                        f"Kính gửi {c_name},\n\n"
-                        f"Cảm ơn bạn đã quan tâm và ứng tuyển cho vị trí {position}. "
-                        "Dù hồ sơ của bạn rất thú vị, tuy nhiên ở thời điểm hiện tại, chúng tôi đang ưu tiên "
-                        "các ứng viên có kinh nghiệm phù hợp hơn với định hướng của dự án. Chúng tôi sẽ lưu thông tin "
-                        "của bạn vào Talent Pool cho các cơ hội trong tương lai.\n\n"
-                        "Trân trọng,\nParaline AI Recruitment Team"
-                    )
-
-                result = {
-                    "id": counter,
-                    "applicant_id": cid,
-                    "applicant_name": candidate.get("name", "Unknown"),
-                    "position": position,
-                    "total_score": score,
-                    "max_score": 100,
-                    "percentage": percentage,
-                    "recommendation": recommendation,
-                    "status": stage_name,
-                    "action": action,
-                    "breakdown": {
-                        "required_skills": {
-                            "found": [],
-                            "percentage": score * 0.4,
-                            "points": score * 0.3,
-                        },
-                        "preferred_skills": {
-                            "found": [],
-                            "percentage": score * 0.3,
-                            "points": score * 0.2,
-                        },
-                        "experience": {
-                            "years_found": 2,
-                            "years_required": 2,
-                            "points": score * 0.25,
-                        },
-                        "education": {"relevant": True, "points": score * 0.15},
-                        "certifications": {"found": [], "points": 0},
-                    },
-                    "min_score": min_score,
-                    "interview_questions": interview_questions,
-                    "draft_email": draft_email,
-                    "created_at": datetime.now().isoformat(),
-                }
-                new_results.append(result)
-                existing_ids.add(cid)
-                counter += 1
-
-    if new_results:
-        _save_results(existing + new_results)
-
-    return {"count": len(new_results), "results": new_results}
+def run_screening(
+    background_tasks: BackgroundTasks,
+    applicant_id: Optional[int] = None,
+    current_user: User = Depends(get_current_user),
+) -> Dict[str, Any]:
+    background_tasks.add_task(_run_screening_background, applicant_id)
+    return {
+        "status": "processing",
+        "message": "CV screening task added to background queue.",
+    }
 
 
 @router.get("/results")
 def list_results(
     position: Optional[str] = None,
     recommendation: Optional[str] = None,
+    current_user: User = Depends(get_current_user),
 ) -> List[Dict]:
-    results = _load_results()
+    session = get_session()
+    query = select(ScreeningResult, Applicant).join(Applicant)
+
     if position:
-        results = [r for r in results if r.get("position") == position]
+        query = query.where(ScreeningResult.position == position)
     if recommendation:
-        results = [r for r in results if r.get("recommendation") == recommendation]
+        query = query.where(ScreeningResult.recommendation == recommendation)
+
+    db_results = session.exec(query).all()
+
+    results = []
+    for res, app in db_results:
+        d = res.model_dump()
+        d["applicant_name"] = app.name
+        results.append(d)
+
     return results
 
 
 @router.get("/results/{result_id}")
-def get_result(result_id: int) -> Dict:
-    results = _load_results()
-    for r in results:
-        if r.get("id") == result_id:
-            return r
-    raise HTTPException(status_code=404, detail="Screening result not found")
+def get_result(result_id: int, current_user: User = Depends(get_current_user)) -> Dict:
+    session = get_session()
+    res = session.get(ScreeningResult, result_id)
+    if not res:
+        raise HTTPException(status_code=404, detail="Screening result not found")
+
+    app = session.get(Applicant, res.applicant_id)
+    d = res.model_dump()
+    if app:
+        d["applicant_name"] = app.name
+
+    return d
+
+
+from fastapi.responses import StreamingResponse
+import io
+import csv
+
+
+@router.get("/export")
+def export_results_csv(current_user: User = Depends(get_current_user)):
+    session = get_session()
+    query = select(ScreeningResult, Applicant).join(Applicant)
+    db_results = session.exec(query).all()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    # Header
+    writer.writerow(
+        [
+            "ID",
+            "Candidate Name",
+            "Position",
+            "Score (%)",
+            "Recommendation",
+            "Status",
+            "Action",
+            "Missing Skills",
+        ]
+    )
+
+    for res, app in db_results:
+        # Extract missing skills from breakdown if available
+        missing_skills = []
+        if res.breakdown and "required_skills" in res.breakdown:
+            # We don't have exact missing skills in DB easily, but we can put placeholder
+            missing_skills.append("See Breakdown")
+
+        writer.writerow(
+            [
+                res.id,
+                app.name,
+                res.position,
+                res.percentage,
+                res.recommendation,
+                res.status.strip(),
+                res.action,
+                ", ".join(missing_skills),
+            ]
+        )
+
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=screening_results.csv"},
+    )
