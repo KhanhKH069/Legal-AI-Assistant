@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hr-ai-config
+  labels:
+    app: hr-ai
+data:
+  OFFLINE_MODE: "true"
+  REDIS_URL: "redis://redis:6379/0"
+  NEXT_PUBLIC_API_URL: "http://localhost:8000"
+  API_URL: "http://backend:8000"

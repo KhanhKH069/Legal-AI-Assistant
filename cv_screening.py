@@ -289,8 +289,26 @@ def extract_years_of_experience(cv_text: str) -> int:
 
     years = []
     for pattern in patterns:
-        matches = re.findall(pattern, cv_text)
+        matches = re.findall(pattern, cv_text.lower())
         years.extend([int(y) for y in matches])
+
+    from datetime import datetime
+    current_year = datetime.now().year
+    
+    year_matches = re.findall(r"\b(19\d{2}|20\d{2})\b", cv_text)
+    year_matches = sorted(list(set([int(y) for y in year_matches])))
+    
+    if year_matches:
+        min_year = min(year_matches)
+        max_year = max(year_matches)
+        
+        if re.search(r"-\s*present|to\s*present|-\s*hiện tại|đến\s*nay|nay|hiện nay", cv_text.lower()):
+            max_year = max(max_year, current_year)
+            
+        if 1980 <= min_year <= current_year and min_year <= max_year:
+            calc_years = max_year - min_year
+            if calc_years > 0:
+                years.append(calc_years)
 
     return max(years) if years else 0
 
@@ -299,26 +317,38 @@ def check_skills(cv_text: str, skill_list: List[str]) -> Tuple[List[str], float]
     """Check which skills from list are present in CV"""
     found_skills = []
     cv_text_lower = cv_text.lower()
+
     for skill in skill_list:
-        clean_skill = skill.replace("(", ",").replace(")", ",").lower()
+        clean_skill = re.sub(r'\(.*?\)', '', skill).lower().strip()
         parts = [p.strip() for p in re.split(r"[/,]", clean_skill) if p.strip()]
 
         matched = False
         for part in parts:
-            part = (
-                part.replace(" fundamentals", "")
-                .replace(" basics", "")
-                .replace(" concepts", "")
-                .strip()
-            )
-            if part.endswith("s") and len(part) <= 5:
-                part_singular = part[:-1]
-                if part_singular and part_singular in cv_text_lower:
+            if not part:
+                continue
+
+            fluff_words = ["programming", "principles", "concepts", "fundamentals", "basics", "usage", "framework", "library", "methodology", "familiarity", "exposure", "knowledge of", "development"]
+            for fluff in fluff_words:
+                part = part.replace(fluff, "").strip()
+
+            if not part:
+                continue
+
+            if len(part) <= 3 or part in ["java", "c++", "c#"]:
+                escaped = re.escape(part)
+                if re.search(r"(?<![a-z0-9])" + escaped + r"(?![a-z0-9])", cv_text_lower):
                     matched = True
                     break
-            if part and part in cv_text_lower:
-                matched = True
-                break
+            else:
+                if part in cv_text_lower:
+                    matched = True
+                    break
+                    
+                words = part.split()
+                if len(words) >= 3:
+                    if words[0] in cv_text_lower and words[-1] in cv_text_lower:
+                        matched = True
+                        break
 
         if matched:
             found_skills.append(skill)
@@ -334,39 +364,24 @@ def extract_section(cv_text: str, keywords: List[str]) -> str:
     in_section = False
 
     stop_keywords = [
-        "education",
-        "học vấn",
-        "experience",
-        "kinh nghiệm",
-        "work experience",
-        "skills",
-        "kỹ năng",
-        "certifications",
-        "chứng chỉ",
-        "activities",
-        "hoạt động",
-        "references",
-        "người tham chiếu",
-        "projects",
-        "dự án",
-        "highlight project",
-        "personal projects",
-        "summary",
-        "about me",
-        "tóm tắt",
+        "education", "học vấn", "experience", "kinh nghiệm", "work experience",
+        "skills", "kỹ năng", "certifications", "chứng chỉ", "activities",
+        "hoạt động", "references", "người tham chiếu", "projects", "dự án",
+        "highlight project", "personal projects", "summary", "about me", "tóm tắt",
+        "achievement", "thành tích", "objective", "mục tiêu"
     ]
+    
+    keywords_lower = [k.lower() for k in keywords]
 
     for line in lines:
         lower_line = line.strip().lower()
+        if not lower_line:
+            continue
 
         is_target_header = False
-        for kw in keywords:
-            if (
-                lower_line == kw
-                or lower_line == kw + ":"
-                or lower_line.startswith(kw + " ")
-            ):
-                if len(lower_line) < 30:
+        if len(lower_line) < 60:
+            for kw in keywords_lower:
+                if kw in lower_line:
                     is_target_header = True
                     break
 
@@ -375,23 +390,16 @@ def extract_section(cv_text: str, keywords: List[str]) -> str:
             continue
 
         is_stop_header = False
-        if in_section:
-            for kw in stop_keywords:
-                if kw not in keywords:
-                    if (
-                        lower_line == kw
-                        or lower_line == kw + ":"
-                        or lower_line.startswith(kw + " ")
-                    ):
-                        if len(lower_line) < 30:
-                            is_stop_header = True
-                            break
+        if in_section and len(lower_line) < 60:
+            for stop_kw in stop_keywords:
+                if stop_kw not in keywords_lower and stop_kw in lower_line:
+                    is_stop_header = True
+                    break
 
             if is_stop_header:
                 break
-
-            if line.strip():
-                section_text.append(line.strip())
+            
+            section_text.append(line.strip())
 
     return "\n".join(section_text)
 
@@ -729,18 +737,16 @@ def screen_all_applicants(
 
         if cv_path and position:
             # Check if CV file exists. It might be relative to data dir
-            base_dir = Path(__file__).resolve().parent
-            data_dir = base_dir / "data"
-
-            real_cv_path = Path(cv_path)
-            if not real_cv_path.is_absolute():
-                if (data_dir / cv_path).exists():
-                    real_cv_path = data_dir / cv_path
-                elif (base_dir / cv_path).exists():
-                    real_cv_path = base_dir / cv_path
-
-            if not real_cv_path.exists():
-                errors.append(f" CV not found: {name} - {cv_path}")
+            from src.core.storage import get_storage_service
+            storage = get_storage_service()
+            try:
+                local_path_str = storage.get_local_path(cv_path)
+                real_cv_path = Path(local_path_str)
+                if not real_cv_path.exists():
+                    errors.append(f" CV not found: {name} - {cv_path}")
+                    continue
+            except Exception as e:
+                errors.append(f" Error retrieving CV: {name} - {e}")
                 continue
 
             # Calculate base percentage for this applicant

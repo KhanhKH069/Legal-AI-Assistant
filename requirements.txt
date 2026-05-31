@@ -28,7 +28,7 @@ uvicorn[standard]
 sqlmodel
 
 # Auth
-passlib[bcrypt]
+bcrypt>=4.1.2
 python-jose[cryptography]
 python-multipart
 PyYAML>=6.0.1
@@ -39,3 +39,22 @@ langsmith
 langchain-experimental
 # OCR
 easyocr>=1.7.1
+
+celery
+redis>=5.0.0
+langgraph-checkpoint-redis>=0.4.1
+fastapi-limiter>=0.1.6
+psycopg2-binary
+fpdf2>=2.8.1
+
+# RAG Re-ranking
+flashrank>=0.2.8
+
+# AWS S3 Storage
+boto3>=1.34.0
+
+# Logging
+python-json-logger>=2.0.7
+
+PyMuPDF
+pdfplumber

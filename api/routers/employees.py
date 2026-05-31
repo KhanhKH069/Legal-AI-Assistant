@@ -7,7 +7,7 @@ RBAC rules enforced:
 """
 
 import json
-from datetime import datetime
+from datetime import datetime, UTC
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Depends
@@ -41,7 +41,7 @@ def _log(session: Session, actor_id: str, action: str, target: str, detail: str 
             action=action,
             target=target,
             detail=detail,
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
         )
     )
 
@@ -127,7 +127,7 @@ def get_all_profiles(
             if s not in e.name.lower() and s not in e.employee_id.lower():
                 continue
 
-        emp_dict = e.dict()
+        emp_dict = e.model_dump()
         emp_dict["skills"] = json.loads(e.skills_json) if e.skills_json else []
         emp_dict["contract"] = json.loads(e.contract_json) if e.contract_json else {}
 
@@ -172,7 +172,7 @@ def get_employee_profile_full(
     if not emp:
         raise HTTPException(status_code=404, detail=f"Employee {employee_id} not found")
 
-    emp_dict = emp.dict()
+    emp_dict = emp.model_dump()
     emp_dict["skills"] = json.loads(emp.skills_json) if emp.skills_json else []
     emp_dict["contract"] = json.loads(emp.contract_json) if emp.contract_json else {}
 
@@ -320,8 +320,8 @@ def get_my_metrics(
             "leave_balance": emp.leave_balance,
             "performance_rating": emp.performance_rating,
         },
-        "latest_payroll": payroll.dict() if payroll else None,
-        "latest_appraisal": appraisal.dict() if appraisal else None,
+        "latest_payroll": payroll.model_dump() if payroll else None,
+        "latest_appraisal": appraisal.model_dump() if appraisal else None,
         "pending_leaves": pending_leaves,
         "open_tickets": open_tickets,
     }

@@ -2,26 +2,54 @@
 
 from langchain_core.tools import tool
 
-from cv_screening import score_cv
+from src.celery_app import score_single_cv_task
+from celery.result import AsyncResult
 
 
 @tool
 def screen_cv_for_position(cv_path: str, position: str) -> str:
-    """Score a CV file for a specific position and return a readable summary.
+    """Start scoring a CV file for a specific position in the background.
 
     - cv_path: Absolute or project-relative path to the CV file (PDF/DOCX).
     - position: Position name that exists in job_requirements_config.json.
-    """
-    result = score_cv(cv_path=cv_path, position=position)
 
-    if "error" in result:
-        return f"CV screening error: {result['error']}"
+    Returns a Task ID. You MUST give this Task ID to the user and tell them to wait or ask you to check the status later.
+    """
+    task = score_single_cv_task.delay(cv_path, position)
+    return f"Đã bắt đầu chấm CV dưới nền. Task ID: {task.id}. Vui lòng nói với người dùng: 'Tôi đã đưa CV vào hệ thống chấm điểm ngầm. Quá trình này có thể mất vài phút. Bạn có thể hỏi tôi tiến độ bằng cách cung cấp Task ID: {task.id}'"
+
+
+@tool
+def check_screening_status(task_id: str) -> str:
+    """Check the status or result of a background CV screening task.
+
+    - task_id: The Task ID returned by screen_cv_for_position.
+    """
+    res = AsyncResult(task_id)
+    if not res.ready():
+        state = res.state
+        if state == "PROGRESS":
+            meta = res.info or {}
+            msg = meta.get("message", "Đang xử lý...")
+            pct = meta.get("percent", 0)
+            return f"Task vẫn đang chạy ({state}). Tiến độ: {pct}% - {msg}"
+        return f"Task hiện tại đang ở trạng thái: {state}. Vui lòng thử lại sau."
+
+    result = res.result
+    if isinstance(result, Exception):
+        return f"Lỗi xảy ra trong quá trình chấm CV: {str(result)}"
+
+    if isinstance(result, dict) and "error" in result:
+        return f"Lỗi chấm CV: {result['error']}"
+
+    if not isinstance(result, dict):
+        return f"Kết quả không hợp lệ: {result}"
 
     lines = [
-        f" CV screening result for position: {result['position']}",
-        f" Total score: {result['total_score']}/{result['max_score']} ({result['percentage']}%)",
-        f" Recommendation: {result['recommendation']} - {result['status']}",
-        f" Action: {result['action']}",
+        f" CV screening result for position: {result.get('position')}",
+        f" Total score: {result.get('total_score')}/{result.get('max_score')} ({result.get('percentage')}%)",
+        f" Recommendation: {result.get('recommendation')} - {result.get('status')}",
+        f" Action: {result.get('action')}",
         "",
         "Breakdown:",
     ]
@@ -50,9 +78,9 @@ def screen_cv_for_position(cv_path: str, position: str) -> str:
 
     # Add raw extracted sections for LLM to read
     if result.get("raw_skills"):
-        lines.append(f"\n[Extracted Skills Section]\n{result['raw_skills']}")
+        lines.append(f"\n[Extracted Skills Section]\n{result.get('raw_skills')}")
     if result.get("raw_projects"):
-        lines.append(f"\n[Extracted Projects Section]\n{result['raw_projects']}")
+        lines.append(f"\n[Extracted Projects Section]\n{result.get('raw_projects')}")
 
     return "\n".join(lines)
 

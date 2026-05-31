@@ -1,7 +1,7 @@
 """Helpdesk API Router — with ticket status update endpoint."""
 
 import json
-from datetime import datetime
+from datetime import datetime, UTC
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Depends
@@ -33,7 +33,7 @@ def _log(session: Session, actor_id: str, action: str, target: str, detail: str 
             action=action,
             target=target,
             detail=detail,
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
         )
     )
 
@@ -95,7 +95,7 @@ def create_ticket(
         "status": "created",
         "ticket_id": ticket_id,
         "sla_hours": sla,
-        "ticket": new_ticket.dict(),
+        "ticket": new_ticket.model_dump(),
     }
 
 
@@ -118,7 +118,7 @@ def get_ticket(
             status_code=403, detail="Not authorized to view this ticket"
         )
 
-    t_dict = ticket.dict()
+    t_dict = ticket.model_dump()
     t_dict["comments"] = (
         json.loads(ticket.comments_json) if ticket.comments_json else []
     )
@@ -140,7 +140,7 @@ def list_employee_tickets(
     tickets = session.exec(select(Ticket).where(Ticket.employee_id == eid)).all()
     res = []
     for t in tickets:
-        t_dict = t.dict()
+        t_dict = t.model_dump()
         t_dict["comments"] = json.loads(t.comments_json) if t.comments_json else []
         res.append(t_dict)
 

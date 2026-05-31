@@ -105,16 +105,18 @@ def get_recruitment_pipeline(position: str) -> str:
 @tool
 def create_interview_schedule(
     candidate_name: str,
+    candidate_email: str,
     position: str,
     interview_date: str,
     interview_time: str,
     interview_type: str,
     interviewer: str,
 ) -> str:
-    """Schedule an interview for a candidate and generate a Google Meet link.
+    """Schedule an interview for a candidate, generate a Google Meet link, and send invitation email.
 
     Args:
         candidate_name: Full name of the candidate.
+        candidate_email: Email address of the candidate.
         position: The job position being interviewed for.
         interview_date: Date of the interview in YYYY-MM-DD format.
         interview_time: Time of the interview in HH:MM format (24h).
@@ -135,6 +137,7 @@ def create_interview_schedule(
     new_schedule = {
         "schedule_id": schedule_id,
         "candidate_name": candidate_name,
+        "candidate_email": candidate_email,
         "position": position,
         "interview_type": interview_type,
         "date": interview_date,
@@ -150,16 +153,34 @@ def create_interview_schedule(
     data["interview_schedules"] = schedules
     _save_recruitment_data(data)
 
+    # Send real email
+    try:
+        from src.tools.email_calendar_tools import draft_interview_email
+        from src.core.email_service import get_email_service
+        
+        email_body = draft_interview_email(
+            candidate_name=candidate_name,
+            position=position,
+            interview_time=f"{interview_time} ngày {interview_date}",
+            meet_link=meet_link
+        )
+        email_svc = get_email_service()
+        subject = f"Thư Mời Phỏng Vấn - Vị trí {position} tại Paraline Software"
+        email_svc.send_email(to_email=candidate_email, subject=subject, body_text=email_body)
+        email_status = f"✅ Đã gửi email mời phỏng vấn tới {candidate_email}"
+    except Exception as e:
+        email_status = f"❌ Không thể gửi email: {e}"
+
     return (
         f"✅ Lịch phỏng vấn đã được tạo thành công!\n"
         f"   🆔 Mã lịch: {schedule_id}\n"
-        f"   👤 Ứng viên: {candidate_name}\n"
+        f"   👤 Ứng viên: {candidate_name} ({candidate_email})\n"
         f"   💼 Vị trí: {position}\n"
         f"   📋 Loại phỏng vấn: {interview_type}\n"
         f"   📅 Ngày: {interview_date} lúc {interview_time}\n"
         f"   👥 Người phỏng vấn: {interviewer}\n"
         f"   🔗 Google Meet: {meet_link}\n"
-        f"Email mời phỏng vấn sẽ được gửi tự động đến ứng viên."
+        f"{email_status}"
     )
 
 
@@ -303,6 +324,38 @@ def convert_applicant_to_employee(
         f"  - {item['task']} ({item['due']})" for item in onboarding_checklist
     )
 
+    new_email = f"{new_emp_id.lower()}@paraline.vn"
+    
+    # Send onboarding email
+    try:
+        from src.core.email_service import get_email_service
+        email_svc = get_email_service()
+        subject = f"Chào Mừng Gia Nhập Paraline Software - Thông tin Onboarding"
+        body = f"""
+Kính gửi {new_employee['name']},
+
+Chào mừng bạn đã chính thức gia nhập Paraline Software với vị trí {position} (Phòng {department}).
+Mã nhân viên của bạn là: {new_emp_id}.
+Mức lương cơ bản: {salary_vnd:,} VND.
+Ngày bắt đầu làm việc: {start_date}.
+
+Dưới đây là danh sách Onboarding Checklist bạn cần hoàn thành:
+{checklist_summary}
+
+Vui lòng liên hệ HR nếu bạn cần hỗ trợ thêm thông tin.
+
+Trân trọng,
+HR Team
+Paraline Software
+        """.strip()
+        
+        # Here we mock sending to the internal email, but realistically we would send 
+        # to the applicant's personal email. For this demo, we just print/send to new_email.
+        email_svc.send_email(to_email=new_email, subject=subject, body_text=body)
+        email_status = f"✅ Đã gửi email chào mừng & onboarding tới {new_email}"
+    except Exception as e:
+        email_status = f"❌ Không thể gửi email onboarding: {e}"
+
     return (
         f"Chuyen doi ung vien thanh nhan vien thanh cong!\n"
         f"- Ma nhan vien moi: {new_emp_id}\n"
@@ -311,5 +364,5 @@ def convert_applicant_to_employee(
         f"- Luong co ban: {salary_vnd:,} VND/thang\n\n"
         f"Onboarding checklist da duoc tao tu dong ({len(onboarding_checklist)} tasks):\n"
         f"{checklist_summary}\n\n"
-        f"Email chao mung va huong dan onboarding se duoc gui den {new_emp_id}@paraline.vn"
+        f"{email_status}"
     )

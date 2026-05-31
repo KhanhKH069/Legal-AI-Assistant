@@ -5,7 +5,11 @@ from sqlmodel import Session, create_engine
 
 from src.core.config import config
 
-engine = create_engine(config.database_url, echo=False)
+connect_args = {}
+if config.database_url.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
+
+engine = create_engine(config.database_url, echo=False, connect_args=connect_args)
 
 
 def init_db() -> None:

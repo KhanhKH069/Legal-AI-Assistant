@@ -169,7 +169,14 @@ def answer_question(question: str) -> str:
                 else "Software Engineer"
             )
 
-            res = score_cv(cv_path, position)
+            from src.core.storage import get_storage_service
+            storage = get_storage_service()
+            try:
+                real_cv_path = storage.get_local_path(cv_path)
+            except Exception as e:
+                real_cv_path = cv_path
+
+            res = score_cv(real_cv_path, position)
             if "error" not in res:
                 return (
                     f"⚠️ **Lưu ý:** Hệ thống đang ở chế độ Offline (Không có API Key).\n"

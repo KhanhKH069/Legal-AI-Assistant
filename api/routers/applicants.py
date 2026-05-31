@@ -51,7 +51,7 @@ def create_applicant(payload: Applicant):
             status_code=400, detail="You have already applied for this position."
         )
 
-    applicant = Applicant.from_orm(payload)
+    applicant = Applicant.model_validate(payload.model_dump())
     session.add(applicant)
     session.commit()
     session.refresh(applicant)

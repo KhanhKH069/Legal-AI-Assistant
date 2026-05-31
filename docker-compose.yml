@@ -1,17 +1,67 @@
 version: '3.8'
 
 services:
-  api:
-    build: .
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    volumes:
-      - ./data:/app/data
-      - ./chroma_db:/app/chroma_db
-      - ./chroma_db_offline:/app/chroma_db_offline
-      - ./documents:/app/documents
     environment:
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-paraline_super_secret_key_2026}
-      - OFFLINE_MODE=false
-    restart: always
+      - REDIS_URL=redis://redis:6379/0
+      - OFFLINE_MODE=true
+    depends_on:
+      - redis
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./documents:/app/documents
+      - ./hr_database.db:/app/hr_database.db
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A src.core.celery_app worker --loglevel=info
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - OFFLINE_MODE=true
+    depends_on:
+      - redis
+      - backend
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./documents:/app/documents
+      - ./hr_database.db:/app/hr_database.db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://backend:8000
+    depends_on:
+      - backend
+
+volumes:
+  redis_data:

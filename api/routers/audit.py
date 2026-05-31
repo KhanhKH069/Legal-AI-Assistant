@@ -1,6 +1,6 @@
 """Audit Log Router — admin-only endpoint to query the AuditLog table."""
 
-from datetime import datetime
+from datetime import datetime, UTC
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Depends, Query
@@ -37,7 +37,7 @@ def log_action(
             action=action,
             target=target,
             detail=detail,
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
         )
     )
 

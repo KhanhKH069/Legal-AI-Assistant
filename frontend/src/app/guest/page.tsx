@@ -124,6 +124,8 @@ export default function GuestChatPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const isImage = file.type.startsWith('image/');
+
     setLoading(true);
     setMessages(prev => [...prev, {
       role: 'user',
@@ -139,9 +141,15 @@ export default function GuestChatPage() {
         msgs.pop();
         return msgs;
       });
-      // Gửi message yêu cầu phân tích CV vào chat
-      const positionText = selectedPosition === "Chưa xác định" ? "" : ` cho vị trí ${selectedPosition}`;
-      send(`Tôi vừa tải lên file CV: ${res.cv_path}. Vui lòng đánh giá mức độ phù hợp của tôi${positionText}.`);
+
+      if (isImage) {
+        // Gửi message yêu cầu OCR thẻ cư trú / CCCD
+        send(`Tôi vừa tải lên ảnh thẻ cư trú / CCCD tại đường dẫn: ${res.cv_path}. Vui lòng trích xuất thông tin từ thẻ này giúp tôi.`);
+      } else {
+        // Gửi message yêu cầu phân tích CV vào chat
+        const positionText = selectedPosition === "Chưa xác định" ? "" : ` cho vị trí ${selectedPosition}`;
+        send(`Tôi vừa tải lên file CV: ${res.cv_path}. Vui lòng đánh giá mức độ phù hợp của tôi${positionText}.`);
+      }
     } catch (error) {
       setMessages(prev => {
         const msgs = [...prev];
@@ -298,19 +306,22 @@ export default function GuestChatPage() {
             ref={fileInputRef}
             onChange={handleFileUpload}
             className="hidden"
-            accept=".pdf,.doc,.docx"
+            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
           />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={loading}
-            className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all text-purple-300 hover:bg-purple-900/30"
-            style={{ border: '1px solid rgba(139,92,246,0.2)' }}
-            title="Tải lên CV (PDF, DOCX)"
-          >
-            <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-          </button>
+          <div className="flex flex-col items-center gap-0.5">
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={loading}
+              className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all text-purple-300 hover:bg-purple-900/30"
+              style={{ border: '1px solid rgba(139,92,246,0.2)' }}
+              title="Tải lên CV (PDF) hoặc Thẻ cư trú (Ảnh)"
+            >
+              <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+            </button>
+            <span className="text-slate-500" style={{ fontSize: '9px', lineHeight: '1.2', textAlign: 'center', whiteSpace: 'nowrap' }}>CV / Thẻ</span>
+          </div>
 
           <textarea
             ref={textareaRef}

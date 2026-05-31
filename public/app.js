@@ -140,8 +140,8 @@ cvUpload.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (file.type !== 'application/pdf') {
-        uploadStatus.innerText = 'Vui lòng chọn file PDF!';
+    if (file.type !== 'application/pdf' && !file.type.startsWith('image/')) {
+        uploadStatus.innerText = 'Vui lòng chọn file PDF hoặc Ảnh!';
         uploadStatus.style.color = '#ef4444';
         setTimeout(() => uploadStatus.innerText = '', 3000);
         return;
@@ -154,7 +154,7 @@ cvUpload.addEventListener('change', async (e) => {
     formData.append('file', file);
 
     try {
-        const res = await fetch('/upload_cv', {
+        const res = await fetch('/files/upload-cv', {
             method: 'POST',
             body: formData
         });
@@ -166,7 +166,8 @@ cvUpload.addEventListener('change', async (e) => {
             setTimeout(() => uploadStatus.innerText = '', 3000);
 
             // Automatically send a message on behalf of the user saying they uploaded a CV
-            const msg = `Mình đã tải lên CV tại đường dẫn: ${data.file_path}. Nhờ HR phân tích giúp mình nhé.`;
+            let fileType = file.type === 'application/pdf' ? 'CV' : 'ảnh tài liệu';
+            const msg = `Mình đã tải lên ${fileType} tại đường dẫn: ${data.cv_path}. Nhờ HR phân tích giúp mình nhé.`;
 
             // Add a system-like message
             const sysMsg = document.createElement('div');

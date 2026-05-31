@@ -1,10 +1,11 @@
 from sqlmodel import create_engine, Session
+from src.core.config import config
 
-sqlite_file_name = "data/paraline.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
+connect_args = {}
+if config.database_url.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
 
-connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, echo=False, connect_args=connect_args)
+engine = create_engine(config.database_url, echo=False, connect_args=connect_args)
 
 
 def create_db_and_tables():

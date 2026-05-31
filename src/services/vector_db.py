@@ -18,11 +18,20 @@ class VectorDB:
         self.persist_directory = persist_directory
         Path(persist_directory).mkdir(parents=True, exist_ok=True)
 
-        # Initialize ChromaDB client (0.6.x compatible)
-        self.client = chromadb.PersistentClient(
-            path=persist_directory,
-            settings=Settings(anonymized_telemetry=False, allow_reset=True),
-        )
+        from src.core.config import config
+
+        # Initialize ChromaDB client
+        if config.chromadb_host and config.chromadb_host != "localhost":
+            self.client = chromadb.HttpClient(
+                host=config.chromadb_host,
+                port=config.chromadb_port,
+                settings=Settings(anonymized_telemetry=False, allow_reset=True),
+            )
+        else:
+            self.client = chromadb.PersistentClient(
+                path=persist_directory,
+                settings=Settings(anonymized_telemetry=False, allow_reset=True),
+            )
 
         self.embedding_function = None
         from src.core.config import config

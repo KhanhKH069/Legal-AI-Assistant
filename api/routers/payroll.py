@@ -5,7 +5,7 @@ from sqlmodel import Session, select
 from api.database import get_session
 from api.models import PayrollRecord, Employee, User, AuditLog
 from api.auth import get_current_user
-from datetime import datetime
+from datetime import datetime, UTC
 
 router = APIRouter(prefix="/payroll", tags=["Payroll"])
 
@@ -17,7 +17,7 @@ def _log(session: Session, actor_id: str, action: str, target: str, detail: str 
             action=action,
             target=target,
             detail=detail,
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
         )
     )
 

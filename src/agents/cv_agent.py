@@ -4,13 +4,23 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 from src.core.config import config
-from src.tools.cv_tools import screen_cv_for_position, get_job_requirements
+from src.tools.cv_tools import (
+    screen_cv_for_position,
+    get_job_requirements,
+    check_screening_status,
+)
 from src.tools.recruitment_tools import (
     get_recruitment_pipeline,
     create_interview_schedule,
     get_hiring_stats,
 )
 from src.tools.notification_tools import send_internal_notification
+from src.tools.onboard_validation_tools import extract_id_card_info
+from src.tools.cv_builder_tools import (
+    generate_cv_pdf,
+    save_job_preferences,
+    match_jobs_for_candidate,
+)
 
 # Initialize Gemini LLM (only when online)
 llm = None
@@ -44,11 +54,16 @@ def create_cv_agent():
 
     tools = [
         screen_cv_for_position,
+        check_screening_status,
         get_recruitment_pipeline,
         create_interview_schedule,
         get_hiring_stats,
         send_internal_notification,
         get_job_requirements,
+        extract_id_card_info,
+        generate_cv_pdf,
+        save_job_preferences,
+        match_jobs_for_candidate,
     ]
     llm_with_tools = llm.bind_tools(tools)
     return prompt | llm_with_tools

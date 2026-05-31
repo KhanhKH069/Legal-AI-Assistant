@@ -2,7 +2,7 @@
 
 import json
 import os
-from datetime import datetime, date
+from datetime import datetime, date, UTC
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Depends
@@ -39,7 +39,7 @@ def _log(session: Session, actor_id: str, action: str, target: str, detail: str 
             action=action,
             target=target,
             detail=detail,
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
         )
     )
 

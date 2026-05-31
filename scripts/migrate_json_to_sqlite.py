@@ -8,7 +8,7 @@ import os
 import sys
 import json
 from pathlib import Path
-from passlib.context import CryptContext
+import bcrypt
 
 # Add project root to path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -17,11 +17,9 @@ from sqlmodel import select
 from api.database import create_db_and_tables, get_session
 from api.models import Employee, User, Appraisal, AttendanceRecord
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 
 DATA_DIR = Path("data")

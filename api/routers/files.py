@@ -1,8 +1,12 @@
 from pathlib import Path
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
+import os
 
 router = APIRouter(prefix="/files", tags=["files"])
+
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+ALLOWED_EXTENSIONS = {".pdf", ".doc", ".docx", ".png", ".jpg", ".jpeg"}
 
 
 @router.post("/upload-cv")
@@ -12,25 +16,32 @@ async def upload_cv(file: UploadFile = File(...)) -> dict:
     Returns a server-side cv_path that backend uses for screening.
     Files are stored under data/cv_uploads/ for consistency with the screening pipeline.
     """
-    # Resolve absolute path to data/cv_uploads relative to this file
-    base_dir = Path(__file__).resolve().parent.parent.parent
-    upload_dir = base_dir / "data" / "cv_uploads"
-    upload_dir.mkdir(parents=True, exist_ok=True)
+    ext = Path(file.filename).suffix.lower()
+    if ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"File type not allowed. Allowed types are: {', '.join(ALLOWED_EXTENSIONS)}",
+        )
 
-    # Use original filename; could be improved to avoid collisions
-    dest_path = upload_dir / file.filename
+    content = await file.read()
+    if len(content) > MAX_FILE_SIZE:
+        raise HTTPException(
+            status_code=413, detail="File too large. Maximum size is 10MB."
+        )
 
+    # Use StorageService instead of hardcoded paths
+    from src.core.storage import get_storage_service
+    import io
+    
+    storage = get_storage_service()
     try:
-        content = await file.read()
-        with open(dest_path, "wb") as f:
-            f.write(content)
+        # Wrap content in BytesIO for the StorageService
+        cv_path = storage.save_file(file.filename, io.BytesIO(content))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save file: {e}")
 
-    # Return relative path (relative to project root) so screening can locate it
+    # Return the path/URL returned by StorageService
     return {
         "filename": file.filename,
-        "cv_path": str(
-            Path("cv_uploads") / file.filename
-        ),  # stored as cv_uploads/xxx.pdf for DB
+        "cv_path": cv_path,
     }

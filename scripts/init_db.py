@@ -77,7 +77,7 @@ def init_db():
 
                     new_user = User(
                         username=emp["employee_id"],
-                        hashed_password=get_password_hash("Paraline@2026"),
+                        hashed_password=get_password_hash("password123"),
                         role=role,
                         employee_id=emp["employee_id"],
                     )
@@ -87,7 +87,7 @@ def init_db():
             if not session.exec(select(User).where(User.username == "admin")).first():
                 admin_user = User(
                     username="admin",
-                    hashed_password=get_password_hash("Paraline@2026"),
+                    hashed_password=get_password_hash("password123"),
                     role="admin",
                     employee_id=None,
                 )

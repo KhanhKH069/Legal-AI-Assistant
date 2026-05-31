@@ -107,7 +107,7 @@ def test_health_endpoint(client):
     assert resp.status_code == 200
     body = resp.json()
     assert body["status"] == "ok"
-    assert "agents" in body
+    assert "version" in body
 
 
 # ── Auth ──────────────────────────────────────────────────────────────────────

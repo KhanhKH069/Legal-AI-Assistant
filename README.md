@@ -1,226 +1,146 @@
-# Paraline HR AI Agent
+# Paraline HR AI Agent (Enterprise Edition)
 
-Hệ thống **HR AI Assistant** đa tác nhân cho Paraline Vietnam — kiến trúc Microservices hiện đại: **Next.js 15 frontend**, **Python/FastAPI backend**, và **LangGraph orchestration**. Tích hợp **8 AI agents**, hỗ trợ **Dual-Mode Portal** (Nhân viên & Ứng viên), và **AI Performance Dashboard** thời gian thực.
+Hệ thống **HR AI Assistant** đa tác nhân chuẩn Enterprise cho Paraline Vietnam. Kiến trúc Microservices hiện đại kết hợp **Next.js 15 Frontend**, **FastAPI Backend**, **Celery + Redis Background Workers**, và **LangGraph Orchestration**. Được trang bị khả năng triển khai lên **Kubernetes (K8s)** với Auto-scale vô hạn.
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688.svg)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js_15-Frontend-000000.svg)](https://nextjs.org)
-[![LangGraph](https://img.shields.io/badge/LangGraph-8--Agent-FF9900.svg)](https://python.langchain.com/)
-[![SQLite](https://img.shields.io/badge/SQLite-Database-003B57.svg)](https://sqlite.org/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-8_Agents-FF9900.svg)](https://python.langchain.com/)
 [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED.svg)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-K8s-326CE5.svg)](https://kubernetes.io/)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-101_Tests_Passing-success.svg)](https://github.com/KhanhKH069/hr-ai-agent/actions)
 
 ---
 
-## 🏗️ Kiến Trúc Hệ Thống
+## 🏗️ Kiến Trúc Hệ Thống (Microservices)
 
 ```
 Người dùng
 │
-├── 🟣 Guest / Ứng viên ──► localhost:3000/guest   (Không cần đăng nhập)
-│                                  │
-│                            Guest Chat UI ──► POST /chat/guest/stream
-│                                  │                 │
-│                            Guest Graph (giới hạn)  │
-│                            └─ Recruitment Agent    │
-│                               (screen CV, job info)│
+├── 🟣 Khách / Ứng viên ──► Cổng thông tin (Port 3000)
+│   (Upload CV PDF / Thẻ cư trú JPG)
 │
-└── 🟢 Nhân viên / Admin ──► localhost:3000         (Đăng nhập JWT)
-                                   │
-                            Employee HR Portal
-                            ├─ Dashboard + Metrics
-                            ├─ HR Assistant Chat ──► POST /chat/stream
-                            │                              │
-                            │                      Employee Graph (full)
-                            │                      └─ 8 AI Agents
-                            └─ Quản lý nhân sự
+└── 🟢 Nhân sự / Admin ──► Dashboard & Chatbot (Port 3000)
+             │
+             ▼
+     [ API GATEWAY (FastAPI - Port 8000) ] ◄──► [ REDIS (Message Broker & Cache) ]
+             │                                              │
+      (LangGraph Routing)                                   ▼
+             │                                    [ CELERY WORKER ]
+    ┌────────┴────────┐                           (Xử lý tải nặng ngầm)
+    ▼                 ▼                           - OCR Trích xuất chữ từ Ảnh
+[8 AI Agents]   [Hybrid Search]                   - Vẽ & Render CV ra file PDF
+                (Vector + BM25)
+                      │
+                [Flashrank Re-ranker]
+                (Xếp hạng siêu tốc trên CPU)
 ```
 
 ---
 
-## 🔀 Dual-Mode Portal (Tính Năng Nổi Bật)
+## 🚀 Các Bản Cập Nhật Mới Nhất (Enterprise-Ready)
 
-### 👤 Guest Portal — Cổng Ứng Viên (`/guest`)
-- **Không cần đăng nhập** — ứng viên bấm vào và hỏi ngay
-- Chỉ trả lời câu hỏi về: vị trí tuyển dụng, quy trình phỏng vấn, văn hóa công ty, phúc lợi tổng quan
-- **Bảo mật tuyệt đối**: Guest Graph bị cắt đứt hoàn toàn khỏi database nhân sự → rủi ro Prompt Injection Data Leakage = **0%**
-- Giao diện màu **tím** (Purple) thân thiện, gợi ý câu hỏi liên quan đến tuyển dụng
-
-### 🏢 Employee Portal — Cổng Nội Bộ (`/dashboard`)
-- Yêu cầu đăng nhập **JWT** với mã nhân viên
-- Toàn quyền truy cập 8 AI Agents chuyên biệt
-- Giao diện màu **xanh lá** (Emerald) chuyên nghiệp
+1. **RAG Re-ranking Layer (Flashrank)**: Tích hợp thư viện `flashrank` (chạy độc lập 100% Offline trên CPU, siêu nhẹ ~30MB). Tăng độ chính xác khi truy xuất chính sách HR lên mức tối đa mà không tốn RAM.
+2. **Kubernetes (K8s) Orchestration**: Tích hợp sẵn 7 file YAML chuẩn quốc tế (`k8s/`). Hệ thống được cài đặt **HPA (Horizontal Pod Autoscaler)** — tự động "phân thân" Celery Worker (từ 2 lên 10 pods) khi đợt tuyển dụng có hàng vạn ứng viên nộp CV, và tự thu gọn khi vắng khách.
+3. **CI/CD Pipeline Tự Động**: Cấu hình GitHub Actions chạy toàn bộ **101 Unit Tests** chặn đứng lỗi trước khi merge code vào nhánh chính.
+4. **Standalone BI Dashboard (Streamlit)**: Giao diện chỉ huy dành riêng cho Giám đốc nhân sự theo dõi thời gian thực (Realtime) tốc độ phản hồi của AI, lưu lượng tải, biểu đồ phân bổ tác vụ.
+5. **100% Offline Mode Readiness**: OCR thẻ cư trú, trích xuất dữ liệu, render PDF, phân tích RAG đều chạy ngầm cục bộ mà không để lọt một byte dữ liệu nào ra ngoài mạng Internet.
 
 ---
 
-## 🧠 Hệ Thống Multi-Agent (8 Agents)
+## 🔀 Tính Năng Cốt Lõi
 
+### 1. Dual-Mode Portal
+- **Guest Portal (Ứng viên)**: Giao diện thân thiện, không cần đăng nhập. Ứng viên có thể hỏi đáp về quy trình phỏng vấn hoặc **Upload CV (PDF) & Thẻ cư trú (Ảnh JPG/PNG)**. Agent sẽ tự động bóc tách (OCR), chấm điểm và lưu vào Pipeline.
+- **Employee Portal (Nội bộ)**: Yêu cầu đăng nhập JWT. Nhân viên có thể tạo đơn xin nghỉ phép, tra cứu lương, chấm công (tích hợp **Human-in-the-Loop** chờ Manager duyệt).
+
+### 2. Hệ Thống Multi-Agent (8 Chuyên Gia AI)
+- **Policy Agent**: Trả lời chính sách, tính thuế TNCN.
+- **Onboard Agent**: Checklist nhận việc, ký hợp đồng.
+- **CV Agent**: Đọc CV, OCR thẻ cư trú, chấm điểm, lên lịch phỏng vấn.
+- **Analytics Agent**: Chat với Data SQL bằng ngôn ngữ tự nhiên.
+- **Attendance Agent**, **Helpdesk Agent**, **Benefits Agent**, **Appraisal Agent**...
+
+---
+
+## ⚡ Hướng Dẫn Chạy & Triển Khai
+
+### 1. Chạy Demo Nhanh (Local Development)
+Dành cho mục đích test nhanh, phát triển hoặc chạy demo nhỏ trên máy cá nhân. Không cần thiết lập Docker hay Kubernetes.
+
+**Terminal 1: Chạy Backend (FastAPI)**
+```bash
+# Cài đặt thư viện Python (nếu cần)
+pip install -r requirements.txt
+
+# Chạy server FastAPI bằng Uvicorn
+uvicorn api.main:app --reload
 ```
-User Message → FastAPI → Orchestrator (Gemini LLM classify intent)
-                                │
-    ┌──────┬──────┬──────┬──────┼──────┬──────┬──────┬──────┐
-    ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼
- POLICY ONBOARD  CV  ANALYTICS ATTEND HELP BENEFITS APPRAISE OFFLINE
+*API Docs (Swagger UI): `http://localhost:8000/docs`*
+
+**Terminal 2: Chạy Frontend (Next.js)**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Truy cập Giao diện Web: `http://localhost:3000`*
+
+### 2. Triển Khai Toàn Diện (Docker Compose)
+Dựng toàn bộ hệ sinh thái (Next.js, FastAPI, Celery, Redis, Streamlit BI Dashboard) bằng 1 lệnh:
+
+```bash
+docker-compose up --build -d
 ```
 
-| Agent | Chức năng |
-|-------|-----------|
-| **Policy Agent** | Giải đáp chính sách HR qua RAG (ChromaDB), tra cứu lương, tính thuế TNCN 7 bậc |
-| **Onboard Agent** | Checklist onboarding, ký hợp đồng điện tử, cảnh báo hợp đồng hết hạn |
-| **CV Agent** | Chấm điểm CV, Recruitment CRM Pipeline, lên lịch phỏng vấn |
-| **Analytics Agent** | Chat với database HR bằng ngôn ngữ tự nhiên (Pandas) |
-| **Attendance Agent** | Chấm công, OT, nộp đơn nghỉ phép với **Human-in-the-Loop** |
-| **Helpdesk Agent** | Tạo và theo dõi HR Support Ticket |
-| **Benefits Agent** | Gói bảo hiểm, phụ cấp, quyền lợi cá nhân |
-| **Appraisal Agent** | Đánh giá hiệu suất, quản lý kỹ năng, Skill Gap Analysis |
+| Dịch vụ | Địa chỉ truy cập |
+|---------|-----------------|
+| **Cổng HR & Khách** | `http://localhost:3000` |
+| **Admin BI Dashboard** | `http://localhost:8501` |
+| **Backend API Docs** | `http://localhost:8000/docs` |
 
----
-
-## 📊 AI Performance Dashboard (Mới)
-
-Trang **`/dashboard/metrics`** hiển thị real-time (auto-refresh mỗi 15 giây):
-
-- **Tổng số request** (phân chia Nhân viên / Khách)
-- **Cache Hit Rate** — bao nhiêu câu hỏi được trả lời từ bộ nhớ đệm
-- **Thời gian phản hồi trung bình** theo từng Agent
-- **Agent Usage Chart** — horizontal bar chart màu sắc từng agent
-- **20 yêu cầu gần nhất** — timestamp, user, agent, câu hỏi preview, thời gian xử lý
-
----
-
-## ⚡ Tối Ưu Hiệu Suất
-
-### LangChain LLM Cache (SQLite)
-Khi cùng một prompt được gửi lên LLM (bao gồm context RAG), hệ thống trả về ngay lập tức từ `data/llm_cache.db` mà **không cần gọi API Google**. Đặc biệt hiệu quả với Orchestrator routing.
-
-### LangSmith Tracing (tuỳ chọn)
-Thêm `LANGSMITH_API_KEY` vào `.env` để kích hoạt tracing toàn bộ AI pipeline lên LangSmith Dashboard. Giúp debug từng bước: Orchestrator → Agent → Tool → Response.
+### 3. Triển Khai Lên Kubernetes (K8s Cloud)
+Dành cho môi trường Production quy mô lớn (AWS EKS, GKE, Azure AKS):
+```bash
+kubectl apply -f k8s/
+```
 
 ---
 
 ## 🔒 Bảo Mật & Xác Thực
 
-- **JWT Authentication**: Bảo vệ toàn bộ Employee API với Bearer token
-- **bcrypt Password Hashing**: Mật khẩu mã hóa an toàn trong SQLite
-- **Role-Based Access Control (RBAC)**:
-  - `admin/manager`: Toàn quyền, hiển thị nút Duyệt đơn trong chat
-  - `employee`: Chỉ xem dữ liệu cá nhân, bị chặn HTTP 403 nếu vượt quyền
-- **Guest Isolation**: Guest Graph độc lập hoàn toàn, không thể truy cập database nhân sự
+- **Bảo vệ toàn diện**: JWT Bearer Tokens, Mã hóa bcrypt, Phân quyền RBAC (Admin, Manager, Employee, Guest).
+- **Guest Isolation**: Ứng viên (Guest) chạy trên một LangGraph hoàn toàn tách biệt, chặn đứng rủi ro Prompt Injection đánh cắp dữ liệu lương nội bộ.
 
-**Tài khoản demo:**
+**Tài khoản Demo Local:**
 - Admin: `EMP001` / `password123`
 - Nhân viên: `EMP016` / `password123`
-- Khách: Bấm "Tiếp tục với tư cách Khách" trên trang đăng nhập
 
 ---
 
-## 🚀 Khởi Chạy (Docker — Khuyên dùng)
-
-```bash
-# 1 lệnh duy nhất — tự dựng Frontend + Backend + Database
-docker-compose up --build -d
-```
-
-| Dịch vụ | URL |
-|---------|-----|
-| HR Portal (Nhân viên) | http://localhost:3000 |
-| Guest Portal (Ứng viên) | http://localhost:3000/guest |
-| API Documentation | http://localhost:8000/docs |
-| AI Metrics (sau đăng nhập) | http://localhost:3000/dashboard/metrics |
-
-### Cấu hình (`.env`)
-```env
-# Bắt buộc để chạy Online mode
-GOOGLE_API_KEY=YOUR_GEMINI_API_KEY_HERE
-
-# Tuỳ chọn — kích hoạt LangSmith Tracing
-LANGSMITH_API_KEY=YOUR_LANGSMITH_API_KEY_HERE
-
-# Tuỳ chọn — mặc định đã có giá trị
-OFFLINE_MODE=false
-MODEL_NAME=gemini-1.5-flash
-JWT_SECRET_KEY=paraline_super_secret_key_2026
-```
-
-### Chạy thủ công (Developer mode)
-
-**Backend:**
-```bash
-uv venv && .\.venv\Scripts\activate
-uv pip install -r requirements.txt
-uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-**Frontend:**
-```bash
-cd frontend
-npm install && npm run dev
-```
-
----
-
-## 🗂️ Cấu Trúc Dự Án
+## 🗂️ Cấu Trúc Dự Án (Monorepo)
 
 ```
 hr-ai-agent-pure-vector/
 │
-├── api/                          ← FastAPI Backend
-│   ├── main.py                   ← App chính: Chat, Metrics, SSE Streaming
-│   ├── auth.py                   ← JWT + bcrypt
-│   ├── models.py                 ← SQLModel schemas
-│   ├── database.py               ← SQLite connection
-│   └── routers/                  ← 16 API routers (employees, attendance, ...)
-│
+├── api/                  ← FastAPI Endpoints & RBAC Auth
 ├── src/
-│   ├── agents/                   ← 8 AI Agents + Orchestrator + Guest Graph
-│   │   └── orchestrator.py       ← Employee Graph + Guest Graph (tách biệt)
-│   ├── services/
-│   │   ├── metrics.py            ← AI Performance Metrics Collector (Mới)
-│   │   ├── hybrid_retriever.py   ← Vector + BM25 Hybrid Search
-│   │   └── vector_db.py          ← ChromaDB + Multilingual Embeddings
-│   └── tools/                    ← 15+ tool modules (policy, attendance, ...)
+│   ├── agents/           ← 8 LangGraph AI Agents
+│   ├── services/         ← Flashrank RAG, Metrics, VectorDB
+│   ├── core/             ← Celery App, Configs
+│   └── tools/            ← OCR, PDF Generation, Tools
 │
-├── config/
-│   └── prompts.yaml              ← System prompts cho tất cả agents (+ guest)
+├── frontend/             ← Next.js 15 UI (React)
+├── dashboard/            ← Streamlit BI Admin Dashboard
+├── k8s/                  ← Kubernetes YAML Manifests
+├── documents/            ← Tài liệu Markdown gốc cho AI đọc
+├── data/                 ← SQL Database, Logs
 │
-├── frontend/                     ← Next.js 15 App Router
-│   └── src/app/
-│       ├── page.tsx              ← Trang Login (có nút Guest)
-│       ├── guest/                ← Guest Portal (màu tím, không cần auth)
-│       └── dashboard/
-│           ├── chat/             ← Employee HR Chat
-│           ├── employees/        ← Quản lý nhân sự
-│           ├── profile/          ← Hồ sơ cá nhân
-│           └── metrics/          ← AI Performance Dashboard (Mới)
-│
-├── documents/                    ← Tài liệu HR (Markdown) cho RAG
-├── data/                         ← SQLite DBs: paraline.db, llm_cache.db
-├── chroma_db/                    ← Vector store (persist)
-├── docker/
-│   └── Dockerfile.backend        ← Python/FastAPI Docker image
-├── docker-compose.yml            ← Orchestrate toàn bộ hệ thống
-└── requirements.txt
+├── docker-compose.yml    ← Liên kết Frontend + Backend + Redis + Celery + Dashboard
+├── Dockerfile            ← Backend / Worker Image
+└── pytest.ini            ← Cấu hình Unit Tests (101/101 Passed)
 ```
 
 ---
-
-## 🌟 Tính Năng Nổi Bật
-
-| Tính năng | Mô tả |
-|-----------|-------|
-| **Dual-Mode Portal** | Guest (ứng viên) và Employee (nội bộ) dùng UI riêng, Agent riêng, bảo mật riêng |
-| **AI Streaming** | Server-Sent Events (SSE) — response "nhả chữ" realtime như ChatGPT |
-| **Human-in-the-Loop** | Dừng lại chờ Manager bấm "Duyệt" trước khi thực hiện thao tác nhạy cảm |
-| **Multilingual RAG** | Embedding Tiếng Việt chính xác với `paraphrase-multilingual-MiniLM-L12-v2` |
-| **LLM Cache** | SQLite-backed cache — câu hỏi trùng trả về ngay, tiết kiệm API cost |
-| **AI Metrics Dashboard** | Real-time monitoring: agent usage, response time, cache hit rate |
-| **LangSmith Tracing** | Debug AI pipeline chi tiết từng bước (opt-in qua API key) |
-| **Offline Fallback** | Tự động chuyển về KB nội bộ khi mất mạng hoặc thiếu API key |
-| **RBAC** | Phân quyền cấp API: Admin / Manager / Employee / Guest |
-
----
-
-## 📄 License
-
-MIT License — Mã nguồn mở, tự do sử dụng và tùy chỉnh.
 
 **Paraline Software • Japan Quality in Vietnam 🇯🇵🇻🇳**

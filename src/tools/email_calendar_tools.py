@@ -1,5 +1,5 @@
 def draft_interview_email(
-    candidate_name: str, position: str, interview_time: str
+    candidate_name: str, position: str, interview_time: str, meet_link: str = ""
 ) -> str:
     """Mock AI function to draft a professional interview invitation email."""
 
@@ -7,7 +7,7 @@ def draft_interview_email(
     # For now, we return a professional template
 
     email_body = f"""
-Subject: Mời Phỏng Vấn - Vị trí {position} tại Paraline Software
+Subject: Thư Mời Phỏng Vấn - Vị trí {position} tại Paraline Software
 
 Kính gửi bạn {candidate_name},
 
@@ -16,8 +16,9 @@ Qua quá trình sàng lọc hồ sơ tự động, chúng tôi nhận thấy kin
 
 Chúng tôi trân trọng mời bạn tham gia buổi phỏng vấn trực tuyến với đội ngũ chuyên môn.
 Thời gian dự kiến: {interview_time}
+Link Google Meet: {meet_link}
 
-Vui lòng xác nhận lại nếu bạn có thể sắp xếp tham gia qua email này.
+Vui lòng tham gia đúng giờ và xác nhận lại nếu bạn có thể sắp xếp tham gia bằng cách reply email này.
 Nếu thời gian trên chưa phù hợp, xin phản hồi lại để chúng tôi sắp xếp lịch khác.
 
 Trân trọng,

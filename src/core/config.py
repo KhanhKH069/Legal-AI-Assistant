@@ -41,6 +41,9 @@ class Config:
         self.database_url = os.getenv(
             "DATABASE_URL", "sqlite:///data/sql_db/hr_agent.db"
         )
+        self.redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+        self.chromadb_host = os.getenv("CHROMADB_HOST", "localhost")
+        self.chromadb_port = int(os.getenv("CHROMADB_PORT", "8000"))
 
         # Logging Configuration
         self.log_level = os.getenv("LOG_LEVEL", "INFO")

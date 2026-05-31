@@ -19,16 +19,26 @@ from src.db_models import ScreeningResult, Applicant
 import json
 
 router = APIRouter(prefix="/screening", tags=["screening"])
+from src.celery_app import run_screening_background_task
+import redis.asyncio as redis_async
+from src.core.config import config
 
 
 # --- WebSocket Connection Manager ---
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
+        self.listener_task = None
+        self.redis_client = None
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
         self.active_connections.append(websocket)
+
+        # Start Redis listener if not already running
+        if self.listener_task is None:
+            self.redis_client = redis_async.from_url(config.redis_url)
+            self.listener_task = asyncio.create_task(self._listen_to_redis())
 
     def disconnect(self, websocket: WebSocket):
         if websocket in self.active_connections:
@@ -40,6 +50,20 @@ class ConnectionManager:
                 await connection.send_text(json.dumps(message))
             except Exception:
                 pass
+
+    async def _listen_to_redis(self):
+        pubsub = self.redis_client.pubsub()
+        await pubsub.subscribe("screening_progress_global")
+        try:
+            async for message in pubsub.listen():
+                if message["type"] == "message":
+                    data = json.loads(message["data"])
+                    await self.broadcast(data)
+        except asyncio.CancelledError:
+            pass
+        finally:
+            await pubsub.unsubscribe("screening_progress_global")
+            await pubsub.close()
 
 
 manager = ConnectionManager()
@@ -56,142 +80,21 @@ async def websocket_endpoint(websocket: WebSocket):
         manager.disconnect(websocket)
 
 
-# ------------------------------------
-
-
-def _run_screening_background(applicant_id: Optional[int] = None) -> None:
-    """
-    Run real CV screening using cv_screening.py and save to SQLite.
-    Broadcasts progress via WebSocket.
-    """
-    try:
-        from cv_screening import screen_all_applicants
-
-        # We need the event loop to send broadcast messages from this synchronous thread
-        try:
-            loop = asyncio.get_running_loop()
-        except RuntimeError:
-            loop = None
-
-        def progress_callback(msg: str, pct: float):
-            payload = {"message": msg, "progress": pct}
-            if loop:
-                asyncio.run_coroutine_threadsafe(manager.broadcast(payload), loop)
-            else:
-                # Fallback if no loop (e.g. tests)
-                asyncio.run(manager.broadcast(payload))
-
-        # This will query SQLite DB, score CVs using RAG/EasyOCR/Gemini
-        # and return a list of dicts.
-        results = screen_all_applicants(progress_callback=progress_callback)
-
-        if results:
-            session = get_session()
-
-            # Clear old results to prevent duplicates if screening all
-            if applicant_id is None:
-                old_results = session.exec(select(ScreeningResult)).all()
-                for r in old_results:
-                    session.delete(r)
-            else:
-                old_results = session.exec(
-                    select(ScreeningResult).where(
-                        ScreeningResult.applicant_id == applicant_id
-                    )
-                ).all()
-                for r in old_results:
-                    session.delete(r)
-
-            session.commit()
-
-            for r in results:
-                app_id = r.get("id")
-                if applicant_id is not None and app_id != applicant_id:
-                    continue
-
-                if not app_id:
-                    continue
-
-                db_result = ScreeningResult(
-                    applicant_id=app_id,
-                    position=r.get("position", ""),
-                    total_score=r.get("total_score", 0),
-                    max_score=r.get("max_score", 100),
-                    percentage=r.get("percentage", 0),
-                    recommendation=r.get("recommendation", ""),
-                    status=r.get("status", ""),
-                    action=r.get("action", ""),
-                    breakdown=r.get("breakdown", {}),
-                    interview_questions=r.get("interview_questions", []),
-                    min_score=r.get("min_score", 60),
-                )
-                session.add(db_result)
-
-                # Update applicant status based on recommendation
-                app = session.get(Applicant, app_id)
-                if app:
-                    app.status = "SCREENED"
-                    session.add(app)
-
-            session.commit()
-            print(
-                f"Successfully screened {len(results)} applicants and saved to SQLite."
-            )
-
-            # Send completion signal
-            def completion_signal():
-                payload = {
-                    "message": "Đã hoàn tất đánh giá toàn bộ CV!",
-                    "progress": 100,
-                    "done": True,
-                }
-                if loop:
-                    asyncio.run_coroutine_threadsafe(manager.broadcast(payload), loop)
-                else:
-                    asyncio.run(manager.broadcast(payload))
-
-            completion_signal()
-        else:
-            print("No applicants found or no results generated.")
-
-            def empty_signal():
-                payload = {
-                    "message": "Không có ứng viên nào để đánh giá.",
-                    "progress": 100,
-                    "done": True,
-                }
-                if loop:
-                    asyncio.run_coroutine_threadsafe(manager.broadcast(payload), loop)
-                else:
-                    asyncio.run(manager.broadcast(payload))
-
-            empty_signal()
-    except Exception as e:
-        print(f"Error running background screening: {e}")
-        # Send error signal
-        try:
-            loop = asyncio.get_running_loop()
-            asyncio.run_coroutine_threadsafe(
-                manager.broadcast(
-                    {"message": f"Lỗi: {e}", "progress": 0, "error": True}
-                ),
-                loop,
-            )
-        except Exception:
-            pass
-
-
 @router.post("/run")
 def run_screening(
     background_tasks: BackgroundTasks,
     applicant_id: Optional[int] = None,
     current_user: User = Depends(get_current_user),
 ) -> Dict[str, Any]:
-    background_tasks.add_task(_run_screening_background, applicant_id)
-    return {
-        "status": "processing",
-        "message": "CV screening task added to background queue.",
-    }
+    try:
+        # Trigger Celery Task
+        run_screening_background_task.delay(applicant_id)
+        return {
+            "status": "processing",
+            "message": "CV screening task added to background Celery queue.",
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/results")

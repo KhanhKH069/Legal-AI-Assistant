@@ -36,23 +36,26 @@ except ImportError:
 
 
 # ---------------------------------------------------------------------------
-# Cross-encoder reranker (optional)
+# Cross-encoder reranker (Flashrank - Lightweight ONNX)
 # ---------------------------------------------------------------------------
 _reranker = None
 _reranker_loaded = False
-RERANKER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"  # lightweight, multilingual ok
 
 
 def _get_reranker():
-    """Lazy-load the cross-encoder reranker model (singleton)."""
+    """Lazy-load the Flashrank reranker model (singleton)."""
     global _reranker, _reranker_loaded
     if _reranker_loaded:
         return _reranker
     try:
-        from sentence_transformers import CrossEncoder
+        from flashrank import Ranker
 
-        _reranker = CrossEncoder(RERANKER_MODEL, max_length=512)
-        print(f"[HybridRetriever] Cross-encoder reranker loaded: {RERANKER_MODEL}")
+        # Using a very lightweight model perfect for CPU
+        _reranker = Ranker(
+            model_name="ms-marco-MiniLM-L-12-v2",
+            cache_dir="./chroma_db/flashrank_cache",
+        )
+        print("[HybridRetriever] Flashrank reranker loaded")
     except Exception as e:
         print(f"[HybridRetriever] Reranker not available ({e}) – skipping rerank step")
         _reranker = None
@@ -194,13 +197,25 @@ class HybridRetriever:
             reranker = _get_reranker()
             if reranker is not None:
                 try:
-                    pairs = [[query, c["content"]] for c in candidates]
-                    scores = reranker.predict(pairs)
+                    from flashrank import RerankRequest
+
+                    # Flashrank requires list of dicts with 'id' and 'text'
+                    passages = []
                     for i, c in enumerate(candidates):
-                        c["reranker_score"] = float(scores[i])
-                    candidates.sort(
-                        key=lambda x: x.get("reranker_score", 0.0), reverse=True
-                    )
+                        passages.append({"id": str(i), "text": c["content"]})
+
+                    req = RerankRequest(query=query, passages=passages)
+                    results = reranker.rerank(req)
+
+                    # results is sorted list of dicts with 'id', 'text', 'score'
+                    # we map back to our candidates
+                    reranked_candidates = []
+                    for res in results:
+                        orig_idx = int(res["id"])
+                        c = candidates[orig_idx]
+                        c["reranker_score"] = res["score"]
+                        reranked_candidates.append(c)
+                    candidates = reranked_candidates
                 except Exception as e:
                     print(f"[HybridRetriever] Reranker prediction failed: {e}")
 

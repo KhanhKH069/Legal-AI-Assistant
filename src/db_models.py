@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, Optional
 
 from sqlmodel import JSON, Column, Field, SQLModel
@@ -17,7 +17,7 @@ class Applicant(SQLModel, table=True):  # type: ignore[call-arg]
     status: str = Field(
         default="NEW", description="NEW/SCREENED/INTERVIEW/REJECTED/HIRED"
     )
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ScreeningResult(SQLModel, table=True):  # type: ignore[call-arg]
@@ -35,7 +35,7 @@ class ScreeningResult(SQLModel, table=True):  # type: ignore[call-arg]
     breakdown: Dict[str, Any] = Field(sa_column=Column(JSON))
     interview_questions: Optional[Any] = Field(sa_column=Column(JSON), default=None)
     min_score: float
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class JobRequirement(SQLModel, table=True):  # type: ignore[call-arg]
@@ -57,4 +57,20 @@ class JobRequirement(SQLModel, table=True):  # type: ignore[call-arg]
         sa_column=Column(JSON), description="Preferred certifications"
     )
     min_score: float = 60.0
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class JobPreference(SQLModel, table=True):  # type: ignore[call-arg]
+    __tablename__ = "job_preferences"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    applicant_id: int = Field(foreign_key="applicants.id")
+    industry: Optional[str] = None
+    locations: Optional[str] = Field(
+        default=None, description="Comma-separated locations"
+    )
+    min_salary: Optional[float] = None
+    conditions: Optional[str] = Field(
+        default=None, description="Other conditions (e.g. Remote, No OT)"
+    )
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

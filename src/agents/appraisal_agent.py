@@ -39,7 +39,15 @@ def create_appraisal_agent():
 def appraisal_agent_node(state):
     """Appraisal Agent Node for LangGraph."""
     agent = create_appraisal_agent()
-    response = agent.invoke({"messages": state["messages"]})
+    
+    messages = list(state["messages"])
+    if state.get("user_info"):
+        from langchain_core.messages import SystemMessage
+        import json
+        info_str = f"LƯU Ý: Đây là thông tin của nhân viên đang chat. Hãy dùng thông tin này nếu họ hỏi về cá nhân họ:\n{json.dumps(state['user_info'], ensure_ascii=False, indent=2)}"
+        messages.insert(max(0, len(messages) - 1), SystemMessage(content=info_str))
+
+    response = agent.invoke({"messages": messages})
     return {
         "messages": [response],
         "next": "end",

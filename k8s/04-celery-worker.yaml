@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-worker
+  labels:
+    app: hr-ai
+    tier: worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hr-ai
+      tier: worker
+  template:
+    metadata:
+      labels:
+        app: hr-ai
+        tier: worker
+    spec:
+      containers:
+      - name: celery-worker
+        image: hr-ai-backend:latest
+        imagePullPolicy: IfNotPresent
+        command: ["celery", "-A", "src.core.celery_app", "worker", "--loglevel=info"]
+        envFrom:
+        - configMapRef:
+            name: hr-ai-config
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "2000m"
+            memory: "2Gi"
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/chroma_db
+          subPath: chroma_db
+        - name: data-volume
+          mountPath: /app/documents
+          subPath: documents
+        - name: data-volume
+          mountPath: /app/hr_database.db
+          subPath: hr_database.db
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: hr-ai-pvc
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: celery-worker-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: celery-worker
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
