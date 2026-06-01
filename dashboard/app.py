@@ -5,7 +5,7 @@ import plotly.express as px
 import os
 import time
 
-st.set_page_config(page_title="HR AI Agent Dashboard", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="Legal AI Agent Dashboard", page_icon="🤖", layout="wide")
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
@@ -20,7 +20,7 @@ def fetch_metrics():
     return None
 
 
-st.title("🤖 Paraline HR AI Agent - Command Center")
+st.title("🤖 Paraline Legal AI Agent - Command Center")
 st.markdown("Live metrics and real-time monitoring of AI Agents.")
 
 metrics_data = fetch_metrics()

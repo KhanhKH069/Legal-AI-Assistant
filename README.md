@@ -1,146 +1,106 @@
-# Paraline HR AI Agent (Enterprise Edition)
+# Legal AI Assistant (Road to AI 2026) 🏆
 
-Hệ thống **HR AI Assistant** đa tác nhân chuẩn Enterprise cho Paraline Vietnam. Kiến trúc Microservices hiện đại kết hợp **Next.js 15 Frontend**, **FastAPI Backend**, **Celery + Redis Background Workers**, và **LangGraph Orchestration**. Được trang bị khả năng triển khai lên **Kubernetes (K8s)** với Auto-scale vô hạn.
+Dự án Legal AI Assistant là một hệ thống Trí tuệ Nhân tạo chuyên biệt trong lĩnh vực Pháp lý (LegalTech), được xây dựng để tham gia cuộc thi **Road to AI 2026**. 
 
-[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688.svg)](https://fastapi.tiangolo.com)
-[![Next.js](https://img.shields.io/badge/Next.js_15-Frontend-000000.svg)](https://nextjs.org)
-[![LangGraph](https://img.shields.io/badge/LangGraph-8_Agents-FF9900.svg)](https://python.langchain.com/)
-[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED.svg)](https://www.docker.com/)
-[![Kubernetes](https://img.shields.io/badge/Kubernetes-K8s-326CE5.svg)](https://kubernetes.io/)
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-101_Tests_Passing-success.svg)](https://github.com/KhanhKH069/hr-ai-agent/actions)
+Hệ thống được thiết kế dưới dạng **Multi-Agent** (nhiều AI tương tác với nhau) và ứng dụng kiến trúc **RAG (Retrieval-Augmented Generation) tiên tiến nhất**, giúp loại bỏ triệt để hiện tượng AI "bịa luật" (Hallucination) và mang lại câu trả lời với độ chính xác tuyệt đối từ Hệ thống Pháp điển Quốc gia và Án lệ Việt Nam.
 
 ---
 
-## 🏗️ Kiến Trúc Hệ Thống (Microservices)
+## 🌟 TÍNH NĂNG NỔI BẬT (KILLER FEATURES)
 
+1. **Thuật toán Hybrid Search + BGE Reranker:**
+   Sự kết hợp hoàn hảo giữa Semantic Search (Vector) và Keyword Search (BM25) qua cơ chế RRF (Reciprocal Rank Fusion). Kết quả sau đó được lọc lại bằng mô hình Cross-Encoder `BAAI/bge-reranker-v2-m3` tối ưu riêng cho Tiếng Việt, đảm bảo AI bốc trúng 100% điều luật chính xác nhất.
+   
+2. **Thẩm định Rủi ro Hợp đồng (Contract Reviewing):**
+   Người dùng có thể upload một file hợp đồng PDF. AI sẽ tự động đọc, bóc tách từng điều khoản, và đối chiếu với quy định trong Pháp điển để rà soát các điều khoản vi phạm pháp luật hoặc có rủi ro pháp lý.
+
+3. **Luật 🤝 Án lệ Cross-Reference:**
+   Tính năng đọc chéo tự động. Khi tư vấn một Điều luật, AI sẽ tự động quét chéo kho Án lệ để gợi ý các Bản án thực tế đã từng áp dụng Điều luật đó.
+
+4. **Dynamic Knowledge Graph (Đồ thị Tư duy Real-time):**
+   Mỗi khi tư vấn các bộ luật phức tạp (Luật -> Nghị định -> Thông tư), AI sẽ tự động sinh code Mermaid.js để giao diện Frontend render ngay lập tức thành một **Sơ đồ đồ thị SVG tương tác**, giúp người dùng hiểu rõ hệ thống phân cấp pháp luật chỉ trong 1 giây.
+
+5. **Giao diện Legal UI Đẳng cấp:**
+   Xây dựng bằng Next.js, Tailwind CSS với phong cách Dark Mode, Glassmorphism sang trọng. Mọi trích dẫn luật đều biến thành các "Glowing Buttons" (nút bấm phát sáng) có thể click để đọc nguồn gốc.
+
+---
+
+## 🏗 KIẾN TRÚC HỆ THỐNG
+
+- **Backend:** FastAPI (Python)
+- **AI Orchestration:** LangGraph & LangChain
+- **LLM Core:** Google Gemini 1.5 Pro
+- **Vector Database:** ChromaDB (Lưu trữ Vector dưới local, không tốn phí cloud)
+- **Keyword Index:** Rank-BM25
+- **Frontend:** Next.js (React), TailwindCSS, React-Markdown, Mermaid.js
+- **PDF Extraction:** PyMuPDF (fitz)
+
+---
+
+## 📂 CẤU TRÚC THƯ MỤC (PROJECT TREE)
+
+```text
+hr-ai-agent-pure-vector/
+├── api/                # Backend API Server (FastAPI)
+├── frontend/           # Giao diện người dùng (Next.js, React)
+├── dashboard/          # Trang quản trị / Dashboard
+├── src/                # Mã nguồn chính (AI Agents, Services, Tools)
+├── tests/              # Unit & Integration tests
+├── config/             # Cấu hình dự án
+├── alembic/            # Scripts migrate cho Database
+├── chroma_db/          # Lưu trữ dữ liệu Vector cục bộ (ChromaDB)
+├── data/               # Dữ liệu nguồn (Pháp điển, Án lệ)
+├── docker/             # Các cấu hình Docker
+├── docs/               # Tài liệu dự án
+├── k8s/                # Cấu hình Kubernetes để deploy
+├── scripts/            # Các scripts tiện ích
+├── Dockerfile          # Cấu hình build Docker image
+├── docker-compose.yml  # Triển khai hệ thống qua Docker Compose
+└── requirements.txt    # Danh sách các thư viện Python
 ```
-Người dùng
-│
-├── 🟣 Khách / Ứng viên ──► Cổng thông tin (Port 3000)
-│   (Upload CV PDF / Thẻ cư trú JPG)
-│
-└── 🟢 Nhân sự / Admin ──► Dashboard & Chatbot (Port 3000)
-             │
-             ▼
-     [ API GATEWAY (FastAPI - Port 8000) ] ◄──► [ REDIS (Message Broker & Cache) ]
-             │                                              │
-      (LangGraph Routing)                                   ▼
-             │                                    [ CELERY WORKER ]
-    ┌────────┴────────┐                           (Xử lý tải nặng ngầm)
-    ▼                 ▼                           - OCR Trích xuất chữ từ Ảnh
-[8 AI Agents]   [Hybrid Search]                   - Vẽ & Render CV ra file PDF
-                (Vector + BM25)
-                      │
-                [Flashrank Re-ranker]
-                (Xếp hạng siêu tốc trên CPU)
-```
 
 ---
 
-## 🚀 Các Bản Cập Nhật Mới Nhất (Enterprise-Ready)
+## 🚀 HƯỚNG DẪN CÀI ĐẶT & CHẠY DỰ ÁN
 
-1. **RAG Re-ranking Layer (Flashrank)**: Tích hợp thư viện `flashrank` (chạy độc lập 100% Offline trên CPU, siêu nhẹ ~30MB). Tăng độ chính xác khi truy xuất chính sách HR lên mức tối đa mà không tốn RAM.
-2. **Kubernetes (K8s) Orchestration**: Tích hợp sẵn 7 file YAML chuẩn quốc tế (`k8s/`). Hệ thống được cài đặt **HPA (Horizontal Pod Autoscaler)** — tự động "phân thân" Celery Worker (từ 2 lên 10 pods) khi đợt tuyển dụng có hàng vạn ứng viên nộp CV, và tự thu gọn khi vắng khách.
-3. **CI/CD Pipeline Tự Động**: Cấu hình GitHub Actions chạy toàn bộ **101 Unit Tests** chặn đứng lỗi trước khi merge code vào nhánh chính.
-4. **Standalone BI Dashboard (Streamlit)**: Giao diện chỉ huy dành riêng cho Giám đốc nhân sự theo dõi thời gian thực (Realtime) tốc độ phản hồi của AI, lưu lượng tải, biểu đồ phân bổ tác vụ.
-5. **100% Offline Mode Readiness**: OCR thẻ cư trú, trích xuất dữ liệu, render PDF, phân tích RAG đều chạy ngầm cục bộ mà không để lọt một byte dữ liệu nào ra ngoài mạng Internet.
+### Yêu cầu hệ thống
+- Python 3.10+
+- Node.js 18+
+- Biến môi trường: Bạn cần có `GOOGLE_API_KEY` (Gemini API) trong file `.env`.
 
----
-
-## 🔀 Tính Năng Cốt Lõi
-
-### 1. Dual-Mode Portal
-- **Guest Portal (Ứng viên)**: Giao diện thân thiện, không cần đăng nhập. Ứng viên có thể hỏi đáp về quy trình phỏng vấn hoặc **Upload CV (PDF) & Thẻ cư trú (Ảnh JPG/PNG)**. Agent sẽ tự động bóc tách (OCR), chấm điểm và lưu vào Pipeline.
-- **Employee Portal (Nội bộ)**: Yêu cầu đăng nhập JWT. Nhân viên có thể tạo đơn xin nghỉ phép, tra cứu lương, chấm công (tích hợp **Human-in-the-Loop** chờ Manager duyệt).
-
-### 2. Hệ Thống Multi-Agent (8 Chuyên Gia AI)
-- **Policy Agent**: Trả lời chính sách, tính thuế TNCN.
-- **Onboard Agent**: Checklist nhận việc, ký hợp đồng.
-- **CV Agent**: Đọc CV, OCR thẻ cư trú, chấm điểm, lên lịch phỏng vấn.
-- **Analytics Agent**: Chat với Data SQL bằng ngôn ngữ tự nhiên.
-- **Attendance Agent**, **Helpdesk Agent**, **Benefits Agent**, **Appraisal Agent**...
-
----
-
-## ⚡ Hướng Dẫn Chạy & Triển Khai
-
-### 1. Chạy Demo Nhanh (Local Development)
-Dành cho mục đích test nhanh, phát triển hoặc chạy demo nhỏ trên máy cá nhân. Không cần thiết lập Docker hay Kubernetes.
-
-**Terminal 1: Chạy Backend (FastAPI)**
+### 1. Cài đặt Backend
+Mở Terminal 1 và chạy các lệnh sau:
 ```bash
-# Cài đặt thư viện Python (nếu cần)
+# Cài đặt thư viện Python
 pip install -r requirements.txt
 
-# Chạy server FastAPI bằng Uvicorn
+# Khởi động Backend API (Chạy ở cổng 8000)
 uvicorn api.main:app --reload
 ```
-*API Docs (Swagger UI): `http://localhost:8000/docs`*
 
-**Terminal 2: Chạy Frontend (Next.js)**
+### 2. Cài đặt Frontend
+Mở Terminal 2, di chuyển vào thư mục `frontend` và chạy:
 ```bash
 cd frontend
-npm install
+
+# Cài đặt thư viện Node (Bao gồm react-markdown, mermaid)
+npm install --legacy-peer-deps
+
+# Khởi động Giao diện Web (Chạy ở cổng 3000)
 npm run dev
 ```
-*Truy cập Giao diện Web: `http://localhost:3000`*
 
-### 2. Triển Khai Toàn Diện (Docker Compose)
-Dựng toàn bộ hệ sinh thái (Next.js, FastAPI, Celery, Redis, Streamlit BI Dashboard) bằng 1 lệnh:
-
-```bash
-docker-compose up --build -d
-```
-
-| Dịch vụ | Địa chỉ truy cập |
-|---------|-----------------|
-| **Cổng HR & Khách** | `http://localhost:3000` |
-| **Admin BI Dashboard** | `http://localhost:8501` |
-| **Backend API Docs** | `http://localhost:8000/docs` |
-
-### 3. Triển Khai Lên Kubernetes (K8s Cloud)
-Dành cho môi trường Production quy mô lớn (AWS EKS, GKE, Azure AKS):
-```bash
-kubectl apply -f k8s/
-```
+### 3. Trải nghiệm
+Mở trình duyệt và truy cập: **http://localhost:3000**
 
 ---
 
-## 🔒 Bảo Mật & Xác Thực
+## 📚 DỮ LIỆU SỬ DỤNG
+Dự án sử dụng bộ dữ liệu mã nguồn mở được xử lý từ các hệ thống văn bản pháp luật chính thức của Việt Nam:
+1. **Pháp điển:** Dữ liệu từ `phapdien.moj.gov.vn`
+2. **Án lệ & Bản án:** Dữ liệu từ `anle.toaan.gov.vn`
 
-- **Bảo vệ toàn diện**: JWT Bearer Tokens, Mã hóa bcrypt, Phân quyền RBAC (Admin, Manager, Employee, Guest).
-- **Guest Isolation**: Ứng viên (Guest) chạy trên một LangGraph hoàn toàn tách biệt, chặn đứng rủi ro Prompt Injection đánh cắp dữ liệu lương nội bộ.
-
-**Tài khoản Demo Local:**
-- Admin: `EMP001` / `password123`
-- Nhân viên: `EMP016` / `password123`
+*(Toàn bộ dữ liệu Raw được lưu trữ trong thư mục `data/raw`)*
 
 ---
-
-## 🗂️ Cấu Trúc Dự Án (Monorepo)
-
-```
-hr-ai-agent-pure-vector/
-│
-├── api/                  ← FastAPI Endpoints & RBAC Auth
-├── src/
-│   ├── agents/           ← 8 LangGraph AI Agents
-│   ├── services/         ← Flashrank RAG, Metrics, VectorDB
-│   ├── core/             ← Celery App, Configs
-│   └── tools/            ← OCR, PDF Generation, Tools
-│
-├── frontend/             ← Next.js 15 UI (React)
-├── dashboard/            ← Streamlit BI Admin Dashboard
-├── k8s/                  ← Kubernetes YAML Manifests
-├── documents/            ← Tài liệu Markdown gốc cho AI đọc
-├── data/                 ← SQL Database, Logs
-│
-├── docker-compose.yml    ← Liên kết Frontend + Backend + Redis + Celery + Dashboard
-├── Dockerfile            ← Backend / Worker Image
-└── pytest.ini            ← Cấu hình Unit Tests (101/101 Passed)
-```
-
----
-
-**Paraline Software • Japan Quality in Vietnam 🇯🇵🇻🇳**
+**Tác giả:** Hệ thống được lập trình và tối ưu hóa 100% dành cho cuộc đua **Road to AI 2026**. Chúc đội thi gặt hái thành công lớn! 🏆

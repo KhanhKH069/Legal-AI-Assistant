@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path
 from typing import Protocol, BinaryIO
 
+
 class StorageService(Protocol):
     def save_file(self, filename: str, file_obj: BinaryIO) -> str:
         """Saves a file and returns its access path/URL."""
@@ -11,6 +12,7 @@ class StorageService(Protocol):
     def get_file_path(self, filename: str) -> str:
         """Gets the local path or URL to access the file."""
         ...
+
 
 class LocalStorageService:
     def __init__(self, base_dir: str = "data/cv_uploads"):
@@ -32,14 +34,16 @@ class LocalStorageService:
     def get_local_path(self, filename: str) -> str:
         return self.get_file_path(filename)
 
+
 class S3StorageService:
     def __init__(self, bucket_name: str):
         import boto3
+
         self.s3 = boto3.client(
             "s3",
             aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
             aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-            region_name=os.getenv("AWS_REGION", "us-east-1")
+            region_name=os.getenv("AWS_REGION", "us-east-1"),
         )
         self.bucket_name = bucket_name
 
@@ -53,12 +57,14 @@ class S3StorageService:
     def get_local_path(self, filename: str) -> str:
         import tempfile
         import os
+
         # filename is either S3 URL or just key. We extract the key.
         key = filename.split("/")[-1] if filename.startswith("s3://") else filename
         fd, temp_path = tempfile.mkstemp(suffix=os.path.splitext(key)[1])
         os.close(fd)
         self.s3.download_file(self.bucket_name, key, temp_path)
         return temp_path
+
 
 def get_storage_service() -> StorageService:
     bucket = os.getenv("S3_BUCKET_NAME")

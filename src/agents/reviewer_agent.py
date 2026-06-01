@@ -47,11 +47,22 @@ def reviewer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     if fail_count >= 2:
         return {"next": "pass"}
 
-    llm = ChatGoogleGenerativeAI(
-        model=config.model_name,
-        google_api_key=config.google_api_key,
-        temperature=0.0,
-    )
+    llm = None
+    if config.enable_offline_mode or not config.google_api_key:
+        from langchain_ollama import ChatOllama
+
+        llm = ChatOllama(
+            model="qwen2.5:7b-instruct",
+            temperature=0.1,
+            base_url="http://localhost:11434"
+        )
+    else:
+        llm = ChatGoogleGenerativeAI(
+            model=config.model_name,
+            google_api_key=config.google_api_key,
+            temperature=0.1,
+            max_tokens=config.max_tokens,
+        )
 
     system_prompt_template = get_prompt("reviewer_agent")
     prompt = ChatPromptTemplate.from_messages([("system", system_prompt_template)])

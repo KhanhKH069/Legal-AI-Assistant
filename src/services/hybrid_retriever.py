@@ -36,26 +36,23 @@ except ImportError:
 
 
 # ---------------------------------------------------------------------------
-# Cross-encoder reranker (Flashrank - Lightweight ONNX)
+# Cross-encoder reranker (BAAI/bge-reranker-v2-m3)
 # ---------------------------------------------------------------------------
 _reranker = None
 _reranker_loaded = False
 
 
 def _get_reranker():
-    """Lazy-load the Flashrank reranker model (singleton)."""
+    """Lazy-load the BGE reranker model (singleton)."""
     global _reranker, _reranker_loaded
     if _reranker_loaded:
         return _reranker
     try:
-        from flashrank import Ranker
+        from sentence_transformers import CrossEncoder
 
-        # Using a very lightweight model perfect for CPU
-        _reranker = Ranker(
-            model_name="ms-marco-MiniLM-L-12-v2",
-            cache_dir="./chroma_db/flashrank_cache",
-        )
-        print("[HybridRetriever] Flashrank reranker loaded")
+        print("[HybridRetriever] Loading BAAI/bge-reranker-v2-m3...")
+        _reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")
+        print("[HybridRetriever] Reranker loaded")
     except Exception as e:
         print(f"[HybridRetriever] Reranker not available ({e}) – skipping rerank step")
         _reranker = None
@@ -69,7 +66,7 @@ class HybridRetriever:
 
     def __init__(
         self,
-        collection_name: str = "hr_policies",
+        collection_name: str,
         persist_directory: str = "./chroma_db",
         use_reranker: bool = True,
     ):
@@ -78,9 +75,9 @@ class HybridRetriever:
         self.vdb = get_vector_db(str(self.persist_directory))
         self.use_reranker = use_reranker
 
-        # BM25 index paths
-        self.bm25_index_path = self.persist_directory / "bm25_index.pkl"
-        self.bm25_corpus_path = self.persist_directory / "bm25_corpus.json"
+        # BM25 index paths (separated by collection)
+        self.bm25_index_path = self.persist_directory / f"bm25_index_{collection_name}.pkl"
+        self.bm25_corpus_path = self.persist_directory / f"bm25_corpus_{collection_name}.json"
 
         self.bm25: Optional[BM25Okapi] = None
         self.corpus_data: List[Dict] = []
@@ -197,25 +194,15 @@ class HybridRetriever:
             reranker = _get_reranker()
             if reranker is not None:
                 try:
-                    from flashrank import RerankRequest
+                    # Format for SentenceTransformer CrossEncoder: list of (query, document) pairs
+                    pairs = [[query, c["content"]] for c in candidates]
+                    scores = reranker.predict(pairs)
 
-                    # Flashrank requires list of dicts with 'id' and 'text'
-                    passages = []
                     for i, c in enumerate(candidates):
-                        passages.append({"id": str(i), "text": c["content"]})
+                        c["reranker_score"] = float(scores[i])
+                        c["score"] = float(scores[i]) # override score with reranker score
 
-                    req = RerankRequest(query=query, passages=passages)
-                    results = reranker.rerank(req)
-
-                    # results is sorted list of dicts with 'id', 'text', 'score'
-                    # we map back to our candidates
-                    reranked_candidates = []
-                    for res in results:
-                        orig_idx = int(res["id"])
-                        c = candidates[orig_idx]
-                        c["reranker_score"] = res["score"]
-                        reranked_candidates.append(c)
-                    candidates = reranked_candidates
+                    candidates.sort(key=lambda x: x["score"], reverse=True)
                 except Exception as e:
                     print(f"[HybridRetriever] Reranker prediction failed: {e}")
 
@@ -223,14 +210,14 @@ class HybridRetriever:
 
 
 # ---------------------------------------------------------------------------
-# Singleton
+# Singleton Pattern
 # ---------------------------------------------------------------------------
-_hybrid_retriever_instance: Optional[HybridRetriever] = None
+_hybrid_retrievers: Dict[str, HybridRetriever] = {}
 
 
-def get_hybrid_retriever() -> HybridRetriever:
-    """Get singleton HybridRetriever instance."""
-    global _hybrid_retriever_instance
-    if _hybrid_retriever_instance is None:
-        _hybrid_retriever_instance = HybridRetriever()
-    return _hybrid_retriever_instance
+def get_hybrid_retriever(collection_name: str) -> HybridRetriever:
+    """Get singleton HybridRetriever instance per collection."""
+    global _hybrid_retrievers
+    if collection_name not in _hybrid_retrievers:
+        _hybrid_retrievers[collection_name] = HybridRetriever(collection_name=collection_name)
+    return _hybrid_retrievers[collection_name]

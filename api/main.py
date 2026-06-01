@@ -18,29 +18,18 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from pydantic import BaseModel
 
 from api.routers import (
-    applicants,
-    files,
-    job_requirements,
-    screening,
-    employees,
-    attendance,
-    helpdesk,
-    benefits,
-    notification,
-    payroll,
-    appraisal,
-    skills,
-    contracts,
     auth,
     audit,
-    policies,
     chat,
+    document_review,
+    stt,
 )
 from src.db import init_db
 from src.core.config import config
 import time
 
 from src.core.logging_config import setup_logging
+
 setup_logging()
 
 logger = logging.getLogger(__name__)
@@ -70,12 +59,36 @@ async def lifespan(app: FastAPI):
     if config.enable_offline_mode or not config.google_api_key:
         app.state.graph = None
         app.state.guest_graph = None
-    else:
-        from src.agents.orchestrator import create_hr_agent_graph
-        from src.agents.guest_orchestrator import create_guest_agent_graph
 
-        app.state.graph = create_hr_agent_graph()
+        # Enable Semantic Cache
+        import logging
+
+        logger = logging.getLogger("api")
+        logger.info("Offline mode enabled, LLM caching disabled.")
+    else:
+        from src.agents.orchestrator import create_legal_agent_graph
+        from src.agents.guest_orchestrator import create_guest_agent_graph
+        from langchain.globals import set_llm_cache
+        from langchain_community.cache import RedisSemanticCache
+        from langchain_community.embeddings import HuggingFaceEmbeddings
+
+        app.state.graph = create_legal_agent_graph()
         app.state.guest_graph = create_guest_agent_graph()
+
+        try:
+            # Semantic Caching
+            set_llm_cache(
+                RedisSemanticCache(
+                    redis_url=config.redis_url,
+                    embedding=HuggingFaceEmbeddings(
+                        model_name="paraphrase-multilingual-MiniLM-L12-v2"
+                    ),
+                    score_threshold=0.15,  # lower distance means higher similarity (depends on distance metric, usually L2)
+                )
+            )
+            print("✅ Redis Semantic Cache Enabled")
+        except Exception as e:
+            print(f"⚠️ Failed to enable Semantic Cache: {e}")
 
     # ── LangSmith Tracing (optional, activates if LANGSMITH_API_KEY is set) ──
     import os
@@ -85,7 +98,7 @@ async def lifespan(app: FastAPI):
         os.environ["LANGCHAIN_TRACING_V2"] = "true"
         os.environ["LANGCHAIN_API_KEY"] = _lskey
         os.environ["LANGCHAIN_PROJECT"] = os.getenv(
-            "LANGCHAIN_PROJECT", "paraline-hr-agent"
+            "LANGCHAIN_PROJECT", "legal-ai-assistant"
         )
         logger.info(
             "LangSmith tracing enabled → project: %s", os.environ["LANGCHAIN_PROJECT"]
@@ -111,9 +124,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Paraline HR AI Agent API",
+    title="Legal AI Assistant API",
     version="1.0.0",
-    description="FastAPI backend for HR multi-agent (LangGraph) assistant",
+    description="FastAPI backend for Vietnamese Legal AI Agent (LangGraph) — Pháp điển + Án lệ",
     lifespan=lifespan,
 )
 
@@ -133,28 +146,12 @@ app.add_middleware(
 )
 
 
-# Routers for business resources
-app.include_router(applicants.router)
-app.include_router(screening.router)
-app.include_router(job_requirements.router)
-app.include_router(files.router)
-app.include_router(employees.router)
-
-# Routers for Odoo-inspired HR modules
-app.include_router(attendance.router)
-app.include_router(helpdesk.router)
-app.include_router(benefits.router)
-app.include_router(notification.router)
-app.include_router(payroll.router)
-
-# New Odoo-inspired modules (Phase 2)
-app.include_router(appraisal.router)
-app.include_router(skills.router)
-app.include_router(contracts.router)
+# Core routers (auth + chat — used by Legal AI)
 app.include_router(auth.router)
 app.include_router(audit.router)
-app.include_router(policies.router)
 app.include_router(chat.router)
+app.include_router(document_review.router)
+app.include_router(stt.router, prefix="/api", tags=["Speech-to-Text"])
 
 
 from src.services.metrics import get_metrics_collector

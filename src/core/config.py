@@ -39,11 +39,16 @@ class Config:
 
         # Database Configuration
         self.database_url = os.getenv(
-            "DATABASE_URL", "sqlite:///data/sql_db/hr_agent.db"
+            "DATABASE_URL", "sqlite:///data/sql_db/legal_agent.db"
         )
         self.redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
         self.chromadb_host = os.getenv("CHROMADB_HOST", "localhost")
         self.chromadb_port = int(os.getenv("CHROMADB_PORT", "8000"))
+        self.chromadb_dir = os.getenv("CHROMADB_DIR", "./chroma_db")
+
+        # Legal AI collection names
+        self.statutory_collection = os.getenv("STATUTORY_COLLECTION", "legal_statutory")
+        self.caselaw_collection = os.getenv("CASELAW_COLLECTION", "legal_caselaw")
 
         # Logging Configuration
         self.log_level = os.getenv("LOG_LEVEL", "INFO")

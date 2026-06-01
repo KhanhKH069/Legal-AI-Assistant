@@ -17,6 +17,7 @@ from sqlmodel import select
 from api.database import create_db_and_tables, get_session
 from api.models import Employee, User, Appraisal, AttendanceRecord
 
+
 def get_password_hash(password: str) -> str:
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")

@@ -1,0 +1,37 @@
+[
+    {
+        "id": "qa_001",
+        "question": "Công ty mới thành lập có được miễn thuế môn bài năm đầu không?",
+        "answer": "Theo quy định tại khoản 1 Điều 1 Nghị định 22/2020/NĐ-CP, doanh nghiệp mới thành lập (được cấp mã số thuế mới, mã số doanh nghiệp mới) được miễn lệ phí môn bài trong năm đầu thành lập hoặc ra hoạt động sản xuất, kinh doanh (từ ngày 01/01 đến 31/12).",
+        "category": "Thuế Môn Bài",
+        "source": "Hỏi Đáp - Tổng cục Thuế"
+    },
+    {
+        "id": "qa_002",
+        "question": "Thời hạn nộp hồ sơ khai thuế GTGT theo quý là khi nào?",
+        "answer": "Theo Điều 44 Luật Quản lý thuế 2019, thời hạn nộp hồ sơ khai thuế đối với loại thuế khai và nộp theo quý là chậm nhất là ngày cuối cùng của tháng đầu của quý tiếp theo quý phát sinh nghĩa vụ thuế.",
+        "category": "Thuế GTGT",
+        "source": "Hỏi Đáp - Cổng TTĐT Bộ Tài chính"
+    },
+    {
+        "id": "qa_003",
+        "question": "Bán hàng trên Shopee, Tiktok Shop có phải đóng thuế không?",
+        "answer": "Cá nhân kinh doanh trên các sàn thương mại điện tử (Shopee, TikTok, Lazada...) có doanh thu từ 100 triệu đồng/năm trở lên thì phải nộp Thuế Giá trị gia tăng (1%) và Thuế Thu nhập cá nhân (0.5%). Dưới 100 triệu thì được miễn.",
+        "category": "Thuế TNCN",
+        "source": "Hướng dẫn Cục Thuế TP.HCM"
+    },
+    {
+        "id": "qa_004",
+        "question": "Mức đóng BHXH tự nguyện thấp nhất hiện nay là bao nhiêu?",
+        "answer": "Từ ngày 01/07/2024, mức thu nhập tháng làm căn cứ đóng BHXH tự nguyện thấp nhất bằng mức chuẩn hộ nghèo khu vực nông thôn (1.500.000 đồng/tháng). Tỷ lệ đóng là 22%, do đó mức đóng thấp nhất là 330.000 đồng/tháng (chưa trừ phần nhà nước hỗ trợ).",
+        "category": "Bảo hiểm Xã hội",
+        "source": "Bảo hiểm Xã hội Việt Nam"
+    },
+    {
+        "id": "qa_005",
+        "question": "Người lao động thử việc có bị trừ 10% thuế TNCN không?",
+        "answer": "Theo Thông tư 111/2013/TT-BTC, nếu người lao động ký hợp đồng thử việc (dưới 3 tháng) và có tổng mức trả thu nhập từ 2.000.000 VNĐ/lần trở lên thì doanh nghiệp phải khấu trừ 10% thuế TNCN trước khi trả cho người lao động, trừ trường hợp người lao động làm bản cam kết 08/CK-TNCN.",
+        "category": "Thuế TNCN",
+        "source": "Tổng cục Thuế"
+    }
+]
