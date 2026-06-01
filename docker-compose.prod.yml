@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      # In production, these should be managed by Secret Manager or env files
+      - REDIS_URL=redis://redis:6379/0
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD:-password}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    depends_on:
+      - backend
+    restart: always
+
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - redis_data_prod:/data
+    command: redis-server --appendonly yes
+
+  neo4j:
+    image: neo4j:5-community
+    restart: always
+    volumes:
+      - neo4j_data_prod:/data
+    environment:
+      - NEO4J_AUTH=neo4j/${NEO4J_PASSWORD:-password}
+
+volumes:
+  redis_data_prod:
+  neo4j_data_prod:

@@ -19,6 +19,8 @@ from fastapi.responses import StreamingResponse
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from pydantic import BaseModel
 
+from api.auth import get_current_user
+from api.models import User
 
 logger = logging.getLogger(__name__)
 
@@ -164,8 +166,6 @@ def chat_endpoint(payload: ChatRequest, request: Request) -> ChatResponse:
     )
 
 
-
-
 @router.get("/history/{user_id}", summary="Get Conversation History")
 def get_chat_history(user_id: str) -> Dict:
     history = _load_history(user_id)
@@ -191,8 +191,13 @@ def clear_chat_history(user_id: str) -> Dict:
     summary="Streaming Chat (SSE)",
     dependencies=[Depends(RateLimiter(_chat_limiter))],
 )
-async def chat_stream_endpoint(payload: ChatRequest, request: Request):
-    user_id = payload.user_id
+async def chat_stream_endpoint(
+    payload: ChatRequest,
+    request: Request,
+    current_user: User = Depends(get_current_user),
+):
+    # Dùng employee_id hoặc username làm user_id để phân tách lịch sử chat
+    user_id = current_user.employee_id or current_user.username
     human_msg = HumanMessage(content=payload.message)
     graph = request.app.state.graph
 
@@ -225,9 +230,7 @@ async def chat_stream_endpoint(payload: ChatRequest, request: Request):
                             token_text = getattr(chunk_msg, "content", "")
                             if isinstance(token_text, list):
                                 token_text = " ".join(
-                                    b.get("text", "")
-                                    if isinstance(b, dict)
-                                    else str(b)
+                                    b.get("text", "") if isinstance(b, dict) else str(b)
                                     for b in token_text
                                 )
                             if token_text:
@@ -235,7 +238,7 @@ async def chat_stream_endpoint(payload: ChatRequest, request: Request):
                                 payload_data: dict = {
                                     "token": token_text,
                                     "done": False,
-                                    "type": "text"
+                                    "type": "text",
                                 }
                                 if not intent_sent:
                                     payload_data["intent"] = intent_str
@@ -249,7 +252,7 @@ async def chat_stream_endpoint(payload: ChatRequest, request: Request):
                             "token": f"\n⏳ Đang tra cứu hệ thống ({tool_name})...\n",
                             "done": False,
                             "type": "tool_start",
-                            "tool_name": tool_name
+                            "tool_name": tool_name,
                         }
                         yield f"data: {_json.dumps(payload_data)}\n\n"
 
@@ -259,7 +262,7 @@ async def chat_stream_endpoint(payload: ChatRequest, request: Request):
                             "token": f"✅ Đã tìm thấy kết quả từ {tool_name}.\n\n",
                             "done": False,
                             "type": "tool_end",
-                            "tool_name": tool_name
+                            "tool_name": tool_name,
                         }
                         yield f"data: {_json.dumps(payload_data)}\n\n"
 
