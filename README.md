@@ -1,6 +1,6 @@
 # Legal AI Assistant (Road to AI 2026) 🏆
 
-Dự án Legal AI Assistant là một hệ thống Trí tuệ Nhân tạo chuyên biệt trong lĩnh vực Pháp lý (LegalTech), được xây dựng để tham gia cuộc thi **Road to AI 2026**. 
+Dự án Legal AI Assistant là một hệ thống Trí tuệ Nhân tạo chuyên biệt trong lĩnh vực Pháp lý (LegalTech), được xây dựng để tham gia cuộc thi **Road to AI 2026**.
 
 Hệ thống được thiết kế dưới dạng **Multi-Agent** (nhiều AI tương tác với nhau) và ứng dụng kiến trúc **RAG (Retrieval-Augmented Generation) tiên tiến nhất**, giúp loại bỏ triệt để hiện tượng AI "bịa luật" (Hallucination) và mang lại câu trả lời với độ chính xác tuyệt đối từ Hệ thống Pháp điển Quốc gia và Án lệ Việt Nam.
 
@@ -10,7 +10,7 @@ Hệ thống được thiết kế dưới dạng **Multi-Agent** (nhiều AI t�
 
 1. **Thuật toán Hybrid Search + BGE Reranker:**
    Sự kết hợp hoàn hảo giữa Semantic Search (Vector) và Keyword Search (BM25) qua cơ chế RRF (Reciprocal Rank Fusion). Kết quả sau đó được lọc lại bằng mô hình Cross-Encoder `BAAI/bge-reranker-v2-m3` tối ưu riêng cho Tiếng Việt, đảm bảo AI bốc trúng 100% điều luật chính xác nhất.
-   
+
 2. **Thẩm định Rủi ro Hợp đồng (Contract Reviewing):**
    Người dùng có thể upload một file hợp đồng PDF. AI sẽ tự động đọc, bóc tách từng điều khoản, và đối chiếu với quy định trong Pháp điển để rà soát các điều khoản vi phạm pháp luật hoặc có rủi ro pháp lý.
 

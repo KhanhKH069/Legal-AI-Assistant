@@ -20,9 +20,7 @@ if config.enable_offline_mode or not config.google_api_key:
     from langchain_ollama import ChatOllama
 
     llm = ChatOllama(
-        model="qwen2.5:7b-instruct",
-        temperature=0.2,
-        base_url="http://localhost:11434"
+        model="qwen2.5:7b-instruct", temperature=0.2, base_url="http://localhost:11434"
     )
 else:
     llm = ChatGoogleGenerativeAI(

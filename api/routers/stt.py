@@ -16,11 +16,14 @@ except Exception as e:
     logger.error(f"Failed to load WhisperModel: {e}")
     model = None
 
+
 @router.post("")
 async def transcribe_audio(file: UploadFile = File(...)):
     if model is None:
-        raise HTTPException(status_code=500, detail="STT model is not available on this server.")
-    
+        raise HTTPException(
+            status_code=500, detail="STT model is not available on this server."
+        )
+
     try:
         # Save the uploaded file temporarily
         suffix = os.path.splitext(file.filename)[1] if file.filename else ".webm"
@@ -33,15 +36,17 @@ async def transcribe_audio(file: UploadFile = File(...)):
         # Force language="vi" since this is a Vietnamese Legal AI
         segments, info = model.transcribe(tmp_path, language="vi", beam_size=5)
         text = " ".join([segment.text for segment in segments])
-        
+
         # Cleanup
         os.remove(tmp_path)
-        
+
         return {"text": text.strip()}
-        
+
     except Exception as e:
         logger.error(f"Speech-to-text error: {e}")
         # Ensure cleanup if error occurs
-        if 'tmp_path' in locals() and os.path.exists(tmp_path):
+        if "tmp_path" in locals() and os.path.exists(tmp_path):
             os.remove(tmp_path)
-        raise HTTPException(status_code=500, detail=f"Failed to transcribe audio: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to transcribe audio: {str(e)}"
+        )

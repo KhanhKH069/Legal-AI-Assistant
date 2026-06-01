@@ -54,7 +54,7 @@ def reviewer_node(state: Dict[str, Any]) -> Dict[str, Any]:
         llm = ChatOllama(
             model="qwen2.5:7b-instruct",
             temperature=0.1,
-            base_url="http://localhost:11434"
+            base_url="http://localhost:11434",
         )
     else:
         llm = ChatGoogleGenerativeAI(

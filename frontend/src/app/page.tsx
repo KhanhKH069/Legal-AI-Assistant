@@ -39,20 +39,20 @@ const stripMarkdown = (text: string) => {
 
 const speakText = (text: string) => {
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-    window.speechSynthesis.cancel(); 
+    window.speechSynthesis.cancel();
     const cleanText = stripMarkdown(text);
     if (!cleanText) return;
-    
+
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'vi-VN';
-    
+
     // Try to find a Vietnamese female voice
     const voices = window.speechSynthesis.getVoices();
     const viVoice = voices.find(v => v.lang.includes('vi') || v.name.includes('Vietnamese'));
     if (viVoice) {
       utterance.voice = viVoice;
     }
-    
+
     utterance.rate = 1.1;
     window.speechSynthesis.speak(utterance);
   }
@@ -90,7 +90,7 @@ export default function LegalAssistant() {
       }
       return;
     }
-    
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
@@ -107,7 +107,7 @@ export default function LegalAssistant() {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
         const formData = new FormData();
         formData.append('file', audioBlob, 'recording.webm');
-        
+
         setIsRecording(false);
         setIsTranscribing(true);
         try {
@@ -124,7 +124,7 @@ export default function LegalAssistant() {
         } finally {
           setIsTranscribing(false);
         }
-        
+
         stream.getTracks().forEach(track => track.stop());
       };
 
@@ -180,10 +180,10 @@ export default function LegalAssistant() {
     if (!file) return;
     setIsReviewing(true);
     setReviewReport('');
-    
+
     const formData = new FormData();
     formData.append('file', file);
-    
+
     try {
       const res = await fetch('http://localhost:8000/contract/review', {
         method: 'POST',
@@ -204,7 +204,7 @@ export default function LegalAssistant() {
 
   return (
     <div className="flex h-screen bg-[#0a0f1e] text-slate-200 font-sans overflow-hidden">
-      
+
       {/* Sidebar: Thẩm định Hợp đồng */}
       <div className="w-1/3 max-w-sm border-r border-slate-800 bg-[#0d1424] flex flex-col">
         <div className="p-6 border-b border-slate-800">
@@ -216,19 +216,19 @@ export default function LegalAssistant() {
           </div>
           <p className="text-sm text-slate-400">Tải lên file hợp đồng (PDF) để AI phân tích rủi ro dựa trên Pháp điển.</p>
         </div>
-        
+
         <div className="p-6 flex-1 overflow-y-auto">
           <div className="glass-card p-5 mb-6 border border-emerald-900/30">
             <label className="block text-sm font-medium text-slate-300 mb-3">
               Tệp tài liệu (.pdf)
             </label>
-            <input 
-              type="file" 
+            <input
+              type="file"
               accept=".pdf"
               onChange={(e) => setFile(e.target.files?.[0] || null)}
               className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-500/10 file:text-emerald-400 hover:file:bg-emerald-500/20 cursor-pointer"
             />
-            <button 
+            <button
               onClick={handleFileUpload}
               disabled={!file || isReviewing}
               className="mt-4 w-full py-2.5 rounded-xl text-sm font-semibold text-white transition-all bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed glow"
@@ -236,7 +236,7 @@ export default function LegalAssistant() {
               {isReviewing ? 'Đang phân tích...' : 'Bắt đầu Thẩm định'}
             </button>
           </div>
-          
+
           {reviewReport && (
             <div className="fade-in-up">
               <h3 className="text-emerald-400 font-semibold mb-3 flex items-center gap-2">
@@ -256,7 +256,7 @@ export default function LegalAssistant() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col relative"
         style={{ backgroundImage: 'radial-gradient(ellipse at center, rgba(16,185,129,0.03) 0%, transparent 70%)' }}>
-        
+
         {/* Header */}
         <header className="h-16 border-b border-slate-800 bg-[#0a0f1e]/80 backdrop-blur-md flex items-center px-6 z-10">
            <h2 className="text-lg font-semibold text-white">Legal AI Assistant</h2>
@@ -274,7 +274,7 @@ export default function LegalAssistant() {
               </div>
               <h2 className="text-2xl font-bold text-white mb-2">Trợ lý Pháp lý Thông minh</h2>
               <p className="text-slate-400 max-w-md">Hãy hỏi tôi bất kỳ câu hỏi nào về Luật dân sự, Luật doanh nghiệp, hoặc tình huống Án lệ thực tế tại Việt Nam.</p>
-              
+
               <div className="mt-8 grid grid-cols-2 gap-4 max-w-xl">
                 {["Thủ tục thành lập công ty TNHH", "Án lệ về tranh chấp đất đai", "Quy định về thời gian thử việc", "Phân chia tài sản khi ly hôn"].map(hint => (
                   <button key={hint} onClick={() => setInput(hint)} className="p-3 rounded-xl border border-slate-800 bg-slate-900/50 text-sm text-slate-300 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all text-left">
@@ -323,7 +323,7 @@ export default function LegalAssistant() {
                     >
                       {msg.content}
                     </ReactMarkdown>
-                    
+
                     {msg.role === 'assistant' && (
                       <div className="flex justify-start mt-3">
                         <button
@@ -365,14 +365,14 @@ export default function LegalAssistant() {
               disabled={isLoading || isTranscribing}
               className="w-full bg-[#1e293b]/50 border border-slate-700 text-slate-100 rounded-full pl-6 pr-28 py-4 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all shadow-inner"
             />
-            
+
             <button
               type="button"
               onClick={toggleRecording}
               disabled={isLoading || isTranscribing}
               className={`absolute right-14 top-2 bottom-2 w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                isRecording 
-                  ? "bg-red-500/20 text-red-500 hover:bg-red-500/30 animate-pulse" 
+                isRecording
+                  ? "bg-red-500/20 text-red-500 hover:bg-red-500/30 animate-pulse"
                   : "bg-slate-700/50 text-slate-300 hover:bg-slate-600 hover:text-emerald-400"
               }`}
             >

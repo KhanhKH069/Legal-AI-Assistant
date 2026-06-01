@@ -147,11 +147,11 @@ def search_case_law(query: str, top_k: int = 5) -> str:
 def find_related_caselaw(article_name: str, top_k: int = 3) -> str:
     """
     Tìm kiếm ĐỌC CHÉO: Tìm các Án lệ / Bản án đã từng xét xử và áp dụng một Điều luật cụ thể.
-    
-    Dùng khi: 
+
+    Dùng khi:
     - Đã tìm thấy Điều luật (VD: Điều 15 Bộ luật hình sự) và muốn biết thực tế Tòa án áp dụng nó như thế nào.
     - Người dùng hỏi "Điều luật này có án lệ nào không?".
-    
+
     Args:
         article_name: Tên của Điều luật (VD: "Điều 123 Bộ luật dân sự năm 2015")
         top_k: Số lượng án lệ tối đa muốn xem (mặc định 3)
@@ -170,7 +170,7 @@ def find_related_caselaw(article_name: str, top_k: int = 3) -> str:
             meta = r.get("metadata", {})
             title = meta.get("title") or meta.get("doc_name") or "Bản án"
             detail_url = meta.get("detail_url", "")
-            
+
             parts.append(f"[{i}] **{title}**")
             if detail_url:
                 parts.append(f"    🔗 Nguồn: {detail_url}")
@@ -178,23 +178,24 @@ def find_related_caselaw(article_name: str, top_k: int = 3) -> str:
             parts.append("")
 
         return "\n".join(parts)
-        
+
     except Exception as e:
         return f"Lỗi khi tìm án lệ liên quan: {str(e)}"
+
 
 @tool
 def search_law_graph(article_name: str) -> str:
     """
     Tìm kiếm mối liên hệ (Đồ thị) của một Điều luật cụ thể trong Pháp điển bằng Neo4j.
     Dùng để biết Điều luật này nằm ở Chương nào, Chủ đề nào, Đề mục nào để hiểu rõ ngữ cảnh.
-    
+
     Args:
         article_name: Tên của Điều luật (VD: "Điều 123", "Điều 1")
     """
     db = get_graph_db()
     if not db.driver:
         return "Tính năng GraphRAG chưa được cấu hình. Neo4j chưa chạy."
-    
+
     query = """
     MATCH (t:Topic)-[:HAS_SUBJECT]->(s:Subject)-[:HAS_CHAPTER]->(c:Chapter)-[:HAS_ARTICLE]->(a:Article)
     WHERE a.title CONTAINS $article_name
@@ -205,33 +206,40 @@ def search_law_graph(article_name: str) -> str:
         results = db.query(query, {"article_name": article_name})
         if not results:
             return f"Không tìm thấy mối liên hệ cho '{article_name}' trong Graph."
-        
+
         parts = [f"**KẾT QUẢ TỪ KNOWLEDGE GRAPH (Neo4j)**:\n"]
         for i, r in enumerate(results, 1):
-            parts.append(f"[{i}] **{r['topic']}** > **{r['subject']}** > **{r['chapter']}** > **{r['article']}**")
+            parts.append(
+                f"[{i}] **{r['topic']}** > **{r['subject']}** > **{r['chapter']}** > **{r['article']}**"
+            )
             parts.append(f"    {r['content'][:300]}...")
-            
+
         return "\n".join(parts)
     except Exception as e:
         return f"Lỗi truy vấn Graph: {str(e)}"
+
 
 @tool
 def search_web_for_latest_laws(query: str, max_results: int = 3) -> str:
     """
     Tìm kiếm quy định pháp luật mới nhất hoặc dự thảo luật trên Internet (qua DuckDuckGo).
     Dùng khi thông tin trong cơ sở dữ liệu đã cũ hoặc khi người dùng hỏi về luật mới, tin tức pháp lý.
-    
+
     Args:
         query: Từ khóa tìm kiếm
         max_results: Số lượng kết quả
     """
     try:
         with DDGS() as ddgs:
-            results = list(ddgs.text(f"{query} quy định pháp luật việt nam", max_results=max_results))
-        
+            results = list(
+                ddgs.text(
+                    f"{query} quy định pháp luật việt nam", max_results=max_results
+                )
+            )
+
         if not results:
             return "Không tìm thấy thông tin trên mạng."
-            
+
         parts = ["**KẾT QUẢ TỪ WEB SEARCH**:\n"]
         for i, r in enumerate(results, 1):
             parts.append(f"[{i}] **{r.get('title')}**")
@@ -242,5 +250,12 @@ def search_web_for_latest_laws(query: str, max_results: int = 3) -> str:
     except Exception as e:
         return f"Lỗi Web Search: {str(e)}"
 
+
 # Export
-legal_tools = [search_statutory_law, search_case_law, find_related_caselaw, search_law_graph, search_web_for_latest_laws]
+legal_tools = [
+    search_statutory_law,
+    search_case_law,
+    find_related_caselaw,
+    search_law_graph,
+    search_web_for_latest_laws,
+]

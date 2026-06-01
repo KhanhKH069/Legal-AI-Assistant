@@ -32,9 +32,7 @@ if config.enable_offline_mode or not config.google_api_key:
     from langchain_ollama import ChatOllama
 
     llm = ChatOllama(
-        model="qwen2.5:7b-instruct",
-        temperature=0.0,
-        base_url="http://localhost:11434"
+        model="qwen2.5:7b-instruct", temperature=0.0, base_url="http://localhost:11434"
     )
 else:
     llm = ChatGoogleGenerativeAI(
@@ -114,7 +112,9 @@ def orchestrator_node(state: AgentState):
         next_agent = _classify_intent(response_clean)
         if next_agent != "end":
             break
-        logger.warning("Orchestrator attempt %d: unrecognised intent '%s'", attempt, response_clean)
+        logger.warning(
+            "Orchestrator attempt %d: unrecognised intent '%s'", attempt, response_clean
+        )
 
     logger.info("Legal Orchestrator → %s (intent: %s)", next_agent, response_clean)
 
@@ -225,8 +225,9 @@ def create_legal_agent_graph():
         memory = RedisSaver(conn)
         return workflow.compile(checkpointer=memory)
     except Exception as e:
-        logger.warning("Redis unavailable (%s) — using MemorySaver for checkpointing", e)
+        logger.warning(
+            "Redis unavailable (%s) — using MemorySaver for checkpointing", e
+        )
         from langgraph.checkpoint.memory import MemorySaver
+
         return workflow.compile(checkpointer=MemorySaver())
-
-

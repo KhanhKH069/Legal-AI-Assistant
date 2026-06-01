@@ -33,6 +33,7 @@ print("=" * 60)
 def test_collections():
     print("\n[1/3] Kiem tra ChromaDB collections...")
     from src.services.vector_db import get_vector_db
+
     vdb = get_vector_db("./chroma_db")
     collections = vdb.list_collections()
     print(f"  Collections hien co: {collections}")
@@ -49,6 +50,7 @@ def test_statutory_search():
     print("\n[2/3] Test tra cuu Phap dien...")
     try:
         from src.services.hybrid_retriever import HybridRetriever
+
         retriever = HybridRetriever(
             collection_name="legal_statutory",
             persist_directory="./chroma_db",
@@ -73,6 +75,7 @@ def test_caselaw_search():
     print("\n[3/3] Test tra cuu An le...")
     try:
         from src.services.hybrid_retriever import HybridRetriever
+
         retriever = HybridRetriever(
             collection_name="legal_caselaw",
             persist_directory="./chroma_db",
@@ -84,7 +87,9 @@ def test_caselaw_search():
             for i, r in enumerate(results[:1]):
                 meta = r.get("metadata", {})
                 print(f"  [{i+1}] {meta.get('title', 'N/A')}")
-                print(f"       Loai: {meta.get('case_type', 'N/A')} | Nam: {meta.get('year', 'N/A')}")
+                print(
+                    f"       Loai: {meta.get('case_type', 'N/A')} | Nam: {meta.get('year', 'N/A')}"
+                )
         else:
             print("  WARN - Khong tim thay ket qua")
         return True
@@ -103,5 +108,7 @@ if __name__ == "__main__":
         print("  KIEM TRA THANH CONG!")
         print("  Chay backend: uvicorn api.main:app --reload")
     else:
-        print("  CO LOI. Chay lai index: python scripts/index_legal_to_chromadb.py --reset")
+        print(
+            "  CO LOI. Chay lai index: python scripts/index_legal_to_chromadb.py --reset"
+        )
     print("=" * 60)

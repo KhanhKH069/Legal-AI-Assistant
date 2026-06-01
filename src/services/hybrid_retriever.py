@@ -76,8 +76,12 @@ class HybridRetriever:
         self.use_reranker = use_reranker
 
         # BM25 index paths (separated by collection)
-        self.bm25_index_path = self.persist_directory / f"bm25_index_{collection_name}.pkl"
-        self.bm25_corpus_path = self.persist_directory / f"bm25_corpus_{collection_name}.json"
+        self.bm25_index_path = (
+            self.persist_directory / f"bm25_index_{collection_name}.pkl"
+        )
+        self.bm25_corpus_path = (
+            self.persist_directory / f"bm25_corpus_{collection_name}.json"
+        )
 
         self.bm25: Optional[BM25Okapi] = None
         self.corpus_data: List[Dict] = []
@@ -200,7 +204,9 @@ class HybridRetriever:
 
                     for i, c in enumerate(candidates):
                         c["reranker_score"] = float(scores[i])
-                        c["score"] = float(scores[i]) # override score with reranker score
+                        c["score"] = float(
+                            scores[i]
+                        )  # override score with reranker score
 
                     candidates.sort(key=lambda x: x["score"], reverse=True)
                 except Exception as e:
@@ -219,5 +225,7 @@ def get_hybrid_retriever(collection_name: str) -> HybridRetriever:
     """Get singleton HybridRetriever instance per collection."""
     global _hybrid_retrievers
     if collection_name not in _hybrid_retrievers:
-        _hybrid_retrievers[collection_name] = HybridRetriever(collection_name=collection_name)
+        _hybrid_retrievers[collection_name] = HybridRetriever(
+            collection_name=collection_name
+        )
     return _hybrid_retrievers[collection_name]

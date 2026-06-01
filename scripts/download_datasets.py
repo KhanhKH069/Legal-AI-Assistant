@@ -29,6 +29,7 @@ RAW_DIR.mkdir(parents=True, exist_ok=True)
 
 def check_and_install(package: str, import_name: str | None = None):
     import importlib
+
     name = import_name or package
     try:
         importlib.import_module(name)
@@ -48,6 +49,7 @@ import pandas as pd  # noqa: E402
 # ─────────────────────────────────────────────────────────────────────────────
 # 1. STATUTORY LAW — phapdien-moj-gov-vn
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 def download_statutory():
     """Download phapdien (statutory law) dataset — 'articles' split."""
@@ -80,7 +82,9 @@ def download_statutory():
         )
         df_sub = ds_sub.to_pandas()
         df_sub.to_parquet(RAW_DIR / "phapdien_subjects.parquet", index=False)
-        print(f"  ✓ Đã tải {len(df_sub):,} chủ đề → {RAW_DIR / 'phapdien_subjects.parquet'}")
+        print(
+            f"  ✓ Đã tải {len(df_sub):,} chủ đề → {RAW_DIR / 'phapdien_subjects.parquet'}"
+        )
 
         return df
     except Exception as e:
@@ -91,6 +95,7 @@ def download_statutory():
 # ─────────────────────────────────────────────────────────────────────────────
 # 2. CASE LAW — anle-toaan-gov-vn
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 def download_caselaw():
     """Download anle (case law) dataset — 'documents' split."""
@@ -122,6 +127,7 @@ def download_caselaw():
 # ─────────────────────────────────────────────────────────────────────────────
 # 3. STATS
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 def print_stats(df_stat, df_case):
     print("\n" + "=" * 60)

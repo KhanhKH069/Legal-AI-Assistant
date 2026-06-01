@@ -13,16 +13,18 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 from src.core.config import config
-from src.tools.legal_tools import search_statutory_law, search_legal_qa, find_related_caselaw
+from src.tools.legal_tools import (
+    search_statutory_law,
+    search_legal_qa,
+    find_related_caselaw,
+)
 
 llm = None
 if config.enable_offline_mode or not config.google_api_key:
     from langchain_ollama import ChatOllama
 
     llm = ChatOllama(
-        model="qwen2.5:7b-instruct",
-        temperature=0.1,
-        base_url="http://localhost:11434"
+        model="qwen2.5:7b-instruct", temperature=0.1, base_url="http://localhost:11434"
     )
 else:
     llm = ChatGoogleGenerativeAI(

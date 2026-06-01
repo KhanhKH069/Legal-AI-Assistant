@@ -28,9 +28,7 @@ if config.enable_offline_mode or not config.google_api_key:
     from langchain_ollama import ChatOllama
 
     llm = ChatOllama(
-        model="qwen2.5:7b-instruct",
-        temperature=0.0,
-        base_url="http://localhost:11434"
+        model="qwen2.5:7b-instruct", temperature=0.0, base_url="http://localhost:11434"
     )
 else:
     llm = ChatGoogleGenerativeAI(
@@ -95,6 +93,7 @@ def create_guest_agent_graph():
     # Wrap statutory_agent_node for GuestLegalState
     def guest_statutory_node(state: GuestLegalState):
         from src.agents.orchestrator import AgentState
+
         adapted: AgentState = {
             "messages": state["messages"],
             "next": "",
@@ -113,6 +112,7 @@ def create_guest_agent_graph():
     # Wrap caselaw_agent_node for GuestLegalState
     def guest_caselaw_node(state: GuestLegalState):
         from src.agents.orchestrator import AgentState
+
         adapted: AgentState = {
             "messages": state["messages"],
             "next": "",
@@ -132,7 +132,9 @@ def create_guest_agent_graph():
     workflow.add_node("statutory_agent", guest_statutory_node)
     workflow.add_node("caselaw_agent", guest_caselaw_node)
     workflow.add_node("statutory_tools", ToolNode([search_statutory_law]))
-    workflow.add_node("caselaw_tools", ToolNode([search_case_law, search_statutory_law]))
+    workflow.add_node(
+        "caselaw_tools", ToolNode([search_case_law, search_statutory_law])
+    )
 
     workflow.set_entry_point("guest_orchestrator")
 
@@ -158,13 +160,15 @@ def create_guest_agent_graph():
         return "end"
 
     workflow.add_conditional_edges(
-        "statutory_agent", route_statutory,
+        "statutory_agent",
+        route_statutory,
         {"statutory_tools": "statutory_tools", "end": END},
     )
     workflow.add_edge("statutory_tools", "statutory_agent")
 
     workflow.add_conditional_edges(
-        "caselaw_agent", route_caselaw,
+        "caselaw_agent",
+        route_caselaw,
         {"caselaw_tools": "caselaw_tools", "end": END},
     )
     workflow.add_edge("caselaw_tools", "caselaw_agent")
