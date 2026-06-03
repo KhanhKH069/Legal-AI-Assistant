@@ -59,22 +59,21 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         print(f"Failed to init Rate Limiter: {e}")
 
-    if config.enable_offline_mode or not config.google_api_key:
+    if config.enable_offline_mode:
         app.state.graph = None
         app.state.guest_graph = None
-
-        logger.info("Offline mode enabled, LLM caching disabled.")
+        logger.info("Offline mode enabled, skipping agent graph init.")
     else:
         from src.agents.orchestrator import create_legal_agent_graph
         from src.agents.guest_orchestrator import create_guest_agent_graph
-        from langchain_core.globals import set_llm_cache
-        from langchain_community.cache import RedisSemanticCache
-        from langchain_community.embeddings import HuggingFaceEmbeddings
 
         app.state.graph = create_legal_agent_graph()
         app.state.guest_graph = create_guest_agent_graph()
 
         try:
+            from langchain_core.globals import set_llm_cache
+            from langchain_community.cache import RedisSemanticCache
+            from langchain_community.embeddings import HuggingFaceEmbeddings
             set_llm_cache(
                 RedisSemanticCache(
                     redis_url=config.redis_url,
@@ -84,9 +83,9 @@ async def lifespan(app: FastAPI):
                     score_threshold=0.15,
                 )
             )
-            print("✅ Redis Semantic Cache Enabled")
+            print("Redis Semantic Cache Enabled")
         except Exception as e:
-            print(f"⚠️ Failed to enable Semantic Cache: {e}")
+            print(f"Semantic Cache not available: {e}")
 
     import os
 

@@ -1,7 +1,5 @@
-"""Memory Manager Service"""
-
-
 class MemoryManager:
+
     def __init__(self):
         self.conversations = {}
 
@@ -10,7 +8,7 @@ class MemoryManager:
             self.conversations[user_id] = []
         self.conversations[user_id].append(message)
 
-    def get_history(self, user_id: str, limit: int = 10):
+    def get_history(self, user_id: str, limit: int=10):
         return self.conversations.get(user_id, [])[-limit:]
 
     def clear(self, user_id: str):
