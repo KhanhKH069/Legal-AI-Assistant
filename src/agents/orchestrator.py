@@ -12,11 +12,9 @@ from typing import Annotated, Sequence, TypedDict
 from langchain_core.messages import BaseMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import ToolNode
 
-from src.core.config import config
 from src.tools.legal_tools import search_statutory_law, search_case_law
 
 logger = logging.getLogger(__name__)
@@ -27,20 +25,9 @@ _VALID_AGENTS = {
 }
 _MAX_ROUTING_RETRIES = 2
 
-llm = None
-if config.enable_offline_mode or not config.google_api_key:
-    from langchain_ollama import ChatOllama
+from src.core.llm import get_llm
 
-    llm = ChatOllama(
-        model="qwen2.5:7b-instruct", temperature=0.0, base_url="http://localhost:11434"
-    )
-else:
-    llm = ChatGoogleGenerativeAI(
-        model=config.model_name,
-        google_api_key=config.google_api_key,
-        temperature=0.0,
-        max_tokens=config.max_tokens,
-    )
+llm = get_llm()
 
 
 class AgentState(TypedDict):
@@ -98,7 +85,7 @@ def _classify_intent(response_text: str) -> str:
     for keyword, agent_key in _VALID_AGENTS.items():
         if keyword in upper:
             return agent_key
-    return "statutory_agent"  # Default fallback for legal domain
+    return "statutory_agent"
 
 
 def orchestrator_node(state: AgentState):
@@ -143,23 +130,19 @@ def create_legal_agent_graph():
 
     workflow = StateGraph(AgentState)
 
-    # Nodes
     workflow.add_node("orchestrator", orchestrator_node)
     workflow.add_node("statutory_agent", statutory_agent_node)
     workflow.add_node("caselaw_agent", caselaw_agent_node)
     workflow.add_node("reviewer_node", reviewer_node)
 
-    # Tool nodes
     statutory_tools_list = [search_statutory_law]
     caselaw_tools_list = [search_case_law, search_statutory_law]
 
     workflow.add_node("statutory_tools", ToolNode(statutory_tools_list))
     workflow.add_node("caselaw_tools", ToolNode(caselaw_tools_list))
 
-    # Entry
     workflow.set_entry_point("orchestrator")
 
-    # Orchestrator routing
     workflow.add_conditional_edges(
         "orchestrator",
         router,
@@ -170,7 +153,6 @@ def create_legal_agent_graph():
         },
     )
 
-    # Statutory agent routing: tool calls → statutory_tools → reviewer
     def route_statutory(state: AgentState) -> str:
         messages = state.get("messages", [])
         if not messages:
@@ -198,7 +180,6 @@ def create_legal_agent_graph():
         {"statutory_agent": "statutory_agent", "end": END},
     )
 
-    # Caselaw agent routing: tool calls → caselaw_tools → end
     def route_caselaw(state: AgentState) -> str:
         messages = state.get("messages", [])
         if not messages:
@@ -215,7 +196,6 @@ def create_legal_agent_graph():
     )
     workflow.add_edge("caselaw_tools", "caselaw_agent")
 
-    # Checkpointer
     try:
         from langgraph.checkpoint.redis import RedisSaver
         import redis

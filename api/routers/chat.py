@@ -6,12 +6,10 @@ from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Request, Depends
-from fastapi_limiter.depends import RateLimiter
 from pyrate_limiter import Rate, Duration, Limiter
 
 from src.core.config import config
 
-# Default chat rate: config.max_requests_per_minute requests per minute
 _chat_rate = Rate(config.max_requests_per_minute, Duration.MINUTE)
 _chat_limiter = Limiter(_chat_rate)
 
@@ -26,7 +24,6 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 
-# ── Conversation history helpers (SQLite-backed) ──────────────────────────────
 
 
 def _load_history(user_id: str) -> List[BaseMessage]:
@@ -98,7 +95,6 @@ class ChatResponse(BaseModel):
     timestamp: str = ""
 
 
-# Maps internal agent intent strings to friendly display names
 _INTENT_LABELS: Dict[str, str] = {
     "STATUTORY": "Chuyên gia Pháp điển",
     "CASELAW": "Chuyên gia Án lệ",
@@ -122,7 +118,6 @@ def chat_endpoint(payload: ChatRequest, request: Request) -> ChatResponse:
         "user_info": {},
     }
 
-    # The agent graph natively supports offline models based on config.enable_offline_mode
 
     try:
         config_dict = {"configurable": {"thread_id": user_id}}
@@ -193,14 +188,12 @@ async def chat_stream_endpoint(
     request: Request,
     current_user: User = Depends(get_current_user),
 ):
-    # Dùng employee_id hoặc username làm user_id để phân tách lịch sử chat
     user_id = current_user.employee_id or current_user.username
     human_msg = HumanMessage(content=payload.message)
     graph = request.app.state.graph
 
     async def event_generator():
         try:
-            # The agent graph natively supports offline models based on config.enable_offline_mode
             _save_message(user_id, "user", payload.message)
             initial_state = {
                 "messages": [human_msg],
@@ -371,7 +364,6 @@ async def guest_chat(req: GuestChatRequest, request: Request):
 )
 async def guest_chat_stream(req: GuestChatRequest, request: Request):
     guest_graph = request.app.state.guest_graph
-    # The guest graph natively supports offline models
     human_msg = HumanMessage(content=req.message)
 
     async def generate():

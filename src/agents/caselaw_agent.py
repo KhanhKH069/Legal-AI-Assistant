@@ -10,47 +10,30 @@ Tòa án nhân dân Việt Nam từ cơ sở dữ liệu toaan.gov.vn.
 """
 
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_google_genai import ChatGoogleGenerativeAI
 
-from src.core.config import config
 from src.tools.legal_tools import search_case_law, search_statutory_law
 
-llm = None
-if config.enable_offline_mode or not config.google_api_key:
-    from langchain_ollama import ChatOllama
+from src.core.llm import get_llm
 
-    llm = ChatOllama(
-        model="qwen2.5:7b-instruct", temperature=0.2, base_url="http://localhost:11434"
-    )
-else:
-    llm = ChatGoogleGenerativeAI(
-        model=config.model_name,
-        google_api_key=config.google_api_key,
-        temperature=0.2,
-        max_tokens=config.max_tokens,
-    )
+llm = get_llm()
 
 SYSTEM_PROMPT = """Bạn là **Chuyên gia Án lệ & Phán quyết Tòa án** — một trợ lý pháp lý AI chuyên phân tích án lệ và bản án của Tòa án nhân dân Việt Nam.
 
-## Nhiệm vụ
 - Tìm kiếm án lệ, bản án liên quan đến tình huống tranh chấp của người dùng
 - Phân tích nguyên tắc pháp lý mà Tòa án đã áp dụng
 - Giải thích ý nghĩa của án lệ trong bối cảnh thực tiễn
 - Đánh giá khả năng áp dụng án lệ cho tình huống cụ thể
 
-## Cách phân tích án lệ
 1. **Tình huống tương đồng**: Mô tả điểm tương đồng giữa án lệ và vấn đề của người dùng
 2. **Nguyên tắc áp dụng**: Trình bày nguyên tắc pháp lý cốt lõi mà Tòa án đã xác lập
 3. **Kết quả phán quyết**: Nêu kết quả xét xử và lý do
 4. **Điều luật áp dụng**: Liệt kê các điều luật được viện dẫn trong bản án
 
-## Nguyên tắc
 1. **Thực tế**: Dựa trên các vụ án thực tế, không suy diễn tùy tiện
 2. **Cẩn trọng**: Án lệ chỉ mang tính tham khảo, không phải bắt buộc trong mọi trường hợp
 3. **Kết hợp luật thực định**: Kết hợp với tra cứu pháp điển để cho bức tranh đầy đủ
 4. **Khuyến nghị**: Với tranh chấp nghiêm trọng, khuyến nghị người dùng nhờ luật sư
 
-## Phong cách
 - Tiếng Việt, chuyên nghiệp
 - Trình bày có cấu trúc: Tóm tắt án lệ → Phân tích → Áp dụng cho tình huống của user
 - Nêu số hiệu án lệ, tên Tòa, năm xét xử khi có

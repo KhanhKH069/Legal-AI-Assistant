@@ -8,10 +8,9 @@ from sqlmodel import Session, select
 from api.database import get_session
 from api.models import User
 
-# JWT Config
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "paraline_super_secret_key_2026")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
 import bcrypt
 

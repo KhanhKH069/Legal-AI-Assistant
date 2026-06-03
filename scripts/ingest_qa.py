@@ -23,7 +23,6 @@ def main():
 
     for item in data:
         ids.append(item["id"])
-        # Embed Question + Answer
         documents.append(f"Câu hỏi: {item['question']}\nTrả lời: {item['answer']}")
         metadatas.append(
             {

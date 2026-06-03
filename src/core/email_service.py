@@ -19,10 +19,9 @@ class EmailService:
         self, to_email: str, subject: str, body_text: str, body_html: str = None
     ):
         if not self.host or not self.username or not self.password:
-            # Fallback for dev mode / when SMTP is not configured
             logger.warning("SMTP config missing. Falling back to console output.")
             print("\n" + "=" * 50)
-            print(f"📧 [MOCK EMAIL SENT]")
+            print("📧 [MOCK EMAIL SENT]")
             print(f"To: {to_email}")
             print(f"From: {self.from_email}")
             print(f"Subject: {subject}")

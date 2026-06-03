@@ -1,27 +1,53 @@
 # Legal AI Assistant (Road to AI 2026) 🏆
 
-Dự án Legal AI Assistant là một hệ thống Trí tuệ Nhân tạo chuyên biệt trong lĩnh vực Pháp lý (LegalTech), được xây dựng để tham gia cuộc thi **Road to AI 2026**.
+Dự án Legal AI Assistant là một hệ thống Trí tuệ Nhân tạo chuyên biệt trong lĩnh vực Pháp lý (LegalTech), được xây dựng để tham gia cuộc thi **Road to AI 2026 — Truy hồi và Hỏi đáp Văn bản Pháp luật Tiếng Việt (SME)**.
 
-Hệ thống được thiết kế dưới dạng **Multi-Agent** (nhiều AI tương tác với nhau) và ứng dụng kiến trúc **RAG (Retrieval-Augmented Generation) tiên tiến nhất**, giúp loại bỏ triệt để hiện tượng AI "bịa luật" (Hallucination) và mang lại câu trả lời với độ chính xác tuyệt đối từ Hệ thống Pháp điển Quốc gia và Án lệ Việt Nam.
+Hệ thống được thiết kế dưới dạng **Multi-Agent** (nhiều AI tương tác với nhau) và ứng dụng kiến trúc **RAG (Retrieval-Augmented Generation) tiên tiến nhất**, giúp loại bỏ triệt để hiện tượng AI "bịa luật" (Hallucination) và mang lại câu trả lời chính xác từ Hệ thống Pháp điển Quốc gia và Án lệ Việt Nam.
+
+> **Lưu ý Quy chế:** Hệ thống sử dụng **100% mô hình mã nguồn mở** (dưới 14B tham số, phát hành trước 01/03/2026), hoàn toàn tuân thủ Điều lệ của Ban Tổ chức.
+
+---
+
+## 🧠 MÔ HÌNH AI SỬ DỤNG
+
+### LLM Chính (Bộ Não Hệ Thống)
+| Model | Tham số | Phát hành | Vai trò |
+|---|---|---|---|
+| `Qwen/Qwen2.5-7B-Instruct` | 7.6 Tỷ | Tháng 9/2024 | Sinh câu trả lời pháp lý, hỏi đáp |
+
+> **Cách chạy:** Dùng [Ollama](https://ollama.com) để chạy LLM nội bộ. Chỉ cần mở Terminal và gõ: `ollama run qwen2.5`
+
+### Các Model Phụ Trợ (Offline/HuggingFace)
+Toàn bộ chạy 100% nội bộ, không cần API key bên ngoài.
+
+| Model | Vai trò | Tham số |
+|---|---|---|
+| `truro7/vn-law-embedding` | Embedding vector (Chuyên pháp luật VN) | ~135M |
+| `huynhdat543/VietNamese_law_rerank` | Reranker (Hybrid Search chính xác) | ~278M |
+| `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | Semantic Cache (Tăng tốc) | ~118M |
+| `Systran/faster-whisper-small` | Speech-to-Text (Nhận diện giọng nói) | ~244M |
 
 ---
 
 ## 🌟 TÍNH NĂNG NỔI BẬT (KILLER FEATURES)
 
 1. **Thuật toán Hybrid Search + BGE Reranker:**
-   Sự kết hợp hoàn hảo giữa Semantic Search (Vector) và Keyword Search (BM25) qua cơ chế RRF (Reciprocal Rank Fusion). Kết quả sau đó được lọc lại bằng mô hình Cross-Encoder `BAAI/bge-reranker-v2-m3` tối ưu riêng cho Tiếng Việt, đảm bảo AI bốc trúng 100% điều luật chính xác nhất.
+   Kết hợp Semantic Search (Vector) + Keyword Search (BM25) qua cơ chế RRF (Reciprocal Rank Fusion). Kết quả lọc lại bằng Cross-Encoder `VietNamese_law_rerank`, đảm bảo truy hồi 100% điều luật chính xác nhất.
 
-2. **Thẩm định Rủi ro Hợp đồng (Contract Reviewing):**
-   Người dùng có thể upload một file hợp đồng PDF. AI sẽ tự động đọc, bóc tách từng điều khoản, và đối chiếu với quy định trong Pháp điển để rà soát các điều khoản vi phạm pháp luật hoặc có rủi ro pháp lý.
+2. **Dữ liệu SME Tập trung:**
+   Chỉ nạp các bộ luật trực tiếp liên quan đến Doanh nghiệp vừa và nhỏ vào VectorDB. Loại bỏ toàn bộ nhiễu từ 60,000+ điều luật lĩnh vực khác (Hình sự, Hàng hải...).
 
-3. **Luật 🤝 Án lệ Cross-Reference:**
-   Tính năng đọc chéo tự động. Khi tư vấn một Điều luật, AI sẽ tự động quét chéo kho Án lệ để gợi ý các Bản án thực tế đã từng áp dụng Điều luật đó.
+3. **Thẩm định Rủi ro Hợp đồng (Contract Reviewing):**
+   Upload file hợp đồng PDF, AI tự đọc, đối chiếu với Pháp điển và rà soát điều khoản vi phạm pháp luật.
 
-4. **Dynamic Knowledge Graph (Đồ thị Tư duy Real-time):**
-   Mỗi khi tư vấn các bộ luật phức tạp (Luật -> Nghị định -> Thông tư), AI sẽ tự động sinh code Mermaid.js để giao diện Frontend render ngay lập tức thành một **Sơ đồ đồ thị SVG tương tác**, giúp người dùng hiểu rõ hệ thống phân cấp pháp luật chỉ trong 1 giây.
+4. **Luật 🤝 Án lệ Cross-Reference:**
+   Khi tư vấn một Điều luật, AI tự động quét kho Án lệ để gợi ý Bản án thực tế đã áp dụng Điều luật đó.
 
-5. **Giao diện Legal UI Đẳng cấp:**
-   Xây dựng bằng Next.js, Tailwind CSS với phong cách Dark Mode, Glassmorphism sang trọng. Mọi trích dẫn luật đều biến thành các "Glowing Buttons" (nút bấm phát sáng) có thể click để đọc nguồn gốc.
+5. **Dynamic Knowledge Graph (Đồ thị Tư duy Real-time):**
+   Tự động sinh code Mermaid.js, render ngay thành Sơ đồ đồ thị SVG tương tác, giúp hiểu hệ thống phân cấp pháp luật (Luật → Nghị định → Thông tư).
+
+6. **Script Nộp Bài Tự Động:**
+   Script `scripts/generate_submission.py` tự động hóa toàn bộ quy trình từ câu hỏi → tra cứu → trả lời → xuất file `results.json` đúng format thi đấu.
 
 ---
 
@@ -29,23 +55,11 @@ Hệ thống được thiết kế dưới dạng **Multi-Agent** (nhiều AI t�
 
 - **Backend:** FastAPI (Python)
 - **AI Orchestration:** LangGraph & LangChain
-- **LLM Core:** Google Gemini 1.5 Pro (hoặc các LLM qua API)
-- **Vector Database:** ChromaDB (Lưu trữ Vector dưới local, không tốn phí cloud)
+- **LLM Core:** `Qwen2.5-7B-Instruct` (qua Ollama, chuẩn OpenAI API)
+- **Vector Database:** ChromaDB (lưu trữ local, không tốn phí cloud)
 - **Keyword Index:** Rank-BM25
 - **Frontend:** Next.js (React), TailwindCSS, React-Markdown, Mermaid.js
 - **PDF Extraction:** PyMuPDF (fitz)
-
-### 🧠 Các Model AI Offline (HuggingFace)
-Hệ thống sử dụng cấu hình các model nội bộ chạy 100% offline (yêu cầu VRAM tối đa ~5GB) để xử lý dữ liệu:
-1. **Embedding Models (Vector DB)**:
-   - *Primary:* `truro7/vn-law-embedding` (Độ chính xác cao nhất cho Pháp luật VN).
-   - *Fallback:* `dangvantuan/vietnamese-document-embedding` (Phổ quát tiếng Việt).
-2. **Reranker (Hybrid Search)**:
-   - `huynhdat543/VietNamese_law_rerank` (Tối ưu điểm số BM25 + Vector).
-3. **Semantic Cache**:
-   - `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (Tăng tốc xử lý câu hỏi trùng lặp).
-4. **Speech-to-Text (STT)**:
-   - `Systran/faster-whisper-small` (Xử lý âm thanh, tối ưu CUDA).
 
 ---
 
@@ -53,22 +67,28 @@ Hệ thống sử dụng cấu hình các model nội bộ chạy 100% offline (
 
 ```text
 Legal-AI-Assistant/
-├── api/                # Backend API Server (FastAPI)
-├── frontend/           # Giao diện người dùng (Next.js, React)
-├── dashboard/          # Trang quản trị / Dashboard
-├── src/                # Mã nguồn chính (AI Agents, Services, Tools)
-├── tests/              # Unit & Integration tests
-├── config/             # Cấu hình dự án
-├── alembic/            # Scripts migrate cho Database
-├── chroma_db/          # Lưu trữ dữ liệu Vector cục bộ (ChromaDB)
-├── data/               # Dữ liệu nguồn (Pháp điển, Án lệ)
-├── docker/             # Các cấu hình Docker
-├── docs/               # Tài liệu dự án
-├── k8s/                # Cấu hình Kubernetes để deploy
-├── scripts/            # Các scripts tiện ích
-├── Dockerfile          # Cấu hình build Docker image
-├── docker-compose.yml  # Triển khai hệ thống qua Docker Compose
-└── requirements.txt    # Danh sách các thư viện Python
+├── api/                    # Backend API Server (FastAPI)
+├── frontend/               # Giao diện người dùng (Next.js, React)
+├── src/                    # Mã nguồn chính (AI Agents, Services, Tools)
+│   ├── agents/             # Các LangGraph Agents (Statutory, Caselaw, Contract...)
+│   ├── core/
+│   │   ├── config.py       # Cấu hình hệ thống (LLM endpoint, model name...)
+│   │   └── llm.py          # Factory function get_llm() — trung tâm khởi tạo LLM
+│   ├── services/
+│   │   ├── vector_db.py    # Quản lý ChromaDB
+│   │   └── guardrail.py    # Bộ lọc chống bịa luật (Anti-Hallucination)
+│   └── tools/              # Công cụ tra cứu pháp luật
+├── scripts/
+│   ├── download_datasets.py    # Tải Pháp điển + Án lệ từ HuggingFace
+│   ├── index_sme_laws.py       # Lọc & Index 5 bộ luật SME vào ChromaDB
+│   ├── generate_submission.py  # Tạo file results.json nộp thi 
+│   └── index_legal_to_chromadb.py  # Index toàn bộ Pháp điển 
+├── tests/                  # Unit & Integration tests
+├── chroma_db/              # Lưu trữ Vector cục bộ (ChromaDB)
+├── data/
+│   └── raw/                # Dữ liệu nguồn Parquet (Pháp điển, Án lệ)
+├── requirements.txt        # Danh sách thư viện Python
+└── .env.example            # Mẫu cấu hình biến môi trường
 ```
 
 ---
@@ -78,41 +98,100 @@ Legal-AI-Assistant/
 ### Yêu cầu hệ thống
 - Python 3.10+
 - Node.js 18+
-- Biến môi trường: Bạn cần có `GOOGLE_API_KEY` (Gemini API) trong file `.env`.
+- [Ollama](https://ollama.com/download) (để chạy Qwen2.5 nội bộ)
+- RAM: 8GB+ | VRAM: 6GB+ (NVIDIA GPU)
 
-### 1. Cài đặt Backend
-Mở Terminal 1 và chạy các lệnh sau:
+### Bước 1: Cài đặt Ollama & tải LLM
 ```bash
-# Cài đặt thư viện Python
-pip install -r requirements.txt
-
-# Khởi động Backend API (Chạy ở cổng 8000)
-uvicorn api.main:app --reload
+# Cài Ollama (https://ollama.com/download), sau đó chạy:
+ollama run qwen2.5
+# Giữ cửa sổ này mở. Ollama sẽ serve LLM tại http://localhost:11434
 ```
 
-### 2. Cài đặt Frontend
-Mở Terminal 2, di chuyển vào thư mục `frontend` và chạy:
+### Bước 2: Cài đặt Backend Python
+```bash
+# Tạo môi trường ảo và cài đặt thư viện
+python -m venv .venv
+.\.venv\Scripts\activate        # Windows
+# source .venv/bin/activate     # Linux/Mac
+
+pip install -r requirements.txt
+```
+
+### Bước 3: Cấu hình biến môi trường
+Tạo file `.env` từ mẫu:
+```bash
+copy .env.example .env
+```
+Mở `.env` và cấu hình (chỉ cần đổi nếu Ollama chạy ở cổng khác):
+```env
+OPENAI_API_BASE=http://localhost:11434/v1
+OPENAI_API_KEY=ollama
+LLM_MODEL_NAME=qwen2.5:7b
+```
+
+### Bước 4: Tải & Index Dữ liệu Pháp luật SME
+```bash
+# Tải bộ Pháp điển từ HuggingFace (~200MB)
+python scripts/download_datasets.py
+
+# Lọc và Index 5 bộ luật trọng tâm vào VectorDB (~3-5 phút)
+python scripts/index_sme_laws.py
+```
+
+### Bước 5: Chạy Backend API
+```bash
+uvicorn api.main:app --reload
+# API chạy tại: http://localhost:8000
+```
+
+### Bước 6: Chạy Frontend
 ```bash
 cd frontend
-
-# Cài đặt thư viện Node (Bao gồm react-markdown, mermaid)
 npm install --legacy-peer-deps
-
-# Khởi động Giao diện Web (Chạy ở cổng 3000)
 npm run dev
+# Giao diện web tại: http://localhost:3000
 ```
 
-### 3. Trải nghiệm
-Mở trình duyệt và truy cập: **http://localhost:3000**
+---
+
+## 🏆 HƯỚNG DẪN NỘP BÀI THI (CUỘC THI ROAD TO AI 2026)
+
+Khi Ban Tổ Chức phát file câu hỏi test (`test.json`):
+
+```bash
+# Bước 1: Sinh file kết quả (LLM cần đang chạy qua Ollama)
+python scripts/generate_submission.py --input test.json --output results.json
+
+# Bước 2: Nén thành file nộp bài
+# Chuột phải vào results.json -> "Send to" -> "Compressed (zipped) folder"
+# Đặt tên là: submission.zip
+
+# Bước 3: Nộp file submission.zip lên Dashboard của BTC
+```
+
+> **Format output chuẩn BTC:** `<Mã văn bản>|<Tên văn bản>|<Điều>` (được đảm bảo bởi Pydantic Structured Output)
 
 ---
 
 ## 📚 DỮ LIỆU SỬ DỤNG
-Dự án sử dụng bộ dữ liệu mã nguồn mở được xử lý từ các hệ thống văn bản pháp luật chính thức của Việt Nam:
-1. **Pháp điển:** Dữ liệu từ `phapdien.moj.gov.vn`
-2. **Án lệ & Bản án:** Dữ liệu từ `anle.toaan.gov.vn`
 
-*(Toàn bộ dữ liệu Raw được lưu trữ trong thư mục `data/raw`)*
+Hệ thống được Index riêng 5 bộ luật SME cốt lõi từ Pháp điển Quốc gia:
+
+| # | Tên Bộ Luật | Số Hiệu |
+|---|---|---|
+| 1 | Luật Hỗ trợ Doanh nghiệp nhỏ và vừa | 04/2017/QH14 |
+| 2 | Luật Doanh nghiệp | 59/2020/QH14 |
+| 3 | Bộ luật Lao động | 45/2019/QH14 |
+| 4 | Luật Thuế thu nhập doanh nghiệp | 14/2008/QH12 & sửa đổi |
+| 5 | Luật Bảo hiểm xã hội | 58/2014/QH13 / 41/2024/QH15 |
+
+**Nguồn dữ liệu mở (HuggingFace):**
+- Pháp điển: `tmquan/phapdien-moj-gov-vn`
+- Án lệ: `tmquan/anle-toaan-gov-vn`
+
+*(Toàn bộ dữ liệu Raw được lưu trong `data/raw/` dưới dạng Parquet)*
 
 ---
+
 **Tác giả:** Hệ thống được lập trình và tối ưu hóa 100% dành cho cuộc đua **Road to AI 2026**. Chúc đội thi gặt hái thành công lớn! 🏆

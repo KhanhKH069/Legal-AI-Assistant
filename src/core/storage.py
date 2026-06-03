@@ -23,7 +23,6 @@ class LocalStorageService:
         file_path = self.base_dir / filename
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file_obj, buffer)
-        # Return relative path similar to previous implementation
         return str(Path("cv_uploads") / filename).replace("\\", "/")
 
     def get_file_path(self, filename: str) -> str:
@@ -58,7 +57,6 @@ class S3StorageService:
         import tempfile
         import os
 
-        # filename is either S3 URL or just key. We extract the key.
         key = filename.split("/")[-1] if filename.startswith("s3://") else filename
         fd, temp_path = tempfile.mkstemp(suffix=os.path.splitext(key)[1])
         os.close(fd)

@@ -26,11 +26,11 @@ async def _extract_text_from_pdf(file: UploadFile) -> str:
         temp_path = tmp.name
         content = await file.read()
         tmp.write(content)
-        
+
     try:
         text = f"--- START OF DOCUMENT: {file.filename} ---\n"
         has_text = False
-        
+
         import pdfplumber
         with pdfplumber.open(temp_path) as pdf:
             for page in pdf.pages:
@@ -38,7 +38,7 @@ async def _extract_text_from_pdf(file: UploadFile) -> str:
                 if page_text and page_text.strip():
                     text += page_text + "\n"
                     has_text = True
-                    
+
         if not has_text:
             reader = get_easyocr_reader()
             import fitz
@@ -48,7 +48,7 @@ async def _extract_text_from_pdf(file: UploadFile) -> str:
                     img_bytes = pix.tobytes("png")
                     result = reader.readtext(img_bytes, detail=0)
                     text += " ".join(result) + "\n"
-                    
+
         text += f"\n--- END OF DOCUMENT: {file.filename} ---\n\n"
         return text
     finally:
@@ -70,7 +70,7 @@ async def review_contract(files: List[UploadFile] = File(...)) -> Dict[str, Any]
             raise HTTPException(
                 status_code=400, detail=f"File {file.filename} is not a PDF."
             )
-        
+
         extracted_text = await _extract_text_from_pdf(file)
         combined_text += extracted_text
 
@@ -79,7 +79,6 @@ async def review_contract(files: List[UploadFile] = File(...)) -> Dict[str, Any]
             status_code=400, detail="Could not extract text from the provided PDFs."
         )
 
-    # Pass all documents to the LangGraph agent for review and cross-reference
     result = run_contract_review(combined_text)
 
     return {"status": "success", "result": result}
@@ -105,7 +104,6 @@ async def async_review_contract(files: List[UploadFile] = File(...)) -> Dict[str
             status_code=400, detail="Could not extract text from the provided PDFs."
         )
 
-    # Dispatch Celery Task
     task = process_contract.delay(combined_text)
 
     return {
@@ -119,8 +117,7 @@ async def stream_review_status(job_id: str):
     async def event_generator():
         pubsub = redis_client.pubsub()
         pubsub.subscribe(f"job_status_{job_id}")
-        
-        # Initial ping to keep connection alive
+
         yield "data: {\"status\": \"connected\"}\n\n"
 
         start_time = time.time()
@@ -128,7 +125,7 @@ async def stream_review_status(job_id: str):
             if time.time() - start_time > 300:
                 yield f"data: {json.dumps({'status': 'error', 'message': 'Timeout after 5 minutes'})}\n\n"
                 break
-                
+
             message = pubsub.get_message(ignore_subscribe_messages=True)
             if message:
                 data = json.loads(message['data'])

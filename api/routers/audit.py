@@ -13,7 +13,6 @@ from api.auth import get_current_user
 router = APIRouter(prefix="/audit", tags=["Audit"])
 
 
-# ── Helper ────────────────────────────────────────────────────────────────────
 
 
 def log_action(
@@ -29,7 +28,7 @@ def log_action(
 
         from api.routers.audit import log_action
         log_action(session, current_user.employee_id, "VIEW_SALARY", "EMP042")
-        session.commit()  # caller must commit
+        session.commit()
     """
     session.add(
         AuditLog(
@@ -42,7 +41,6 @@ def log_action(
     )
 
 
-# ── Endpoints ──────────────────────────────────────────────────────────────────
 
 
 @router.get("/logs")
@@ -50,8 +48,8 @@ def get_audit_logs(
     actor_id: Optional[str] = None,
     action: Optional[str] = None,
     target: Optional[str] = None,
-    date_from: Optional[str] = None,  # YYYY-MM-DD
-    date_to: Optional[str] = None,  # YYYY-MM-DD
+    date_from: Optional[str] = None,
+    date_to: Optional[str] = None,
     page: int = Query(default=1, ge=1),
     size: int = Query(default=50, ge=1, le=500),
     session: Session = Depends(get_session),
@@ -72,7 +70,6 @@ def get_audit_logs(
     query = select(AuditLog).order_by(AuditLog.timestamp.desc())
     logs = session.exec(query).all()
 
-    # Filter in Python (SQLite text column — avoids complex SQL LIKE)
     filtered = []
     for log in logs:
         if actor_id and actor_id.upper() not in log.actor_id.upper():

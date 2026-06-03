@@ -14,13 +14,11 @@ import sys
 import os
 from pathlib import Path
 
-# Fix Windows terminal encoding for Vietnamese text
 if sys.stdout.encoding != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 if sys.stderr.encoding != "utf-8":
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-# Ensure project root in path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 RAW_DIR = Path("data/raw")
@@ -42,13 +40,10 @@ check_and_install("datasets")
 check_and_install("pandas")
 check_and_install("pyarrow")
 
-from datasets import load_dataset  # noqa: E402
-import pandas as pd  # noqa: E402
+from datasets import load_dataset
+import pandas as pd
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 1. STATUTORY LAW — phapdien-moj-gov-vn
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def download_statutory():
@@ -73,7 +68,6 @@ def download_statutory():
         df.to_parquet(out_path, index=False)
         print(f"  ✓ Đã tải {len(df):,} điều luật → {out_path}")
 
-        # Also download ontology for subject/topic lookup
         ds_sub = load_dataset(
             "tmquan/phapdien-moj-gov-vn",
             name="ontology_subjects",
@@ -92,9 +86,6 @@ def download_statutory():
         raise
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 2. CASE LAW — anle-toaan-gov-vn
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def download_caselaw():
@@ -124,9 +115,6 @@ def download_caselaw():
         raise
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 3. STATS
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def print_stats(df_stat, df_case):

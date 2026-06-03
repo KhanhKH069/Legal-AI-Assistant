@@ -20,7 +20,6 @@ class VectorDB:
 
         from src.core.config import config
 
-        # Initialize ChromaDB client
         if config.chromadb_host and config.chromadb_host != "localhost":
             self.client = chromadb.HttpClient(
                 host=config.chromadb_host,
@@ -34,50 +33,18 @@ class VectorDB:
             )
 
         self.embedding_function = None
-        from src.core.config import config
 
-        if config.google_api_key and not config.enable_offline_mode:
-            try:
-                from chromadb.api.types import EmbeddingFunction, Documents, Embeddings
-                from langchain_google_genai import GoogleGenerativeAIEmbeddings
+        try:
+            from chromadb.utils import embedding_functions
 
-                class GoogleEmbedding(EmbeddingFunction):
-                    def __init__(self, api_key: str):
-                        self.emb = GoogleGenerativeAIEmbeddings(
-                            model="models/gemini-embedding-2", google_api_key=api_key
-                        )
-
-                    def __call__(self, input: Documents) -> Embeddings:
-                        embeddings = []
-                        for text in input:
-                            res = self.emb.embed_query(text)
-                            embeddings.append(res)
-                        return embeddings
-
-                self.embedding_function = GoogleEmbedding(config.google_api_key)
-            except Exception as e:
-                print(f"Failed to init Google Embeddings: {e}")
-        else:
-            try:
-                from chromadb.utils import embedding_functions
-
-                # Try best multilingual model first, fall back to smaller model
-                try:
-                    self.embedding_function = (
-                        embedding_functions.SentenceTransformerEmbeddingFunction(
-                            model_name="truro7/vn-law-embedding"
-                        )
-                    )
-                    print("[VectorDB] Using truro7/vn-law-embedding model")
-                except Exception:
-                    self.embedding_function = (
-                        embedding_functions.SentenceTransformerEmbeddingFunction(
-                            model_name="dangvantuan/vietnamese-document-embedding"
-                        )
-                    )
-                    print("[VectorDB] Using dangvantuan/vietnamese-document-embedding model (fallback)")
-            except Exception as e:
-                print(f"Failed to init Multilingual Embeddings: {e}")
+            self.embedding_function = (
+                embedding_functions.SentenceTransformerEmbeddingFunction(
+                    model_name="truro7/vn-law-embedding"
+                )
+            )
+            print("[VectorDB] Using truro7/vn-law-embedding model")
+        except Exception as e:
+            print(f"[VectorDB] Error loading embedding model: {e}")
 
     def create_collection(self, collection_name: str, reset: bool = False):
         """Create or get a collection"""
@@ -103,7 +70,6 @@ class VectorDB:
         """Add documents to collection"""
         collection = self.create_collection(collection_name)
 
-        # Generate IDs if not provided
         if ids is None:
             ids = [f"doc_{i}" for i in range(len(documents))]
 
@@ -161,7 +127,6 @@ class VectorDB:
             return False
 
 
-# Singleton instance
 _vector_db_instance = None
 
 
@@ -175,15 +140,11 @@ def get_vector_db(persist_directory: str = "./chroma_db") -> VectorDB:
     return _vector_db_instance
 
 
-# Example usage
 if __name__ == "__main__":
-    # Initialize
     vdb = get_vector_db()
 
-    # Create collection
     collection_name = "test_collection"
 
-    # Add documents
     documents = [
         "Chính sách nghỉ phép: 12 ngày/năm",
         "Thời gian làm việc: 8:30 - 17:30",
@@ -211,7 +172,6 @@ if __name__ == "__main__":
     count = vdb.add_documents(collection_name, documents, metadatas)
     print(f"Added {count} documents")
 
-    # Query
     results = vdb.query(collection_name, "Nghỉ phép mấy ngày?", n_results=1)
 
     if results["documents"][0]:

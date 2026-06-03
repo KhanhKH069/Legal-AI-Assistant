@@ -16,9 +16,6 @@ from pathlib import Path
 from rank_bm25 import BM25Okapi
 from src.services.vector_db import get_vector_db
 
-# ---------------------------------------------------------------------------
-# Vietnamese tokenizer (optional – falls back gracefully)
-# ---------------------------------------------------------------------------
 try:
     from underthesea import word_tokenize as _vn_tokenize
 
@@ -29,15 +26,12 @@ try:
 
 except ImportError:
 
-    def _tokenize(text: str) -> List[str]:  # type: ignore[misc]
+    def _tokenize(text: str) -> List[str]:
         return text.lower().split()
 
     print("[HybridRetriever] underthesea not installed – using whitespace tokenizer")
 
 
-# ---------------------------------------------------------------------------
-# Cross-encoder reranker (BAAI/bge-reranker-v2-m3)
-# ---------------------------------------------------------------------------
 _reranker = None
 _reranker_loaded = False
 
@@ -75,7 +69,6 @@ class HybridRetriever:
         self.vdb = get_vector_db(str(self.persist_directory))
         self.use_reranker = use_reranker
 
-        # BM25 index paths (separated by collection)
         self.bm25_index_path = (
             self.persist_directory / f"bm25_index_{collection_name}.pkl"
         )
@@ -115,7 +108,6 @@ class HybridRetriever:
         metadatas = data["metadatas"]
         ids = data["ids"]
 
-        # Vietnamese-aware tokenization
         tokenized_corpus = [_tokenize(doc) for doc in docs]
 
         if tokenized_corpus:
@@ -124,7 +116,6 @@ class HybridRetriever:
                 {"id": ids[i], "document": docs[i], "metadata": metadatas[i]}
                 for i in range(len(docs))
             ]
-            # Persist to disk
             try:
                 with open(self.bm25_index_path, "wb") as f:
                     pickle.dump(self.bm25, f)
@@ -138,7 +129,6 @@ class HybridRetriever:
         """Retrieve documents using Hybrid Search (RRF) + optional cross-encoder reranking."""
         results_map: Dict[str, Dict] = {}
 
-        # 1. Vector Search
         vector_results = self.vdb.query(
             self.collection_name, query, n_results=top_k * 3
         )
@@ -159,7 +149,6 @@ class HybridRetriever:
                 else:
                     results_map[doc]["vector_rank"] = rank + 1
 
-        # 2. BM25 Search (Vietnamese tokenizer)
         if self.bm25 and self.corpus_data:
             tokenized_query = _tokenize(query)
             bm25_scores = self.bm25.get_scores(tokenized_query)
@@ -178,7 +167,6 @@ class HybridRetriever:
                     else:
                         results_map[doc_content]["bm25_rank"] = rank + 1
 
-        # 3. Reciprocal Rank Fusion (RRF k=60)
         k = 60
         fused: List[Dict[str, Any]] = []
         for doc, info in results_map.items():
@@ -194,14 +182,12 @@ class HybridRetriever:
                 }
             )
         fused.sort(key=lambda x: x["score"], reverse=True)
-        candidates = fused[: top_k * 2]  # Keep more for reranker
+        candidates = fused[: top_k * 2]
 
-        # 4. Cross-encoder Reranking (optional)
         if self.use_reranker and len(candidates) > 1:
             reranker = _get_reranker()
             if reranker is not None:
                 try:
-                    # Format for SentenceTransformer CrossEncoder: list of (query, document) pairs
                     pairs = [[query, c["content"]] for c in candidates]
                     scores = reranker.predict(pairs)
 
@@ -209,7 +195,7 @@ class HybridRetriever:
                         c["reranker_score"] = float(scores[i])
                         c["score"] = float(
                             scores[i]
-                        )  # override score with reranker score
+                        )
 
                     candidates.sort(key=lambda x: x["score"], reverse=True)
                 except Exception as e:
@@ -218,9 +204,6 @@ class HybridRetriever:
         return candidates[:top_k]
 
 
-# ---------------------------------------------------------------------------
-# Singleton Pattern
-# ---------------------------------------------------------------------------
 _hybrid_retrievers: Dict[str, HybridRetriever] = {}
 
 

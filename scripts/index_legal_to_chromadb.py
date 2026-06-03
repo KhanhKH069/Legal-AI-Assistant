@@ -12,24 +12,17 @@ Usage:
 
 import argparse
 import sys
-import os
 from pathlib import Path
 import hashlib
 
-# Fix Windows terminal encoding
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-# Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 RAW_DIR = Path("data/raw")
 CHROMA_DIR = "./chroma_db"
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Direct ChromaDB + SentenceTransformer setup (bypass src.core.config)
-# This avoids load_dotenv(override=True) from disabling offline mode
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def _build_chroma_client():
@@ -44,7 +37,6 @@ def _build_chroma_client():
         settings=Settings(anonymized_telemetry=False, allow_reset=True),
     )
 
-    # Try best multilingual model, fallback to smaller one
     try:
         emb_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
             model_name="truro7/vn-law-embedding"
@@ -87,7 +79,7 @@ def _add_documents_direct(
 ):
     col = _get_or_create_collection(
         collection_name, reset=False
-    )  # reset done separately
+    )
     col.add(documents=documents, metadatas=metadatas, ids=ids)
     return len(documents)
 
@@ -106,9 +98,6 @@ def _make_id(prefix: str, row_idx: int, extra: str = "") -> str:
     return hashlib.md5(raw.encode()).hexdigest()[:16]
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 1. INDEX STATUTORY LAW (Pháp điển)
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def index_statutory(max_rows=None, reset: bool = False):
@@ -126,10 +115,9 @@ def index_statutory(max_rows=None, reset: bool = False):
         df = df.head(max_rows)
     print(f"  So dieu luat se index: {len(df):,}")
 
-    # Create / reset collection via direct client
     col = _get_or_create_collection("legal_statutory", reset=reset)
 
-    BATCH = 100  # Smaller batch = faster feedback & safer
+    BATCH = 100
     total_indexed = 0
 
     for start in range(0, len(df), BATCH):
@@ -146,9 +134,8 @@ def index_statutory(max_rows=None, reset: bool = False):
             source_url = _clean_text(row.get("source_url"))
 
             if not content_text:
-                continue  # skip empty articles
+                continue
 
-            # Build rich text blob for embedding
             text_blob = f"""Chủ đề: {topic_title}
 Đề mục: {subject_title}
 Chương: {chapter_title}
@@ -158,7 +145,6 @@ Nội dung:
             if source_note:
                 text_blob += f"\nNguồn: {source_note}"
 
-            # Truncate to avoid token limits
             text_blob = text_blob[:4000]
 
             meta = {
@@ -190,9 +176,6 @@ Nội dung:
     return total_indexed
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 2. INDEX CASE LAW (Án lệ)
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def index_caselaw(max_rows=None, reset: bool = False):
@@ -212,7 +195,7 @@ def index_caselaw(max_rows=None, reset: bool = False):
 
     col = _get_or_create_collection("legal_caselaw", reset=reset)
 
-    BATCH = 50  # Case law docs are longer
+    BATCH = 50
     total_indexed = 0
 
     for start in range(0, len(df), BATCH):
@@ -234,12 +217,10 @@ def index_caselaw(max_rows=None, reset: bool = False):
             applied_article = _clean_text(row.get("applied_article_code"))
             precedent_num = _clean_text(row.get("precedent_number"))
 
-            # Primary text: use principle_text first (most concise), fallback to markdown
             primary_text = principle_text if principle_text else markdown
             if not primary_text:
                 continue
 
-            # Build embedding text
             text_blob = f"""Tên bản án: {title or doc_name}
 Loại vụ án: {case_type} - {doc_subtype}
 Lĩnh vực: {subject}
@@ -251,7 +232,6 @@ Nguyên tắc pháp lý:
             if precedent_num:
                 text_blob = f"Án lệ số: {precedent_num}\n" + text_blob
 
-            # Truncate long docs
             text_blob = text_blob[:6000]
 
             meta = {
@@ -287,9 +267,6 @@ Nguyên tắc pháp lý:
     return total_indexed
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# MAIN
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def main():
@@ -305,8 +282,7 @@ def main():
     print("  LEGAL AI ASSISTANT - ChromaDB Indexer (Local Embeddings)")
     print("=" * 60)
 
-    # Initialize the ChromaDB client + embeddings (local SentenceTransformer)
-    _get_or_create_collection("legal_statutory", reset=False)  # triggers lazy init
+    _get_or_create_collection("legal_statutory", reset=False)
 
     n1 = index_statutory(max_rows=args.max_statutory, reset=args.reset)
     n2 = index_caselaw(max_rows=args.max_caselaw, reset=args.reset)

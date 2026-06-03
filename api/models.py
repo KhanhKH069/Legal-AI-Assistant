@@ -15,17 +15,17 @@ class ConversationMessage(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: str = Field(index=True)
-    role: str  # "user" | "assistant"
+    role: str
     content: str
-    timestamp: str  # ISO datetime string
+    timestamp: str
 
 
 class AuditLog(SQLModel, table=True):
     """Audit trail for system actions."""
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    actor_id: str = Field(index=True)  # who performed the action
-    action: str  # e.g. "VIEW_DOCUMENT", "UPLOAD_CONTRACT"
+    actor_id: str = Field(index=True)
+    action: str
     target: str = Field(default="")
-    detail: str = Field(default="")  # extra context
-    timestamp: str = Field(index=True)  # ISO datetime string
+    detail: str = Field(default="")
+    timestamp: str = Field(index=True)

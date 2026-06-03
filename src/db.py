@@ -15,7 +15,6 @@ engine = create_engine(config.database_url, echo=False, connect_args=connect_arg
 def init_db() -> None:
     """Create all tables if they don't exist."""
 
-    # Do not call create_all() here, as Alembic will handle migrations
     pass
 
 

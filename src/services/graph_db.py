@@ -19,7 +19,6 @@ class GraphDBService:
             self.driver = GraphDatabase.driver(
                 self.uri, auth=(self.user, self.password)
             )
-            # Verify connectivity
             self.driver.verify_connectivity()
             logger.info("Connected to Neo4j Graph Database.")
         except Exception as e:
@@ -43,7 +42,6 @@ class GraphDBService:
             return []
 
 
-# Singleton
 _graph_db = None
 
 

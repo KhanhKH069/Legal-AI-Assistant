@@ -21,7 +21,7 @@ class APIGateway:
             "admin": {"role": "admin", "name": "Admin"},
         }
 
-    def authenticate(self, user_id: str, api_key: str = None) -> bool:  # type: ignore[assignment]
+    def authenticate(self, user_id: str, api_key: str = None) -> bool:
         """Authenticate user"""
         return user_id in self.authenticated_users
 
@@ -42,7 +42,7 @@ class APIGateway:
         self.rate_limits[user_id].append(now)
         return True
 
-    def process_request(self, user_id: str, message: str, api_key: str = None) -> dict:  # type: ignore[assignment]
+    def process_request(self, user_id: str, message: str, api_key: str = None) -> dict:
         """Process incoming request"""
 
         if not self.authenticate(user_id, api_key):

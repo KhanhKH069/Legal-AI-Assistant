@@ -2,7 +2,6 @@ import json
 import os
 import sys
 
-# Thêm root path vào sys.path để import từ api
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from sqlmodel import Session, select
@@ -27,11 +26,9 @@ def init_db():
 
     print("Migrating data...")
     with Session(engine) as session:
-        # 1. Employees & Users
         emp_data = load_json("data/employees_data.json")
         if emp_data and "employees" in emp_data:
             for emp in emp_data["employees"]:
-                # Check if employee exists
                 if not session.exec(
                     select(Employee).where(Employee.employee_id == emp["employee_id"])
                 ).first():
@@ -57,17 +54,13 @@ def init_db():
                     )
                     session.add(new_emp)
 
-                # Create User account
                 if not session.exec(
                     select(User).where(User.username == emp["employee_id"])
                 ).first():
-                    # Phân quyền: HR department -> admin, có nhân viên quản lý -> manager, còn lại -> employee
                     role = "employee"
                     if emp.get("department") in ["HR", "IT"]:
                         role = "admin"
                     else:
-                        # Kiểm tra xem có ai gọi người này là manager không (sẽ update sau hoặc giả định đơn giản)
-                        # Ở đây làm đơn giản: level Lead/Manager -> manager
                         if (
                             "Lead" in emp.get("position", "")
                             or "Manager" in emp.get("position", "")
@@ -83,7 +76,6 @@ def init_db():
                     )
                     session.add(new_user)
 
-            # Admin đặc biệt
             if not session.exec(select(User).where(User.username == "admin")).first():
                 admin_user = User(
                     username="admin",
@@ -98,7 +90,6 @@ def init_db():
                 f"✅ Migrated {len(emp_data['employees'])} employees and created users."
             )
 
-        # 2. Leave Requests
         att_data = load_json("data/attendance_data.json")
         if att_data and "leave_requests" in att_data:
             for req in att_data["leave_requests"]:
@@ -123,7 +114,6 @@ def init_db():
             session.commit()
             print("✅ Migrated leave requests.")
 
-        # 3. Appraisals
         appr_data = load_json("data/appraisal_data.json")
         if appr_data and "appraisals" in appr_data:
             for app in appr_data["appraisals"]:
@@ -150,7 +140,6 @@ def init_db():
             session.commit()
             print("✅ Migrated appraisals.")
 
-        # 4. Payroll Records
         payroll_data = load_json("data/payroll_data.json")
         if payroll_data and "payroll_records" in payroll_data:
             count = 0
@@ -195,7 +184,6 @@ def init_db():
             session.commit()
             print(f"✅ Migrated {count} payroll records.")
 
-        # 5. Tickets
         ticket_data = load_json("data/helpdesk_data.json")
         if ticket_data and "tickets" in ticket_data:
             for t in ticket_data["tickets"]:

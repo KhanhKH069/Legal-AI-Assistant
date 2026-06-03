@@ -9,7 +9,6 @@ engine = create_engine(config.database_url, echo=False, connect_args=connect_arg
 
 
 def create_db_and_tables():
-    # Deprecated in favor of Alembic migrations
     pass
 
 

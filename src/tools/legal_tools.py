@@ -70,10 +70,13 @@ def search_statutory_law(query: str, top_k: int = 5) -> str:
 
             citation = " | ".join(citation_parts) if citation_parts else "Pháp điển"
             source_url = meta.get("source_url", "")
+            source_note = meta.get("source_note", "")
 
             parts.append(f"[{i}] **{citation}**")
+            if source_note:
+                parts.append(f"    Nguồn: {source_note}")
             if source_url:
-                parts.append(f"    🔗 Nguồn: {source_url}")
+                parts.append(f"    🔗 Link: {source_url}")
             parts.append(f"    {content[:800].strip()}")
             parts.append("")
 
@@ -163,7 +166,6 @@ def find_related_caselaw(article_name: str, top_k: int = 3) -> str:
     """
     try:
         retriever = _get_caselaw_retriever()
-        # Tìm kiếm án lệ liên quan đến điều luật này (kết hợp keyword và vector)
         query = f"Bản án, quyết định áp dụng {article_name}"
         results = retriever.retrieve(query, top_k=top_k)
 
@@ -206,7 +208,7 @@ def search_legal_qa(query: str, top_k: int = 5) -> str:
         if not results:
             return "Không tìm thấy câu hỏi đáp tương tự. Hãy dựa vào quy định pháp luật để tự phân tích."
 
-        parts = [f"**KẾT QUẢ TRA CỨU HỎI ĐÁP PHÁP LUẬT**:\n"]
+        parts = ["**KẾT QUẢ TRA CỨU HỎI ĐÁP PHÁP LUẬT**:\n"]
         for i, r in enumerate(results, 1):
             parts.append(f"[{i}] **Tình huống**: {r.get('metadata', {}).get('question', 'Hỏi đáp')}")
             parts.append(f"    {r.get('content', '')[:1000].strip()}")
@@ -242,7 +244,7 @@ def search_law_graph(article_name: str) -> str:
         if not results:
             return f"Không tìm thấy mối liên hệ cho '{article_name}' trong Graph."
 
-        parts = [f"**KẾT QUẢ TỪ KNOWLEDGE GRAPH (Neo4j)**:\n"]
+        parts = ["**KẾT QUẢ TỪ KNOWLEDGE GRAPH (Neo4j)**:\n"]
         for i, r in enumerate(results, 1):
             parts.append(
                 f"[{i}] **{r['topic']}** > **{r['subject']}** > **{r['chapter']}** > **{r['article']}**"
@@ -286,7 +288,6 @@ def search_web_for_latest_laws(query: str, max_results: int = 3) -> str:
         return f"Lỗi Web Search: {str(e)}"
 
 
-# Export
 legal_tools = [
     search_statutory_law,
     search_case_law,

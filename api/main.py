@@ -1,21 +1,12 @@
-import asyncio
-import json as _json
-import time as _time
 import logging
 import os
-import shutil
-import pathlib
 from datetime import datetime, timezone
-from typing import Dict, List, Optional
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, File, UploadFile, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse, JSONResponse
 
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
-from pydantic import BaseModel
 
 from api.routers import (
     auth,
@@ -26,7 +17,6 @@ from api.routers import (
 )
 from src.db import init_db
 from src.core.config import config
-import time
 
 from src.core.logging_config import setup_logging
 
@@ -45,7 +35,6 @@ async def lifespan(app: FastAPI):
     _startup_time = datetime.now(timezone.utc)
     init_db()
 
-    # Rate limiting is now handled per-router (e.g. in chat.py) via pyrate_limiter in fastapi-limiter>=0.2.0
 
     import subprocess
     import sys
@@ -86,21 +75,19 @@ async def lifespan(app: FastAPI):
         app.state.guest_graph = create_guest_agent_graph()
 
         try:
-            # Semantic Caching
             set_llm_cache(
                 RedisSemanticCache(
                     redis_url=config.redis_url,
                     embedding=HuggingFaceEmbeddings(
                         model_name="paraphrase-multilingual-MiniLM-L12-v2"
                     ),
-                    score_threshold=0.15,  # lower distance means higher similarity (depends on distance metric, usually L2)
+                    score_threshold=0.15,
                 )
             )
             print("✅ Redis Semantic Cache Enabled")
         except Exception as e:
             print(f"⚠️ Failed to enable Semantic Cache: {e}")
 
-    # ── LangSmith Tracing (optional, activates if LANGSMITH_API_KEY is set) ──
     import os
 
     _lskey = os.getenv("LANGSMITH_API_KEY") or os.getenv("LANGCHAIN_API_KEY")
@@ -114,7 +101,6 @@ async def lifespan(app: FastAPI):
             "LangSmith tracing enabled → project: %s", os.environ["LANGCHAIN_PROJECT"]
         )
 
-    # ── LangChain LLM Cache (Redis-backed) ─────────────────
     if not config.enable_offline_mode:
         try:
             from langchain_core.globals import set_llm_cache
@@ -129,8 +115,7 @@ async def lifespan(app: FastAPI):
         except Exception as _e:
             logger.warning("LangChain cache not initialised: %s", _e)
 
-    yield  # Application runs here
-    # Shutdown logic (if any) goes after yield
+    yield
 
 
 app = FastAPI(
@@ -140,11 +125,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Allow Next.js dev + prod origins; change to ["*"] for fully open access
 _ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://localhost:8501",  # Streamlit
+    "http://localhost:8501",
     "http://127.0.0.1:8501",
 ]
 app.add_middleware(
@@ -156,7 +140,6 @@ app.add_middleware(
 )
 
 
-# Core routers (auth + chat — used by Legal AI)
 app.include_router(auth.router)
 app.include_router(audit.router)
 app.include_router(chat.router)

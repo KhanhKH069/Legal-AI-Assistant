@@ -68,3 +68,5 @@ duckduckgo-search>=6.1.7
 # Data processing
 pyarrow>=15.0.0
 fastparquet>=2024.2.0
+langchain-openai>=0.1.0  
+ 

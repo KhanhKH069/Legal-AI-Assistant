@@ -19,7 +19,7 @@ class AdminPanel:
             "max_response_length": 2000,
         }
 
-    def get_config(self, key: str = None):  # type: ignore[assignment]
+    def get_config(self, key: str = None):
         """Get configuration"""
         if key:
             return self.config.get(key)
@@ -30,7 +30,7 @@ class AdminPanel:
         self.config[key] = value
         logger.info(f"Config updated: {key} = {value}")
 
-    def get_audit_logs(self, user_id: str = None, limit: int = 100) -> List[Dict]:  # type: ignore[assignment]
+    def get_audit_logs(self, user_id: str = None, limit: int = 100) -> List[Dict]:
         """Get audit logs"""
         logs = self.db.query("audit_logs")
         if user_id:
@@ -51,11 +51,11 @@ class AdminPanel:
             action = log["action"]
             user_id = log["user_id"]
 
-            stats["requests_by_action"][action] = (  # type: ignore[index]
-                stats["requests_by_action"].get(action, 0) + 1  # type: ignore[attr-defined]
+            stats["requests_by_action"][action] = (
+                stats["requests_by_action"].get(action, 0) + 1
             )
-            stats["requests_by_user"][user_id] = (  # type: ignore[index]
-                stats["requests_by_user"].get(user_id, 0) + 1  # type: ignore[attr-defined]
+            stats["requests_by_user"][user_id] = (
+                stats["requests_by_user"].get(user_id, 0) + 1
             )
 
         return stats

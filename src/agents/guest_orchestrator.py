@@ -9,34 +9,21 @@ import logging
 import operator
 from typing import Annotated, Sequence, TypedDict
 
-from langchain_core.messages import BaseMessage, AIMessage
+from langchain_core.messages import BaseMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import ToolNode
 
-from src.core.config import config
 from src.tools.legal_tools import search_statutory_law, search_case_law
 from src.agents.statutory_agent import statutory_agent_node
 from src.agents.caselaw_agent import caselaw_agent_node
 
 logger = logging.getLogger(__name__)
 
-llm = None
-if config.enable_offline_mode or not config.google_api_key:
-    from langchain_ollama import ChatOllama
+from src.core.llm import get_llm
 
-    llm = ChatOllama(
-        model="qwen2.5:7b-instruct", temperature=0.0, base_url="http://localhost:11434"
-    )
-else:
-    llm = ChatGoogleGenerativeAI(
-        model=config.model_name,
-        google_api_key=config.google_api_key,
-        temperature=0.0,
-        max_tokens=config.max_tokens,
-    )
+llm = get_llm()
 
 
 class GuestLegalState(TypedDict):
@@ -90,7 +77,6 @@ def create_guest_agent_graph():
 
     workflow = StateGraph(GuestLegalState)
 
-    # Wrap statutory_agent_node for GuestLegalState
     def guest_statutory_node(state: GuestLegalState):
         from src.agents.orchestrator import AgentState
 
@@ -109,7 +95,6 @@ def create_guest_agent_graph():
             "session_id": state.get("session_id", "guest"),
         }
 
-    # Wrap caselaw_agent_node for GuestLegalState
     def guest_caselaw_node(state: GuestLegalState):
         from src.agents.orchestrator import AgentState
 

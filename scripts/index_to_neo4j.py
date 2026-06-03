@@ -4,9 +4,7 @@ Migrate Phap Dien data from Parquet to Neo4j Graph Database
 """
 import sys
 from pathlib import Path
-import os
 
-# Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.services.graph_db import get_graph_db
@@ -71,7 +69,6 @@ def main():
         content = clean_text(row.get("content_text"))
         source_url = clean_text(row.get("source_url"))
 
-        # Tạo ID unique cho Article bằng Topic + Subject + Chapter + Article
         article_id = f"{topic}_{subject}_{chapter}_{article_title}"
 
         params = {

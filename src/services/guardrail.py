@@ -7,7 +7,6 @@ preventing hallucination (fabrication) of facts.
 from typing import Dict, Any
 from langchain_core.messages import ToolMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI
 from src.core.config import config
 
 
@@ -21,13 +20,11 @@ def guardrail_node(state: Dict[str, Any]) -> Dict[str, Any]:
     if not messages:
         return state
 
-    # Find the original user query
     user_query = ""
     for msg in messages:
         if isinstance(msg, HumanMessage):
             user_query = msg.content
 
-    # Find the latest tool output (retrieved context)
     context = ""
     for msg in reversed(messages):
         if isinstance(msg, ToolMessage):
@@ -35,18 +32,13 @@ def guardrail_node(state: Dict[str, Any]) -> Dict[str, Any]:
             break
 
     if not context:
-        # If no tool was called or no context, just return what we have
         return state
 
-    # Check if we are in offline mode or no API key
     if config.enable_offline_mode or not config.google_api_key:
         return state
 
-    llm = ChatGoogleGenerativeAI(
-        model=config.model_name,
-        google_api_key=config.google_api_key,
-        temperature=0.0,  # Zero temperature for max strictness
-    )
+    from src.core.llm import get_llm
+    llm = get_llm(temperature=0.0)
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -75,7 +67,6 @@ RULES:
     try:
         response = chain.invoke({"context": context, "query": user_query})
 
-        # We append this final AI message to the state
         return {
             "messages": [response],
             "next": "end",

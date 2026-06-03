@@ -36,7 +36,6 @@ class MetricsCollector:
         self._guest_requests: int = 0
         self._started_at: float = time.time()
 
-    # ------------------------------------------------------------------
     def record(
         self,
         user_id: str,
@@ -68,10 +67,8 @@ class MetricsCollector:
             if is_guest:
                 self._guest_requests += 1
 
-    # ------------------------------------------------------------------
     def get_summary(self) -> Dict[str, Any]:
         with self._lock:
-            # Per-agent stats sorted by usage desc
             agent_stats: Dict[str, Any] = {}
             for agent, count in sorted(self._agent_counts.items(), key=lambda x: -x[1]):
                 times = self._agent_times[agent]
@@ -85,17 +82,15 @@ class MetricsCollector:
                     "max_ms": round(max(times)) if times else 0,
                 }
 
-            # Overall stats
             all_times = [t for ts in self._agent_times.values() for t in ts]
             avg_overall = round(sum(all_times) / len(all_times)) if all_times else 0
 
             peak_agent = (
-                max(self._agent_counts, key=self._agent_counts.get)  # type: ignore[arg-type]
+                max(self._agent_counts, key=self._agent_counts.get)
                 if self._agent_counts
                 else "—"
             )
 
-            # Recent 20 requests newest-first
             recent = [
                 {
                     "timestamp": r.timestamp,
@@ -127,7 +122,6 @@ class MetricsCollector:
             }
 
 
-# Module-level singleton
 _collector = MetricsCollector()
 
 

@@ -1,31 +1,12 @@
-from typing import Dict, Any, List
-from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+from typing import Dict, List
+from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.graph import StateGraph, START, END
 from typing_extensions import TypedDict
 
-from src.core.config import config
 from src.tools.legal_tools import search_statutory_law
 
 
-def get_llm():
-    if config.enable_offline_mode or not config.google_api_key:
-        from langchain_ollama import ChatOllama
-
-        return ChatOllama(
-            model="qwen2.5:7b-instruct",
-            temperature=0.1,
-            base_url="http://localhost:11434",
-        )
-    else:
-        from langchain_google_genai import ChatGoogleGenerativeAI
-
-        return ChatGoogleGenerativeAI(
-            model=config.model_name,
-            google_api_key=config.google_api_key,
-            temperature=0.1,
-            max_tokens=config.max_tokens,
-        )
-
+from src.core.llm import get_llm
 
 class ContractReviewState(TypedDict):
     contract_text: str
@@ -41,7 +22,7 @@ def parse_contract(state: ContractReviewState) -> ContractReviewState:
         "Bạn là một chuyên gia pháp lý. Hãy trích xuất các điều khoản quan trọng "
         "từ bản hợp đồng sau đây để phân tích rủi ro. "
         "Trả về mỗi điều khoản trên một dòng, bắt đầu bằng dấu gạch ngang (-).\n\n"
-        f"Hợp đồng:\n{state['contract_text'][:10000]}"  # Limit to 10k chars for safety
+        f"Hợp đồng:\n{state['contract_text'][:10000]}"
     )
 
     response = llm.invoke([HumanMessage(content=prompt)])
@@ -57,12 +38,9 @@ def analyze_clauses(state: ContractReviewState) -> ContractReviewState:
     """Checks each clause against Statutory law using the search tool."""
     results = []
 
-    # Analyze top 5 most important clauses to save time/tokens
     for clause in state["extracted_clauses"][:5]:
-        # Search for laws related to this clause
         search_result = search_statutory_law(clause, top_k=3)
 
-        # Ask LLM to evaluate the clause against the found laws
         llm = get_llm()
         eval_prompt = (
             "Bạn là một Luật sư Thẩm định. Hãy đánh giá xem điều khoản hợp đồng sau có "

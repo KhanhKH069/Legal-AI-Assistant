@@ -19,7 +19,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-# Fix Windows encoding
 if sys.stdout.encoding != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -54,7 +53,7 @@ def test_statutory_search():
         retriever = HybridRetriever(
             collection_name="legal_statutory",
             persist_directory="./chroma_db",
-            use_reranker=False,  # Skip reranker for quick test
+            use_reranker=False,
         )
         results = retriever.retrieve("dieu kien ket hon", top_k=2)
         if results:
