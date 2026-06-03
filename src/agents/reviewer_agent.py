@@ -38,14 +38,9 @@ def reviewer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     draft_response = last_msg.content
 
     # Prevent infinite loop: Max 2 retries
-    fail_count = sum(
-        1
-        for msg in messages
-        if isinstance(msg, HumanMessage)
-        and msg.content.startswith("Feedback từ Trưởng phòng")
-    )
-    if fail_count >= 2:
-        return {"next": "pass"}
+    retry_count = state.get("retry_count", 0)
+    if retry_count >= 2:
+        return {"next": "pass", "retry_count": retry_count}
 
     llm = None
     if config.enable_offline_mode or not config.google_api_key:
@@ -87,9 +82,9 @@ def reviewer_node(state: Dict[str, Any]) -> Dict[str, Any]:
             )
 
             # Trả về feedback để trigger workflow chạy lại
-            return {"messages": [feedback_msg], "next": "fail"}
+            return {"messages": [feedback_msg], "next": "fail", "retry_count": retry_count + 1}
 
-        return {"next": "pass"}
+        return {"next": "pass", "retry_count": retry_count}
     except Exception as e:
         print(f"Reviewer Error: {e}")
-        return {"next": "pass"}  # Fail open
+        return {"next": "pass", "retry_count": retry_count}  # Fail open

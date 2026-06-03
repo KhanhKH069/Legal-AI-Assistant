@@ -23,6 +23,11 @@ def _get_caselaw_retriever():
     return get_hybrid_retriever("legal_caselaw")
 
 
+def _get_qa_retriever():
+    """Lazy singleton for QA retriever."""
+    return get_hybrid_retriever("legal_qa")
+
+
 @tool
 def search_statutory_law(query: str, top_k: int = 5) -> str:
     """
@@ -184,6 +189,36 @@ def find_related_caselaw(article_name: str, top_k: int = 3) -> str:
 
 
 @tool
+def search_legal_qa(query: str, top_k: int = 5) -> str:
+    """
+    Tìm kiếm các câu hỏi đáp pháp luật, tư vấn pháp lý.
+
+    Dùng khi người dùng hỏi các tình huống thực tiễn, cách giải quyết cụ thể.
+
+    Args:
+        query: Câu hỏi tình huống cần tư vấn
+        top_k: Số lượng kết quả trả về (mặc định 5)
+    """
+    try:
+        retriever = _get_qa_retriever()
+        results = retriever.retrieve(query, top_k=top_k)
+
+        if not results:
+            return "Không tìm thấy câu hỏi đáp tương tự. Hãy dựa vào quy định pháp luật để tự phân tích."
+
+        parts = [f"**KẾT QUẢ TRA CỨU HỎI ĐÁP PHÁP LUẬT**:\n"]
+        for i, r in enumerate(results, 1):
+            parts.append(f"[{i}] **Tình huống**: {r.get('metadata', {}).get('question', 'Hỏi đáp')}")
+            parts.append(f"    {r.get('content', '')[:1000].strip()}")
+            parts.append("")
+
+        return "\n".join(parts)
+
+    except Exception as e:
+        return f"Lỗi khi tra cứu QA: {str(e)}"
+
+
+@tool
 def search_law_graph(article_name: str) -> str:
     """
     Tìm kiếm mối liên hệ (Đồ thị) của một Điều luật cụ thể trong Pháp điển bằng Neo4j.
@@ -256,6 +291,7 @@ legal_tools = [
     search_statutory_law,
     search_case_law,
     find_related_caselaw,
+    search_legal_qa,
     search_law_graph,
     search_web_for_latest_laws,
 ]

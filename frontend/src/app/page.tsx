@@ -111,7 +111,7 @@ export default function LegalAssistant() {
         setIsRecording(false);
         setIsTranscribing(true);
         try {
-          const res = await fetch('http://localhost:8000/api/stt', {
+          const res = await fetch('http://127.0.0.1:8000/api/stt', {
             method: 'POST',
             body: formData,
           });
@@ -155,7 +155,7 @@ export default function LegalAssistant() {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:8000/chat', {
+      const res = await fetch('http://127.0.0.1:8000/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: 'guest_legal', message: userMsg.content }),
@@ -185,7 +185,7 @@ export default function LegalAssistant() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('http://localhost:8000/contract/review', {
+      const res = await fetch('http://127.0.0.1:8000/contract/review', {
         method: 'POST',
         body: formData,
       });

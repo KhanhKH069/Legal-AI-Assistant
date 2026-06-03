@@ -47,14 +47,14 @@ def _build_chroma_client():
     # Try best multilingual model, fallback to smaller one
     try:
         emb_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-            model_name="intfloat/multilingual-e5-large"
+            model_name="truro7/vn-law-embedding"
         )
-        print("[INDEX] Using embedding: multilingual-e5-large")
+        print("[INDEX] Using embedding: truro7/vn-law-embedding")
     except Exception:
         emb_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-            model_name="paraphrase-multilingual-MiniLM-L12-v2"
+            model_name="dangvantuan/vietnamese-document-embedding"
         )
-        print("[INDEX] Using embedding: MiniLM-L12-v2 (fallback)")
+        print("[INDEX] Using embedding: dangvantuan/vietnamese-document-embedding (fallback)")
 
     return client, emb_fn
 

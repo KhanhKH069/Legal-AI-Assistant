@@ -18,7 +18,7 @@ async def test_caselaw_agent_basic():
     assert len(result["messages"]) > 0
     assert "Án lệ" in result["messages"][0]["content"]
 
-def test_hybrid_search_initialization():
-    # Ensure retriever can be imported without crashing
-    from src.services.hybrid_retriever import hybrid_search_docs
-    assert callable(hybrid_search_docs)
+def test_hybrid_retriever_initialization():
+    # Ensure HybridRetriever can be imported without crashing
+    from src.services.hybrid_retriever import HybridRetriever, get_hybrid_retriever
+    assert callable(get_hybrid_retriever)

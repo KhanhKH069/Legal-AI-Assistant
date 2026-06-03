@@ -50,8 +50,8 @@ def _get_reranker():
     try:
         from sentence_transformers import CrossEncoder
 
-        print("[HybridRetriever] Loading BAAI/bge-reranker-v2-m3...")
-        _reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")
+        print("[HybridRetriever] Loading huynhdat543/VietNamese_law_rerank...")
+        _reranker = CrossEncoder("huynhdat543/VietNamese_law_rerank")
         print("[HybridRetriever] Reranker loaded")
     except Exception as e:
         print(f"[HybridRetriever] Reranker not available ({e}) – skipping rerank step")
@@ -89,7 +89,7 @@ class HybridRetriever:
         self.load_bm25()
 
     def load_bm25(self):
-        """Load BM25 index from disk, rebuild if missing or corrupted."""
+        """Load BM25 index from disk, skip if missing or corrupted."""
         if self.bm25_index_path.exists() and self.bm25_corpus_path.exists():
             try:
                 with open(self.bm25_index_path, "rb") as f:
@@ -98,8 +98,11 @@ class HybridRetriever:
                     self.corpus_data = json.load(f)
                 return
             except Exception as e:
-                print(f"[HybridRetriever] Error loading BM25 index: {e} – rebuilding")
-        self.build_bm25()
+                import logging
+                logging.warning(f"[HybridRetriever] Error loading BM25 index: {e} – skipping")
+        else:
+            import logging
+            logging.warning("[HybridRetriever] BM25 index not found. Keyword search will be disabled until index is built offline.")
 
     def build_bm25(self):
         """Build BM25 index from current ChromaDB data using Vietnamese tokenizer."""

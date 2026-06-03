@@ -49,6 +49,7 @@ class AgentState(TypedDict):
     user_intent: str
     user_id: str
     user_info: dict
+    retry_count: int
 
 
 _ORCHESTRATOR_PROMPT = """Bạn là bộ phân loại ý định cho hệ thống **Legal AI Assistant** — Trợ lý Pháp lý AI Việt Nam.
@@ -124,6 +125,7 @@ def orchestrator_node(state: AgentState):
         "user_intent": response_clean,
         "user_id": state.get("user_id", ""),
         "user_info": state.get("user_info", {}),
+        "retry_count": 0,
     }
 
 

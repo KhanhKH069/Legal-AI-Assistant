@@ -106,9 +106,7 @@ _INTENT_LABELS: Dict[str, str] = {
 }
 
 
-@router.post(
-    "", response_model=ChatResponse, dependencies=[Depends(RateLimiter(_chat_limiter))]
-)
+@router.post("", response_model=ChatResponse)
 def chat_endpoint(payload: ChatRequest, request: Request) -> ChatResponse:
     user_id = payload.user_id
     graph = request.app.state.graph
@@ -188,8 +186,7 @@ def clear_chat_history(user_id: str) -> Dict:
 
 @router.post(
     "/stream",
-    summary="Streaming Chat (SSE)",
-    dependencies=[Depends(RateLimiter(_chat_limiter))],
+    summary="Streaming Chat (SSE)"
 )
 async def chat_stream_endpoint(
     payload: ChatRequest,
@@ -335,7 +332,7 @@ class GuestChatRequest(BaseModel):
 
 
 @router.post(
-    "/guest", tags=["Guest Chat"], dependencies=[Depends(RateLimiter(_chat_limiter))]
+    "/guest", tags=["Guest Chat"]
 )
 async def guest_chat(req: GuestChatRequest, request: Request):
     guest_graph = request.app.state.guest_graph
@@ -370,8 +367,7 @@ async def guest_chat(req: GuestChatRequest, request: Request):
 
 @router.post(
     "/guest/stream",
-    tags=["Guest Chat"],
-    dependencies=[Depends(RateLimiter(_chat_limiter))],
+    tags=["Guest Chat"]
 )
 async def guest_chat_stream(req: GuestChatRequest, request: Request):
     guest_graph = request.app.state.guest_graph

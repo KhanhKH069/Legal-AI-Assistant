@@ -11,7 +11,7 @@ router = APIRouter()
 # Initialize the model at module level so it loads only once.
 # Using 'tiny' model and INT8 quantization for maximum speed on CPU/GPU.
 try:
-    model = WhisperModel("tiny", device="cpu", compute_type="int8")
+    model = WhisperModel("small", device="cuda", compute_type="float16")
 except Exception as e:
     logger.error(f"Failed to load WhisperModel: {e}")
     model = None

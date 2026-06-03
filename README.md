@@ -29,18 +29,30 @@ Hệ thống được thiết kế dưới dạng **Multi-Agent** (nhiều AI t�
 
 - **Backend:** FastAPI (Python)
 - **AI Orchestration:** LangGraph & LangChain
-- **LLM Core:** Google Gemini 1.5 Pro
+- **LLM Core:** Google Gemini 1.5 Pro (hoặc các LLM qua API)
 - **Vector Database:** ChromaDB (Lưu trữ Vector dưới local, không tốn phí cloud)
 - **Keyword Index:** Rank-BM25
 - **Frontend:** Next.js (React), TailwindCSS, React-Markdown, Mermaid.js
 - **PDF Extraction:** PyMuPDF (fitz)
+
+### 🧠 Các Model AI Offline (HuggingFace)
+Hệ thống sử dụng cấu hình các model nội bộ chạy 100% offline (yêu cầu VRAM tối đa ~5GB) để xử lý dữ liệu:
+1. **Embedding Models (Vector DB)**:
+   - *Primary:* `truro7/vn-law-embedding` (Độ chính xác cao nhất cho Pháp luật VN).
+   - *Fallback:* `dangvantuan/vietnamese-document-embedding` (Phổ quát tiếng Việt).
+2. **Reranker (Hybrid Search)**:
+   - `huynhdat543/VietNamese_law_rerank` (Tối ưu điểm số BM25 + Vector).
+3. **Semantic Cache**:
+   - `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (Tăng tốc xử lý câu hỏi trùng lặp).
+4. **Speech-to-Text (STT)**:
+   - `Systran/faster-whisper-small` (Xử lý âm thanh, tối ưu CUDA).
 
 ---
 
 ## 📂 CẤU TRÚC THƯ MỤC (PROJECT TREE)
 
 ```text
-hr-ai-agent-pure-vector/
+Legal-AI-Assistant/
 ├── api/                # Backend API Server (FastAPI)
 ├── frontend/           # Giao diện người dùng (Next.js, React)
 ├── dashboard/          # Trang quản trị / Dashboard

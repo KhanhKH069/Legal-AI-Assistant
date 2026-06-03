@@ -65,17 +65,17 @@ class VectorDB:
                 try:
                     self.embedding_function = (
                         embedding_functions.SentenceTransformerEmbeddingFunction(
-                            model_name="intfloat/multilingual-e5-large"
+                            model_name="truro7/vn-law-embedding"
                         )
                     )
-                    print("[VectorDB] Using multilingual-e5-large embedding model")
+                    print("[VectorDB] Using truro7/vn-law-embedding model")
                 except Exception:
                     self.embedding_function = (
                         embedding_functions.SentenceTransformerEmbeddingFunction(
-                            model_name="paraphrase-multilingual-MiniLM-L12-v2"
+                            model_name="dangvantuan/vietnamese-document-embedding"
                         )
                     )
-                    print("[VectorDB] Using MiniLM-L12-v2 embedding model (fallback)")
+                    print("[VectorDB] Using dangvantuan/vietnamese-document-embedding model (fallback)")
             except Exception as e:
                 print(f"Failed to init Multilingual Embeddings: {e}")
 

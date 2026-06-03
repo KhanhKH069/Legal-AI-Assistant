@@ -13,7 +13,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, File, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
+
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from pydantic import BaseModel
 
@@ -50,25 +50,35 @@ async def lifespan(app: FastAPI):
     import subprocess
     import sys
 
+    logger = logging.getLogger("api")
+
     print("[ALEMBIC] Đang chạy Database Migrations tự động...")
     try:
         subprocess.run([sys.executable, "-m", "alembic", "upgrade", "head"], check=True)
     except Exception as e:
         print(f"[ALEMBIC] Lỗi khi chạy migration: {e}")
 
+    try:
+        import redis.asyncio as redis_async
+        from fastapi_limiter import FastAPILimiter
+        _redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+        redis_conn = redis_async.from_url(_redis_url, encoding="utf8", decode_responses=True)
+        await FastAPILimiter.init(redis_conn)
+        print("✅ Rate Limiter (Redis) enabled")
+    except ImportError:
+        print("Rate Limiter: fastapi_limiter not available, skipping")
+    except Exception as e:
+        print(f"Failed to init Rate Limiter: {e}")
+
     if config.enable_offline_mode or not config.google_api_key:
         app.state.graph = None
         app.state.guest_graph = None
 
-        # Enable Semantic Cache
-        import logging
-
-        logger = logging.getLogger("api")
         logger.info("Offline mode enabled, LLM caching disabled.")
     else:
         from src.agents.orchestrator import create_legal_agent_graph
         from src.agents.guest_orchestrator import create_guest_agent_graph
-        from langchain.globals import set_llm_cache
+        from langchain_core.globals import set_llm_cache
         from langchain_community.cache import RedisSemanticCache
         from langchain_community.embeddings import HuggingFaceEmbeddings
 
@@ -107,7 +117,7 @@ async def lifespan(app: FastAPI):
     # ── LangChain LLM Cache (Redis-backed) ─────────────────
     if not config.enable_offline_mode:
         try:
-            from langchain.globals import set_llm_cache
+            from langchain_core.globals import set_llm_cache
             from langchain_community.cache import RedisCache
             import redis
             import os
@@ -167,7 +177,4 @@ def get_metrics_summary():
     return get_metrics_collector().get_summary()
 
 
-# Mount static files for frontend UI
-# Important: Do this at the end so it doesn't override API routes
-public_path = pathlib.Path(__file__).parent.parent / "public"
-app.mount("/app", StaticFiles(directory=str(public_path), html=True), name="static")
+
