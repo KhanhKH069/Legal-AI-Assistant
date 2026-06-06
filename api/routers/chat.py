@@ -103,8 +103,8 @@ _INTENT_LABELS: Dict[str, str] = {
 
 
 @router.post("", response_model=ChatResponse)
-def chat_endpoint(payload: ChatRequest, request: Request) -> ChatResponse:
-    user_id = payload.user_id
+def chat_endpoint(payload: ChatRequest, request: Request, current_user: User = Depends(get_current_user)) -> ChatResponse:
+    user_id = current_user.employee_id or current_user.username
     graph = request.app.state.graph
 
     human_msg = HumanMessage(content=payload.message)
@@ -160,7 +160,7 @@ def chat_endpoint(payload: ChatRequest, request: Request) -> ChatResponse:
 
 
 @router.get("/history/{user_id}", summary="Get Conversation History")
-def get_chat_history(user_id: str) -> Dict:
+def get_chat_history(user_id: str, current_user: User = Depends(get_current_user)) -> Dict:
     history = _load_history(user_id)
     messages = []
     for msg in history:
@@ -174,7 +174,7 @@ def get_chat_history(user_id: str) -> Dict:
 
 
 @router.delete("/history/{user_id}", summary="Clear Conversation History")
-def clear_chat_history(user_id: str) -> Dict:
+def clear_chat_history(user_id: str, current_user: User = Depends(get_current_user)) -> Dict:
     _clear_history(user_id)
     return {"user_id": user_id, "status": "cleared"}
 
@@ -367,6 +367,9 @@ async def guest_chat_stream(req: GuestChatRequest, request: Request):
     human_msg = HumanMessage(content=req.message)
 
     async def generate():
+        full_text = ""
+        intent_str = "STATUTORY"
+        intent_sent = False
         try:
             initial_state = {
                 "messages": [human_msg],
@@ -374,41 +377,60 @@ async def guest_chat_stream(req: GuestChatRequest, request: Request):
                 "user_intent": "",
                 "session_id": req.session_id,
             }
-            result = guest_graph.invoke(initial_state)
-            messages = result.get("messages", [])
-            last = next(
-                (m for m in reversed(messages) if isinstance(m, AIMessage)), None
-            )
-            full_text = (
-                last.content
-                if last
-                else "Xin lỗi, tôi chưa thể trả lời câu hỏi này. Vui lòng liên hệ phapche@paraline.vn."
-            )
-            if isinstance(full_text, list):
-                text_parts = []
-                for block in full_text:
-                    if isinstance(block, dict) and "text" in block:
-                        text_parts.append(block["text"])
-                    elif isinstance(block, str):
-                        text_parts.append(block)
-                full_text = " ".join(text_parts)
+            config_dict = {"configurable": {"thread_id": req.session_id}}
 
-            words = str(full_text).split(" ")
-            for i, word in enumerate(words):
-                payload: dict = {
-                    "token": word + (" " if i < len(words) - 1 else ""),
-                    "done": False,
-                }
-                if i == 0:
-                    payload["intent"] = "STATUTORY"
-                yield f"data: {_json.dumps(payload)}\n\n"
-                await asyncio.sleep(0.025)
+            try:
+                async for event in guest_graph.astream_events(initial_state, config=config_dict, version="v2"):
+                    kind = event.get("event", "")
+                    if kind == "on_chat_model_stream":
+                        chunk_data = event.get("data", {})
+                        chunk_msg = chunk_data.get("chunk")
+                        if chunk_msg is not None:
+                            token_text = getattr(chunk_msg, "content", "")
+                            if isinstance(token_text, list):
+                                token_text = " ".join(
+                                    b.get("text", "") if isinstance(b, dict) else str(b)
+                                    for b in token_text
+                                )
+                            if token_text:
+                                full_text += token_text
+                                payload_data: dict = {"token": token_text, "done": False, "type": "text"}
+                                if not intent_sent:
+                                    payload_data["intent"] = intent_str
+                                    intent_sent = True
+                                yield f"data: {_json.dumps(payload_data)}\n\n"
+                                await asyncio.sleep(0.01)
+                    elif kind == "on_tool_start":
+                        tool_name = event.get("name", "tool")
+                        yield f"data: {_json.dumps({'token': f'\n⏳ Đang tra cứu ({tool_name})...\n', 'done': False, 'type': 'tool_start'})}\n\n"
+                    elif kind == "on_tool_end":
+                        tool_name = event.get("name", "tool")
+                        yield f"data: {_json.dumps({'token': f'✅ Tìm thấy kết quả từ {tool_name}.\n\n', 'done': False, 'type': 'tool_end'})}\n\n"
+                    elif kind == "on_chain_end":
+                        output = event.get("data", {}).get("output", {})
+                        if isinstance(output, dict) and output.get("user_intent"):
+                            intent_str = output["user_intent"]
+
+            except Exception as stream_err:
+                logger.warning("Guest astream_events failed (%s) – falling back to invoke", stream_err)
+                result = guest_graph.invoke(initial_state)
+                messages = result.get("messages", [])
+                last = next((m for m in reversed(messages) if isinstance(m, AIMessage)), None)
+                full_text = getattr(last, "content", "") if last else ""
+                intent_str = result.get("user_intent", "STATUTORY")
+                if isinstance(full_text, list):
+                    full_text = " ".join(
+                        b.get("text", "") if isinstance(b, dict) else str(b) for b in full_text
+                    )
+                words = str(full_text).split(" ")
+                for i, word in enumerate(words):
+                    chunk = word + (" " if i < len(words) - 1 else "")
+                    yield f"data: {_json.dumps({'token': chunk, 'done': False, 'intent': intent_str if i == 0 else None})}\n\n"
+                    await asyncio.sleep(0.02)
+
         except Exception as e:
-            logger.error("Guest stream error: %s", e)
-            err = _json.dumps(
-                {"token": "Đã xảy ra lỗi. Vui lòng thử lại.", "done": False}
-            )
-            yield f"data: {err}\n\n"
+            logger.error("Guest stream error: %s", e, exc_info=True)
+            yield f"data: {_json.dumps({'token': 'Đã xảy ra lỗi. Vui lòng thử lại.', 'done': False})}\n\n"
 
         yield f"data: {_json.dumps({'token': '', 'done': True})}\n\n"
 

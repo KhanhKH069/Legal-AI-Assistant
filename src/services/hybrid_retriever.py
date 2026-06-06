@@ -1,6 +1,7 @@
 import json
 import logging
 import pickle
+import threading
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -13,29 +14,50 @@ import re
 logger = logging.getLogger(__name__)
 
 
+try:
+    from underthesea import word_tokenize as _vn_tokenize
+    _USE_UNDERTHESEA = True
+    logger.info('[HybridRetriever] Using underthesea Vietnamese word tokenizer')
+except ImportError:
+    _USE_UNDERTHESEA = False
+    logger.warning('[HybridRetriever] underthesea not available, falling back to regex tokenizer')
+
+
 def _tokenize(text: str) -> List[str]:
+    """Tokenize Vietnamese text. Uses underthesea word segmentation when available."""
+    if _USE_UNDERTHESEA:
+        try:
+            return _vn_tokenize(text.lower(), format='text').split()
+        except Exception:
+            pass
+    # Fallback: character-level regex
     return re.findall(r'\w+', text.lower())
 
 
-logger.debug('[HybridRetriever] Using fast regex tokenizer')
+logger.debug('[HybridRetriever] Tokenizer ready')
 
 _reranker = None
 _reranker_loaded = False
+_reranker_lock = threading.Lock()
 
 
 def _get_reranker():
     global _reranker, _reranker_loaded
     if _reranker_loaded:
         return _reranker
-    try:
-        from sentence_transformers import CrossEncoder
-        logger.info('[HybridRetriever] Loading huynhdat543/VietNamese_law_rerank...')
-        _reranker = CrossEncoder('huynhdat543/VietNamese_law_rerank', trust_remote_code=True)
-        logger.info('[HybridRetriever] Reranker loaded successfully')
-    except Exception as e:
-        logger.warning('[HybridRetriever] Reranker not available (%s) – skipping rerank step', e)
-        _reranker = None
-    _reranker_loaded = True
+    with _reranker_lock:
+        # Double-checked locking
+        if _reranker_loaded:
+            return _reranker
+        try:
+            from sentence_transformers import CrossEncoder
+            logger.info('[HybridRetriever] Loading huynhdat543/VietNamese_law_rerank...')
+            _reranker = CrossEncoder('huynhdat543/VietNamese_law_rerank', trust_remote_code=True)
+            logger.info('[HybridRetriever] Reranker loaded successfully')
+        except Exception as e:
+            logger.warning('[HybridRetriever] Reranker not available (%s) – skipping rerank step', e)
+            _reranker = None
+        _reranker_loaded = True
     return _reranker
 
 

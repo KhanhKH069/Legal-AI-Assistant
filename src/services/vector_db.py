@@ -102,11 +102,11 @@ class VectorDB:
             return False
 
 
-_vector_db_instance = None
+_vector_db_instances: Dict[str, 'VectorDB'] = {}
 
 
-def get_vector_db(persist_directory: str = './chroma_db') -> VectorDB:
-    global _vector_db_instance
-    if _vector_db_instance is None:
-        _vector_db_instance = VectorDB(persist_directory)
-    return _vector_db_instance
+def get_vector_db(persist_directory: str = './chroma_db') -> 'VectorDB':
+    global _vector_db_instances
+    if persist_directory not in _vector_db_instances:
+        _vector_db_instances[persist_directory] = VectorDB(persist_directory)
+    return _vector_db_instances[persist_directory]

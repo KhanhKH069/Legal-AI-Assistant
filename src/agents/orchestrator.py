@@ -1,5 +1,6 @@
 import logging
 import operator
+from functools import lru_cache
 from typing import Annotated, Literal, Sequence, TypedDict
 
 from langchain_core.messages import BaseMessage
@@ -16,7 +17,11 @@ logger = logging.getLogger(__name__)
 _VALID_AGENTS = {'STATUTORY': 'statutory_agent', 'CASELAW': 'caselaw_agent'}
 _MAX_ROUTING_RETRIES = 2
 
-llm = get_llm()
+
+@lru_cache(maxsize=1)
+def _get_llm():
+    """Lazy, cached LLM initialization."""
+    return get_llm()
 
 
 class IntentRouting(BaseModel):
@@ -62,7 +67,7 @@ def create_orchestrator():
         ('system', _ORCHESTRATOR_PROMPT),
         MessagesPlaceholder(variable_name='messages'),
     ])
-    structured_llm = llm.with_structured_output(IntentRouting)
+    structured_llm = _get_llm().with_structured_output(IntentRouting)
     return prompt | structured_llm
 
 
@@ -151,16 +156,16 @@ def create_legal_agent_graph():
     def route_caselaw(state: AgentState) -> str:
         messages = state.get('messages', [])
         if not messages:
-            return 'end'
+            return 'reviewer_node'
         last = messages[-1]
         if hasattr(last, 'tool_calls') and last.tool_calls:
             return 'caselaw_tools'
-        return 'end'
+        return 'reviewer_node'
 
     workflow.add_conditional_edges(
         'caselaw_agent',
         route_caselaw,
-        {'caselaw_tools': 'caselaw_tools', 'end': END},
+        {'caselaw_tools': 'caselaw_tools', 'reviewer_node': 'reviewer_node'},
     )
     workflow.add_edge('caselaw_tools', 'caselaw_agent')
 

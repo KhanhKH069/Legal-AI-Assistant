@@ -1,13 +1,22 @@
 import json
 import argparse
+import logging
 import sys
 from pathlib import Path
 from tqdm import tqdm
+
+try:
+    from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+    _HAS_TENACITY = True
+except ImportError:
+    _HAS_TENACITY = False
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.core.llm import get_llm
 from src.services.hybrid_retriever import get_hybrid_retriever
 from langchain_core.messages import HumanMessage, SystemMessage
+
+logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = '''Bạn là một Luật sư xuất sắc, chuyên tư vấn pháp luật doanh nghiệp Việt Nam.
 Nhiệm vụ của bạn là đọc các văn bản pháp luật được cung cấp và viết câu trả lời ngắn gọn, chính xác cho câu hỏi.
@@ -75,6 +84,31 @@ def get_context_text(results: list) -> str:
     return '\n'.join(parts)
 
 
+def _invoke_with_retry(llm, messages, max_attempts: int = 3):
+    """Invoke LLM with retry on failure."""
+    last_err = None
+    for attempt in range(1, max_attempts + 1):
+        try:
+            return llm.invoke(messages)
+        except Exception as e:
+            last_err = e
+            logger.warning('[LLM] Attempt %d/%d failed: %s', attempt, max_attempts, e)
+    raise RuntimeError(f'LLM failed after {max_attempts} attempts') from last_err
+
+
+def _retrieve_with_retry(retriever, question: str, top_k: int = 5, max_attempts: int = 3):
+    """Retrieve with retry on failure."""
+    last_err = None
+    for attempt in range(1, max_attempts + 1):
+        try:
+            return retriever.retrieve(question, top_k=top_k)
+        except Exception as e:
+            last_err = e
+            logger.warning('[Retriever] Attempt %d/%d failed: %s', attempt, max_attempts, e)
+    logger.error('[Retriever] All %d attempts failed: %s', max_attempts, last_err)
+    return []
+
+
 def generate_submission(input_file: str, output_file: str):
     print(f'Reading test data from {input_file}...')
     try:
@@ -105,23 +139,19 @@ def generate_submission(input_file: str, output_file: str):
         question_id = item.get('id')
         question = item.get('question')
 
-        try:
-            retrieved = retriever.retrieve(question, top_k=5)
-        except Exception as e:
-            print(f'[Q{question_id}] Retrieval error: {e}')
-            retrieved = []
+        retrieved = _retrieve_with_retry(retriever, question, top_k=5)
 
         relevant_docs, relevant_articles = build_citations_from_metadata(retrieved)
         context_text = get_context_text(retrieved)
         prompt = f'Câu hỏi: {question}\n\nCăn cứ pháp luật:\n{context_text}'
         try:
-            response = llm.invoke([
+            response = _invoke_with_retry(llm, [
                 SystemMessage(content=SYSTEM_PROMPT),
                 HumanMessage(content=prompt)
             ])
             answer = response.content.strip()
         except Exception as e:
-            print(f'[Q{question_id}] LLM error: {e}')
+            logger.error('[Q%s] LLM failed after all retries: %s', question_id, e)
             answer = 'Hệ thống gặp lỗi trong quá trình xử lý.'
 
         result_item = {

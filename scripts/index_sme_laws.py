@@ -43,14 +43,14 @@ def index_sme_laws():
     for start in tqdm(range(0, len(sme_df), BATCH), desc='Indexing SME Laws'):
         batch = sme_df.iloc[start:start + BATCH]
         documents, metadatas, ids = ([], [], [])
-        for idx, row in batch.iterrows():
-            content_text = _clean_text(row.get('content_text'))
-            article_title = _clean_text(row.get('article_title'))
-            chapter_title = _clean_text(row.get('chapter_title'))
-            subject_title = _clean_text(row.get('subject_title'))
-            topic_title = _clean_text(row.get('topic_title'))
-            source_note = _clean_text(row.get('source_note_text'))
-            source_url = _clean_text(row.get('source_url'))
+        for row in batch.itertuples(index=True):
+            content_text = _clean_text(getattr(row, 'content_text', None))
+            article_title = _clean_text(getattr(row, 'article_title', None))
+            chapter_title = _clean_text(getattr(row, 'chapter_title', None))
+            subject_title = _clean_text(getattr(row, 'subject_title', None))
+            topic_title = _clean_text(getattr(row, 'topic_title', None))
+            source_note = _clean_text(getattr(row, 'source_note_text', None))
+            source_url = _clean_text(getattr(row, 'source_url', None))
             if not content_text:
                 continue
             text_blob = f'Chủ đề: {topic_title}\nĐề mục: {subject_title}\nChương: {chapter_title}\nĐiều: {article_title}\nNội dung:\n{content_text}'
@@ -58,7 +58,7 @@ def index_sme_laws():
                 text_blob += f'\nNguồn: {source_note}'
             text_blob = text_blob[:4000]
             meta = {'article_title': article_title or 'Không rõ', 'chapter_title': chapter_title or '', 'subject_title': subject_title or '', 'topic_title': topic_title or '', 'source_url': source_url or '', 'source_note': source_note[:500] if source_note else '', 'law_type': 'statutory'}
-            doc_id = f'sme_law_{start}_{idx}'
+            doc_id = f'sme_law_{start}_{row.Index}'
             documents.append(text_blob)
             metadatas.append(meta)
             ids.append(doc_id)

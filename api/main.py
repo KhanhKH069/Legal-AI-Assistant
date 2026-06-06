@@ -12,6 +12,7 @@ from api.routers import audit, auth, chat, document_review, stt
 from src.core.config import config
 from src.core.logging_config import setup_logging
 from src.db import init_db
+from src.services.metrics import get_metrics_collector
 
 setup_logging()
 
@@ -81,18 +82,6 @@ async def lifespan(app: FastAPI):
         os.environ['LANGCHAIN_PROJECT'] = os.getenv('LANGCHAIN_PROJECT', 'legal-ai-assistant')
         logger.info('LangSmith tracing enabled → project: %s', os.environ['LANGCHAIN_PROJECT'])
 
-    if not config.enable_offline_mode:
-        try:
-            import redis
-            from langchain_community.cache import RedisCache
-            from langchain_core.globals import set_llm_cache
-            redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
-            redis_client = redis.Redis.from_url(redis_url)
-            set_llm_cache(RedisCache(redis_=redis_client))
-            logger.info('LangChain LLM cache enabled (Redis) → %s', redis_url)
-        except Exception as e:
-            logger.warning('LangChain cache not initialised: %s', e)
-
     yield
 
 
@@ -122,9 +111,6 @@ app.include_router(audit.router)
 app.include_router(chat.router)
 app.include_router(document_review.router)
 app.include_router(stt.router, prefix='/api', tags=['Speech-to-Text'])
-
-from src.services.metrics import get_metrics_collector
-
 
 @app.get('/health', tags=['System'])
 def health_check():

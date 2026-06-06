@@ -1,19 +1,28 @@
+import logging
+
 from langchain_core.tools import tool
+
 from src.services.hybrid_retriever import get_hybrid_retriever
 from src.services.graph_db import get_graph_db
 from duckduckgo_search import DDGS
 
+logger = logging.getLogger(__name__)
+
+
 def _get_statutory_retriever():
     return get_hybrid_retriever('legal_statutory')
+
 
 def _get_caselaw_retriever():
     return get_hybrid_retriever('legal_caselaw')
 
+
 def _get_qa_retriever():
     return get_hybrid_retriever('legal_qa')
 
+
 @tool
-def search_statutory_law(query: str, top_k: int=5) -> str:
+def search_statutory_law(query: str, top_k: int = 5) -> str:
     """Tra cứu các điều luật (pháp điển) liên quan đến câu hỏi."""
     try:
         retriever = _get_statutory_retriever()
@@ -45,10 +54,12 @@ def search_statutory_law(query: str, top_k: int=5) -> str:
             parts.append('')
         return '\n'.join(parts)
     except Exception as e:
+        logger.error('search_statutory_law error for query "%s"', query, exc_info=True)
         return f"Lỗi khi tra cứu Pháp điển: {str(e)}. Kiểm tra lại collection 'legal_statutory' đã được index chưa."
 
+
 @tool
-def search_case_law(query: str, top_k: int=5) -> str:
+def search_case_law(query: str, top_k: int = 5) -> str:
     """Tra cứu các bản án, án lệ liên quan đến tình huống."""
     try:
         retriever = _get_caselaw_retriever()
@@ -87,10 +98,12 @@ def search_case_law(query: str, top_k: int=5) -> str:
             parts.append('')
         return '\n'.join(parts)
     except Exception as e:
+        logger.error('search_case_law error for query "%s"', query, exc_info=True)
         return f"Lỗi khi tra cứu Án lệ: {str(e)}. Kiểm tra lại collection 'legal_caselaw' đã được index chưa."
 
+
 @tool
-def find_related_caselaw(article_name: str, top_k: int=3) -> str:
+def find_related_caselaw(article_name: str, top_k: int = 3) -> str:
     """Tìm bản án hoặc án lệ đã từng áp dụng một điều luật cụ thể."""
     try:
         retriever = _get_caselaw_retriever()
@@ -110,10 +123,12 @@ def find_related_caselaw(article_name: str, top_k: int=3) -> str:
             parts.append('')
         return '\n'.join(parts)
     except Exception as e:
+        logger.error('find_related_caselaw error for article "%s"', article_name, exc_info=True)
         return f'Lỗi khi tìm án lệ liên quan: {str(e)}'
 
+
 @tool
-def search_legal_qa(query: str, top_k: int=5) -> str:
+def search_legal_qa(query: str, top_k: int = 5) -> str:
     """Tra cứu các câu hỏi đáp pháp luật liên quan."""
     try:
         retriever = _get_qa_retriever()
@@ -127,7 +142,9 @@ def search_legal_qa(query: str, top_k: int=5) -> str:
             parts.append('')
         return '\n'.join(parts)
     except Exception as e:
+        logger.error('search_legal_qa error for query "%s"', query, exc_info=True)
         return f'Lỗi khi tra cứu QA: {str(e)}'
+
 
 @tool
 def search_law_graph(article_name: str) -> str:
@@ -135,7 +152,12 @@ def search_law_graph(article_name: str) -> str:
     db = get_graph_db()
     if not db.driver:
         return 'Tính năng GraphRAG chưa được cấu hình. Neo4j chưa chạy.'
-    query = '\n    MATCH (t:Topic)-[:HAS_SUBJECT]->(s:Subject)-[:HAS_CHAPTER]->(c:Chapter)-[:HAS_ARTICLE]->(a:Article)\n    WHERE a.title CONTAINS $article_name\n    RETURN t.name as topic, s.name as subject, c.name as chapter, a.title as article, a.content as content\n    LIMIT 3\n    '
+    query = '''
+    MATCH (t:Topic)-[:HAS_SUBJECT]->(s:Subject)-[:HAS_CHAPTER]->(c:Chapter)-[:HAS_ARTICLE]->(a:Article)
+    WHERE a.title CONTAINS $article_name
+    RETURN t.name as topic, s.name as subject, c.name as chapter, a.title as article, a.content as content
+    LIMIT 3
+    '''
     try:
         results = db.query(query, {'article_name': article_name})
         if not results:
@@ -146,10 +168,12 @@ def search_law_graph(article_name: str) -> str:
             parts.append(f"    {r['content'][:300]}...")
         return '\n'.join(parts)
     except Exception as e:
+        logger.error('search_law_graph error for article "%s"', article_name, exc_info=True)
         return f'Lỗi truy vấn Graph: {str(e)}'
 
+
 @tool
-def search_web_for_latest_laws(query: str, max_results: int=3) -> str:
+def search_web_for_latest_laws(query: str, max_results: int = 3) -> str:
     """Tìm kiếm web cho các quy định pháp luật mới nhất."""
     try:
         with DDGS() as ddgs:
@@ -164,5 +188,15 @@ def search_web_for_latest_laws(query: str, max_results: int=3) -> str:
             parts.append('')
         return '\n'.join(parts)
     except Exception as e:
+        logger.error('search_web_for_latest_laws error for query "%s"', query, exc_info=True)
         return f'Lỗi Web Search: {str(e)}'
-legal_tools = [search_statutory_law, search_case_law, find_related_caselaw, search_legal_qa, search_law_graph, search_web_for_latest_laws]
+
+
+legal_tools = [
+    search_statutory_law,
+    search_case_law,
+    find_related_caselaw,
+    search_legal_qa,
+    search_law_graph,
+    search_web_for_latest_laws,
+]

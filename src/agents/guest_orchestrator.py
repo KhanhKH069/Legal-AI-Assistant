@@ -1,5 +1,6 @@
 import logging
 import operator
+from functools import lru_cache
 from typing import Annotated, Literal, Sequence, TypedDict
 
 from langchain_core.messages import BaseMessage
@@ -15,7 +16,11 @@ from src.tools.legal_tools import search_case_law, search_statutory_law
 
 logger = logging.getLogger(__name__)
 
-llm = get_llm()
+
+@lru_cache(maxsize=1)
+def _get_llm():
+    """Lazy, cached LLM initialization."""
+    return get_llm()
 
 
 class GuestIntentRouting(BaseModel):
@@ -43,7 +48,7 @@ def create_guest_orchestrator():
         ('system', _GUEST_ORCHESTRATOR_PROMPT),
         MessagesPlaceholder(variable_name='messages'),
     ])
-    structured_llm = llm.with_structured_output(GuestIntentRouting)
+    structured_llm = _get_llm().with_structured_output(GuestIntentRouting)
     return prompt | structured_llm
 
 
@@ -72,7 +77,7 @@ def guest_router(state: GuestLegalState) -> str:
 
 
 def create_guest_agent_graph():
-    if llm is None:
+    if _get_llm() is None:
         return None
 
     workflow = StateGraph(GuestLegalState)

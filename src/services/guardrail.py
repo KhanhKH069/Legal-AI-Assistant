@@ -1,7 +1,10 @@
+import logging
 from typing import Dict, Any
 from langchain_core.messages import ToolMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
 from src.core.config import config
+
+logger = logging.getLogger(__name__)
 
 def guardrail_node(state: Dict[str, Any]) -> Dict[str, Any]:
     messages = state.get('messages', [])
@@ -28,5 +31,5 @@ def guardrail_node(state: Dict[str, Any]) -> Dict[str, Any]:
         response = chain.invoke({'context': context, 'query': user_query})
         return {'messages': [response], 'next': 'end', 'user_intent': state.get('user_intent', ''), 'user_id': state.get('user_id', ''), 'user_info': state.get('user_info', {})}
     except Exception as e:
-        print(f'Guardrail error: {e}')
+        logger.error('Guardrail error: %s', e, exc_info=True)
         return state
