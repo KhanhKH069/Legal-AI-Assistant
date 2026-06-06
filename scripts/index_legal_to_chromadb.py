@@ -1,5 +1,6 @@
 import argparse
 import sys
+import re
 from pathlib import Path
 import hashlib
 if hasattr(sys.stdout, 'reconfigure'):
@@ -7,6 +8,49 @@ if hasattr(sys.stdout, 'reconfigure'):
 sys.path.insert(0, str(Path(__file__).parent.parent))
 RAW_DIR = Path('data/raw')
 CHROMA_DIR = './chroma_db'
+
+KNOWN_LAW_NAMES = {
+    '59/2020/QH14': 'Luật Doanh nghiệp',
+    '04/2017/QH14': 'Luật Hỗ trợ doanh nghiệp nhỏ và vừa',
+    '67/2014/QH13': 'Luật Doanh nghiệp',
+    '09/2012/QH13': 'Luật Lao động',
+    '45/2019/QH14': 'Bộ luật Lao động',
+    '91/2015/QH13': 'Bộ luật Dân sự',
+    '05/2020/QH14': 'Luật Doanh nghiệp',
+    '02/2011/QH13': 'Luật Khiếu nại',
+    '97/2015/QH13': 'Luật Phí và lệ phí',
+    '57/2010/QH12': 'Luật Thuế',
+    '81/2006/QH11': 'Luật Cư trú',
+    '32/2004/QH11': 'Luật An ninh Quốc gia',
+}
+
+def parse_source_note(source_note: str) -> dict:
+    """Parse source_note_text to extract doc_code, doc_name, and real_article.
+    Example input: (Điều 14 Luật số 59/2020/QH14 Luật Doanh nghiệp ngày...)
+    Returns: {'doc_code': '59/2020/QH14', 'doc_name': 'Luật Doanh nghiệp', 'real_article': 'Điều 14'}
+    """
+    result = {'doc_code': '', 'doc_name': '', 'real_article': ''}
+    if not source_note:
+        return result
+
+    art_match = re.search(r'Đi[eề]u\s+([\d]+[a-zA-Z]*)', source_note)
+    if art_match:
+        result['real_article'] = f'Điều {art_match.group(1)}'
+
+    code_pattern = r'(?:Luật số|Nghị định số|Thông tư số|Quyết định số|Nghị quyết số|Thông tư liên tịch số)\s+([\w/\-\.]+)'
+    code_match = re.search(code_pattern, source_note)
+    if code_match:
+        raw_code = code_match.group(1).rstrip(',.)')
+        result['doc_code'] = raw_code
+        if raw_code in KNOWN_LAW_NAMES:
+            result['doc_name'] = KNOWN_LAW_NAMES[raw_code]
+        else:
+            name_pattern = rf'{re.escape(raw_code)}[,\s]+(.+?)(?=\s+ngày|\s+của\s+|\s*,\s*có hiệu lực|\s*\)$)'
+            name_match = re.search(name_pattern, source_note)
+            if name_match:
+                result['doc_name'] = name_match.group(1).strip().rstrip(',.)')
+
+    return result
 
 def _build_chroma_client():
     import chromadb
@@ -78,11 +122,26 @@ def index_statutory(max_rows=None, reset: bool=False):
             source_url = _clean_text(row.get('source_url'))
             if not content_text:
                 continue
+            parsed = parse_source_note(source_note)
+            doc_code = parsed['doc_code']
+            doc_name = parsed['doc_name']
+            real_article = parsed['real_article']
             text_blob = f'Chủ đề: {topic_title}\nĐề mục: {subject_title}\nChương: {chapter_title}\nĐiều: {article_title}\nNội dung:\n{content_text}'
             if source_note:
                 text_blob += f'\nNguồn: {source_note}'
             text_blob = text_blob[:4000]
-            meta = {'article_title': article_title or 'Không rõ', 'chapter_title': chapter_title or '', 'subject_title': subject_title or '', 'topic_title': topic_title or '', 'source_url': source_url or '', 'source_note': source_note[:500] if source_note else '', 'data_type': 'statutory'}
+            meta = {
+                'article_title': article_title or 'Không rõ',
+                'chapter_title': chapter_title or '',
+                'subject_title': subject_title or '',
+                'topic_title': topic_title or '',
+                'source_url': source_url or '',
+                'source_note': source_note[:500] if source_note else '',
+                'doc_code': doc_code,
+                'doc_name': doc_name,
+                'real_article': real_article,
+                'data_type': 'statutory',
+            }
             doc_id = _make_id('stat', int(idx), article_title)
             documents.append(text_blob)
             metadatas.append(meta)

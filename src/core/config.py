@@ -1,6 +1,12 @@
+import logging
 import os
+
 from dotenv import load_dotenv
+
 load_dotenv(override=True)
+
+logger = logging.getLogger(__name__)
+
 
 class Config:
 
@@ -11,10 +17,12 @@ class Config:
         self.enable_analytics = os.getenv('ENABLE_ANALYTICS', 'true').lower() == 'true'
         self.enable_audit_log = os.getenv('ENABLE_AUDIT_LOG', 'true').lower() == 'true'
         self.enable_offline_mode = os.getenv('OFFLINE_MODE', 'false').lower() == 'true'
+
         if self.enable_offline_mode:
-            print('[CONFIG] Offline mode enabled – LLM calls will be skipped in tests')
+            logger.info('[CONFIG] Offline mode enabled – LLM calls will be skipped in tests')
         else:
-            print(f'[CONFIG] using Local LLM model: {self.llm_model_name} at {self.llm_api_base}')
+            logger.info('[CONFIG] Using local LLM model: %s at %s', self.llm_model_name, self.llm_api_base)
+
         self.temperature = float(os.getenv('TEMPERATURE', '0.0'))
         self.max_tokens = int(os.getenv('MAX_TOKENS', '4000'))
         self.max_requests_per_minute = int(os.getenv('MAX_REQUESTS_PER_MINUTE', '10'))
@@ -28,11 +36,21 @@ class Config:
         self.log_level = os.getenv('LOG_LEVEL', 'INFO')
         self.log_file = os.getenv('LOG_FILE', 'data/logs/app.log')
 
+        self.bm25_rrf_k = int(os.getenv('BM25_RRF_K', '60'))
+        self.retriever_top_k = int(os.getenv('RETRIEVER_TOP_K', '5'))
+
     def validate(self) -> bool:
-        if not self.llm_api_base and (not self.enable_offline_mode):
+        if not self.llm_api_base and not self.enable_offline_mode:
             raise ValueError('OPENAI_API_BASE not set in environment and offline mode is disabled')
         return True
 
     def to_dict(self):
-        return {'model_name': self.llm_model_name, 'temperature': self.temperature, 'max_tokens': self.max_tokens, 'max_requests_per_minute': self.max_requests_per_minute}
+        return {
+            'model_name': self.llm_model_name,
+            'temperature': self.temperature,
+            'max_tokens': self.max_tokens,
+            'max_requests_per_minute': self.max_requests_per_minute,
+        }
+
+
 config = Config()

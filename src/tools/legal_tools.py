@@ -14,6 +14,7 @@ def _get_qa_retriever():
 
 @tool
 def search_statutory_law(query: str, top_k: int=5) -> str:
+    """Tra cứu các điều luật (pháp điển) liên quan đến câu hỏi."""
     try:
         retriever = _get_statutory_retriever()
         results = retriever.retrieve(query, top_k=top_k)
@@ -48,6 +49,7 @@ def search_statutory_law(query: str, top_k: int=5) -> str:
 
 @tool
 def search_case_law(query: str, top_k: int=5) -> str:
+    """Tra cứu các bản án, án lệ liên quan đến tình huống."""
     try:
         retriever = _get_caselaw_retriever()
         results = retriever.retrieve(query, top_k=top_k)
@@ -89,6 +91,7 @@ def search_case_law(query: str, top_k: int=5) -> str:
 
 @tool
 def find_related_caselaw(article_name: str, top_k: int=3) -> str:
+    """Tìm bản án hoặc án lệ đã từng áp dụng một điều luật cụ thể."""
     try:
         retriever = _get_caselaw_retriever()
         query = f'Bản án, quyết định áp dụng {article_name}'
@@ -111,6 +114,7 @@ def find_related_caselaw(article_name: str, top_k: int=3) -> str:
 
 @tool
 def search_legal_qa(query: str, top_k: int=5) -> str:
+    """Tra cứu các câu hỏi đáp pháp luật liên quan."""
     try:
         retriever = _get_qa_retriever()
         results = retriever.retrieve(query, top_k=top_k)
@@ -127,6 +131,7 @@ def search_legal_qa(query: str, top_k: int=5) -> str:
 
 @tool
 def search_law_graph(article_name: str) -> str:
+    """Truy vấn quan hệ của điều luật trong Knowledge Graph."""
     db = get_graph_db()
     if not db.driver:
         return 'Tính năng GraphRAG chưa được cấu hình. Neo4j chưa chạy.'
@@ -145,6 +150,7 @@ def search_law_graph(article_name: str) -> str:
 
 @tool
 def search_web_for_latest_laws(query: str, max_results: int=3) -> str:
+    """Tìm kiếm web cho các quy định pháp luật mới nhất."""
     try:
         with DDGS() as ddgs:
             results = list(ddgs.text(f'{query} quy định pháp luật việt nam', max_results=max_results))

@@ -64,7 +64,7 @@ def index_sme_laws():
             ids.append(doc_id)
         if documents:
             try:
-                col = vdb.client.get_or_create_collection(col_name)
+                col = vdb.create_collection(col_name)
                 col.add(documents=documents, metadatas=metadatas, ids=ids)
             except Exception as e:
                 print(f'Error adding batch {start}: {e}')

@@ -13,4 +13,11 @@ def create_statutory_agent():
 def statutory_agent_node(state):
     agent = create_statutory_agent()
     response = agent.invoke({'messages': list(state['messages'])})
-    return {'messages': [response], 'next': 'end', 'user_intent': state.get('user_intent', ''), 'user_id': state.get('user_id', ''), 'user_info': state.get('user_info', {})}
+    return {
+        'messages': [response],
+        'next': 'end',
+        'user_intent': state.get('user_intent', ''),
+        'user_id': state.get('user_id', ''),
+        'user_info': state.get('user_info', {}),
+        'retry_count': state.get('retry_count', 0),
+    }
